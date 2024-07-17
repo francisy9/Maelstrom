@@ -1,9 +1,12 @@
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class CardController : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     [SerializeField] private Canvas canvas;
+    [SerializeField] private CardVisual cardVisual;
+    public event EventHandler OnCardPlayed;
     private CanvasGroup canvasGroup;
     private RectTransform rectTransform;
     public static Transform zone;
@@ -30,5 +33,10 @@ public class CardController : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
     {
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
+    }
+
+    public void PlayCard() {
+        OnCardPlayed.Invoke(this, EventArgs.Empty);
+        // cardVisual.PlayCard();
     }
 }
