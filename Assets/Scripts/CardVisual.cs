@@ -5,7 +5,7 @@ using static Types;
 
 public class CardVisual : MonoBehaviour
 {
-    [SerializeField] private CardController cardController;
+    [SerializeField] private DragCardController cardController;
     [SerializeField] private GameObject cardBackVisual;
     [SerializeField] private GameObject cardFrontVisual;
     [SerializeField] private GameObject onBoardVisual;

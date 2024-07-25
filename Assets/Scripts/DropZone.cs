@@ -10,10 +10,12 @@ public class DropZone : MonoBehaviour, IDropHandler
         Debug.Log("zone controller drop");
         if (eventData.pointerDrag) {
             Transform cardTransform = eventData.pointerDrag.GetComponent<RectTransform>();
-            CardController card = cardTransform.gameObject.GetComponent<CardController>();
-            Debug.Log($"parent has {transform.childCount} children before adding");
-            cardTransform.SetParent(transform);
-            card.PlayCard();
+            DragCardController card = cardTransform.gameObject.GetComponent<DragCardController>();
+            CardLocation currentCardLocation = card.GetCardLocation();
+            if (currentCardLocation == CardLocation.Hand) {
+                cardTransform.SetParent(transform);
+                card.PlayCard(transform);
+            }
         }
     }
 }

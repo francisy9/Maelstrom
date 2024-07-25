@@ -13,4 +13,10 @@ public static class Types
         public int Mana { get; set; }
         public CardState CardState { get; set; }
     }
+
+    public enum CardLocation {
+        Hand,
+        Board,
+        Discard,
+    }
 }
