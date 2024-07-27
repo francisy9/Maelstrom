@@ -13,6 +13,7 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
     public static Transform zone;
     private CardLocation cardLocation;
     private Transform prevParentTransform;
+    private Vector3 attackFromPos;
     
     private void Awake() {
         rectTransform = GetComponent<RectTransform>();
@@ -30,9 +31,13 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
             case CardLocation.Hand:
                 canvasGroup.alpha = .6f;
                 canvasGroup.blocksRaycasts = false;
-                transform.SetParent(transform.root);
+                transform.SetParent(canvas.transform);
                 break;
             case CardLocation.Board:
+                Vector3 attackFromVec3 = new Vector3(transform.position.x, transform.position.y, -1);
+                Vector3 attackToVec3 = new Vector3(eventData.position.x, eventData.position.y, -1);
+                LineController.Instance.Show();
+                LineController.Instance.SetAttackLine(attackFromVec3, attackToVec3);
                 break;
             case CardLocation.Discard:
                 // Debug.LogError("Should not be able to drag discarded card");
@@ -42,11 +47,18 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
 
     public void OnDrag(PointerEventData eventData)
     {
+        Debug.Log($"cursor position: {eventData.position}");
         switch (cardLocation) {
             case CardLocation.Hand:
-                rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
+                Vector2 pos;
+                RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.transform as RectTransform, eventData.position, canvas.worldCamera, out pos);
+                transform.position = canvas.transform.TransformPoint(pos);
                 break;
             case CardLocation.Board:
+                Vector3 attackFromVec3 = new Vector3(transform.position.x, transform.position.y, -1);
+                Vector2 pointerWorldPos = Camera.main.ScreenToWorldPoint(eventData.position);
+                Vector3 attackToVec3 = new Vector3(pointerWorldPos.x, pointerWorldPos.y, -1);
+                LineController.Instance.SetAttackLine(attackFromVec3, attackToVec3);
                 break;
             case CardLocation.Discard:
                 Debug.LogError("Should not be able to drag discarded card");
@@ -56,15 +68,27 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        canvasGroup.alpha = 1f;
-        canvasGroup.blocksRaycasts = true;
-        transform.SetParent(prevParentTransform);
+        switch (cardLocation) {
+            case CardLocation.Hand:
+                canvasGroup.alpha = 1f;
+                canvasGroup.blocksRaycasts = true;
+                transform.SetParent(prevParentTransform);
+                break;
+            case CardLocation.Board:
+                LineController.Instance.Hide();
+                break;
+            case CardLocation.Discard:
+                Debug.LogError("Should not be able to drag discarded card");
+                break;
+        }
     }
 
     public void PlayCard(Transform boardTransform) {
         cardLocation = CardLocation.Board;
         prevParentTransform = boardTransform;
         OnCardPlayed.Invoke(this, EventArgs.Empty);
+        canvasGroup.alpha = 1f;
+        canvasGroup.blocksRaycasts = true;
     }
 
     public CardLocation GetCardLocation() {

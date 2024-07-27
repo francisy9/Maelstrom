@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets/Scripts/HandController.cs" />
+    <Compile Include="Assets/Scripts/LineController.cs" />
     <Compile Include="Assets/Scripts/DragCardController.cs" />
     <Compile Include="Assets/Scripts/BoardController.cs" />
     <Compile Include="Assets/Scripts/Card.cs" />
