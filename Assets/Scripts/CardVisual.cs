@@ -5,7 +5,8 @@ using static Types;
 
 public class CardVisual : MonoBehaviour
 {
-    [SerializeField] private DragCardController cardController;
+    [SerializeField] private DragCardController dragCardController;
+    [SerializeField] private Card card;
     [SerializeField] private GameObject cardBackVisual;
     [SerializeField] private GameObject cardFrontVisual;
     [SerializeField] private GameObject onBoardVisual;
@@ -14,13 +15,13 @@ public class CardVisual : MonoBehaviour
     [SerializeField] private TextMeshProUGUI manaText;
     [SerializeField] private TextMeshProUGUI attackText;
     [SerializeField] private TextMeshProUGUI hpText;
-    [SerializeField] private DropZone dropZone;
     [SerializeField] private TextMeshProUGUI onBoardAttackText;
     [SerializeField] private TextMeshProUGUI onBoardHpText;
+    private CardStatsSO cardStatsSO;
     
 
     private void Start() {
-        CardStatsSO cardStatsSO = GetComponentInParent<Card>().GetCardStatsSO();
+        cardStatsSO = GetComponentInParent<Card>().GetCardStatsSO();
         cardName.text = cardStatsSO.cardName;
         description.text = cardStatsSO.description;
         manaText.text = cardStatsSO.manaCost.ToString();
@@ -31,14 +32,15 @@ public class CardVisual : MonoBehaviour
         cardBackVisual.SetActive(false);
         cardFrontVisual.SetActive(true);
         onBoardVisual.SetActive(false);
-        cardController.OnCardPlayed += CardController_OnCardPlayed;
+        dragCardController.OnCardPlayed += DragCardController_OnCardPlayed;
+        card.OnAttack += Card_OnAttack;
+        card.OnBeingAttacked += Card_OnBeingAttacked;
     }
 
-    public void UpdateVisual(CardStats cardStats) {
-        hpText.text = cardStats.Hp.ToString();
-        manaText.text = cardStats.Mana.ToString();
-        attackText.text = cardStats.Attack.ToString();
-        SetCardVisualState(cardStats.CardState);
+    public void UpdateBoardVisual(int remainingHp, int attackVal) {
+        Debug.Log(remainingHp);
+        hpText.text = remainingHp.ToString();
+        attackText.text = attackVal.ToString();
     }
 
     public void SetCardVisualState(CardState cardState) {
@@ -58,8 +60,28 @@ public class CardVisual : MonoBehaviour
         }   
     }
 
-    private void CardController_OnCardPlayed(object sender, EventArgs e)
+    private void DragCardController_OnCardPlayed(object sender, EventArgs e)
     {
         SetCardVisualState(CardState.OnBoard);
+    }
+
+    private void Card_OnAttack(object sender, EventArgs e)
+    {
+        int remainingHp = card.GetRemainingHp();
+        onBoardHpText.text = remainingHp.ToString();
+        if (remainingHp < cardStatsSO.hp) {
+            onBoardHpText.color = Color.red;
+        }
+    }
+
+    // Splitting into 2 separate functions now since it gets more complicated once 
+    // more features are implemented
+    private void Card_OnBeingAttacked(object sender, EventArgs e)
+    {
+        int remainingHp = card.GetRemainingHp();
+        onBoardHpText.text = remainingHp.ToString();
+        if (remainingHp < cardStatsSO.hp) {
+            onBoardHpText.color = Color.red;
+        }
     }
  }

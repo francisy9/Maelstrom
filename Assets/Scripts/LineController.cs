@@ -18,7 +18,6 @@ public class LineController : MonoBehaviour
     }
 
     public void SetAttackLine(Vector3 fromCardPos, Vector3 toCardPos) {
-        Debug.Log($"set attack line called{fromCardPos} {toCardPos}");
         lineRenderer.SetPosition(0, fromCardPos);
         lineRenderer.SetPosition(1, toCardPos);
     }

@@ -13,7 +13,7 @@ public class DropZone : MonoBehaviour, IDropHandler
             CardLocation currentCardLocation = card.GetCardLocation();
             if (currentCardLocation == CardLocation.Hand) {
                 cardTransform.SetParent(transform);
-                card.PlayCard(transform);
+                card.MoveCardToBoard(transform);
             }
         }
     }

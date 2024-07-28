@@ -9,14 +9,12 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
     [SerializeField] private CardVisual cardVisual;
     public event EventHandler OnCardPlayed;
     private CanvasGroup canvasGroup;
-    private RectTransform rectTransform;
     public static Transform zone;
     private CardLocation cardLocation;
     private Transform prevParentTransform;
-    private Vector3 attackFromPos;
+    private Card currentlyDetectedCard;
     
     private void Awake() {
-        rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
     }
 
@@ -40,14 +38,13 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
                 LineController.Instance.SetAttackLine(attackFromVec3, attackToVec3);
                 break;
             case CardLocation.Discard:
-                // Debug.LogError("Should not be able to drag discarded card");
+                Debug.LogError("Should not be able to drag discarded card");
                 break;
         }
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        Debug.Log($"cursor position: {eventData.position}");
         switch (cardLocation) {
             case CardLocation.Hand:
                 Vector2 pos;
@@ -55,8 +52,18 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
                 transform.position = canvas.transform.TransformPoint(pos);
                 break;
             case CardLocation.Board:
+                GameObject opponentCard = DetectCard(eventData);
                 Vector3 attackFromVec3 = new Vector3(transform.position.x, transform.position.y, -1);
                 Vector2 pointerWorldPos = Camera.main.ScreenToWorldPoint(eventData.position);
+
+                if (opponentCard != null) {
+                    currentlyDetectedCard = opponentCard.GetComponent<Card>();
+                    Debug.Log(opponentCard.name);
+                    pointerWorldPos = opponentCard.transform.position;
+                } else {
+                    currentlyDetectedCard = null;
+                }
+
                 Vector3 attackToVec3 = new Vector3(pointerWorldPos.x, pointerWorldPos.y, -1);
                 LineController.Instance.SetAttackLine(attackFromVec3, attackToVec3);
                 break;
@@ -75,6 +82,9 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
                 transform.SetParent(prevParentTransform);
                 break;
             case CardLocation.Board:
+                if (currentlyDetectedCard) {
+                    gameObject.GetComponent<Card>().AttackCard(currentlyDetectedCard);
+                }
                 LineController.Instance.Hide();
                 break;
             case CardLocation.Discard:
@@ -83,15 +93,29 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
         }
     }
 
-    public void PlayCard(Transform boardTransform) {
+    public void MoveCardToBoard(Transform boardTransform) {
         cardLocation = CardLocation.Board;
         prevParentTransform = boardTransform;
         OnCardPlayed.Invoke(this, EventArgs.Empty);
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
+        gameObject.layer = LayerMask.NameToLayer(PLAYER_CARD_LAYER);
     }
 
     public CardLocation GetCardLocation() {
         return cardLocation;
+    }
+
+    private GameObject DetectCard(PointerEventData pointerEventData) {
+        Vector2 pointerWorldPos = Camera.main.ScreenToWorldPoint(pointerEventData.position);
+        LayerMask opponentCardLayerMask = LayerMask.GetMask(OPPONENT_PLAYED_CARD_LAYER);
+        RaycastHit2D hit = Physics2D.Raycast(pointerWorldPos, Vector2.zero, 1.0f, opponentCardLayerMask);
+        if (hit.collider != null) {
+            Debug.Log("Game object found");
+            GameObject opponentCardGameObject = hit.collider.gameObject;
+            return opponentCardGameObject;
+        }
+        Debug.Log("no object found");
+        return null;
     }
 }
