@@ -1,42 +1,43 @@
 using System;
 using UnityEngine;
-using static Types;
 
 public class Card : MonoBehaviour
 {
     [SerializeField] private CardStatsSO cardStatsSO;
+    [SerializeField] private CardVisual cardVisual;
     private DragCardController dragCardController;
-    public CardStats cardStats;
     private int remainingAttacks;
+    private int totalAttacks;
     private int attackVal;
     private int remainingHp;
+    private int manaCost;
     public event EventHandler OnAttack;
     public event EventHandler OnBeingAttacked;
+    public event EventHandler OnDeath;
 
-    private void Awake() {
-        cardStats = new CardStats
-        {
-            Hp = cardStatsSO.hp,
-            Attack = cardStatsSO.attack,
-            Mana = cardStatsSO.manaCost,
-            CardState = CardState.CardFront
-        };
-    }
-
-    private void Start() {
+    public void InitCard(CardStatsSO cardStatsSO) {
+        this.cardStatsSO = cardStatsSO;
         dragCardController = GetComponent<DragCardController>();
         dragCardController.OnCardPlayed += DragCardController_OnCardPlayed;
+        cardVisual.InitVisual();
+        manaCost = cardStatsSO.manaCost;
     }
-
+ 
     private void DragCardController_OnCardPlayed(object sender, EventArgs e)
     {
-        remainingAttacks = 1;
-        attackVal = cardStats.Attack;
-        remainingHp = cardStats.Hp;
+        remainingAttacks = 0;
+        totalAttacks = 1;
+        attackVal = cardStatsSO.attack;
+        remainingHp = cardStatsSO.hp;
     }
 
     public CardStatsSO GetCardStatsSO() {
         return cardStatsSO;
+    }
+
+    public int GetManaCost() {
+        Debug.Log($"{name} has {manaCost} mana");
+        return manaCost;
     }
 
     public int GetRemainingHp() {
@@ -63,6 +64,6 @@ public class Card : MonoBehaviour
     }
 
     private void Death() {
-        Debug.Log($"{this.name} has hp val {remainingHp} and is dead"); // Implement death logic
+        OnDeath?.Invoke(this, EventArgs.Empty);
     }
 }

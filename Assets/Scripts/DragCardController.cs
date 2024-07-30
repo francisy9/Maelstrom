@@ -5,28 +5,35 @@ using static Types;
 
 public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    [SerializeField] private Canvas canvas;
+    private Canvas canvas;
+    private DropZone playerDropZone;
     [SerializeField] private CardVisual cardVisual;
+    private Player player;
     public event EventHandler OnCardPlayed;
     private CanvasGroup canvasGroup;
-    public static Transform zone;
     private CardLocation cardLocation;
     private Transform prevParentTransform;
+    private Card card;
     private Card currentlyDetectedCard;
-    
-    private void Awake() {
-        canvasGroup = GetComponent<CanvasGroup>();
-    }
 
-    private void Start() {
+    public void InitDragCardController(Player player) {
+        canvas = player.GetCanvas();
+        playerDropZone = player.GetDropZone();
+        this.player = player;
+        canvasGroup = GetComponent<CanvasGroup>();
         prevParentTransform = transform.parent;
+        card = GetComponent<Card>();
+        card.OnDeath += Card_OnDeath;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        Debug.Log("On begin drag");
         switch (cardLocation) {
             case CardLocation.Hand:
+                if (!CanPlayCard()) {
+                    eventData.pointerDrag = null;
+                    return;
+                }
                 canvasGroup.alpha = .6f;
                 canvasGroup.blocksRaycasts = false;
                 transform.SetParent(canvas.transform);
@@ -77,9 +84,16 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
     {
         switch (cardLocation) {
             case CardLocation.Hand:
+                if (DropZoneIsPointerOver(eventData)) {
+                    Transform boardTransform = playerDropZone.transform;
+                    transform.SetParent(boardTransform);
+                    MoveCardToBoard(boardTransform);
+                    player.ConsumeMana(card.GetManaCost());
+                } else {
+                    transform.SetParent(prevParentTransform);
+                }
                 canvasGroup.alpha = 1f;
                 canvasGroup.blocksRaycasts = true;
-                transform.SetParent(prevParentTransform);
                 break;
             case CardLocation.Board:
                 if (currentlyDetectedCard) {
@@ -91,6 +105,19 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
                 Debug.LogError("Should not be able to drag discarded card");
                 break;
         }
+    }
+
+    private bool CanPlayCard() {
+        if (player.GetRemainingMana() < card.GetManaCost()) {
+            Debug.Log($"{player.GetRemainingMana()} card mana: {card.GetManaCost()}");
+            Debug.Log("Insufficient mana to play card");
+            return false;
+        }
+        if (!player.IsTurn()) {
+            Debug.Log("Not your turn");
+            return false;
+        }
+        return true;
     }
 
     public void MoveCardToBoard(Transform boardTransform) {
@@ -111,11 +138,23 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
         LayerMask opponentCardLayerMask = LayerMask.GetMask(OPPONENT_PLAYED_CARD_LAYER);
         RaycastHit2D hit = Physics2D.Raycast(pointerWorldPos, Vector2.zero, 1.0f, opponentCardLayerMask);
         if (hit.collider != null) {
-            Debug.Log("Game object found");
             GameObject opponentCardGameObject = hit.collider.gameObject;
             return opponentCardGameObject;
         }
-        Debug.Log("no object found");
         return null;
+    }
+
+    private void Card_OnDeath(object sender, EventArgs e) {
+        throw new NotImplementedException();
+    }
+
+    private bool DropZoneIsPointerOver(PointerEventData eventData) {
+        RectTransform dropZoneRectTransform = playerDropZone.GetComponent<RectTransform>();
+        return RectTransformUtility.RectangleContainsScreenPoint(dropZoneRectTransform, eventData.position, eventData.pressEventCamera);
+    }
+
+
+    private void DiscardSelf() {
+        cardLocation = CardLocation.Discard;
     }
 }

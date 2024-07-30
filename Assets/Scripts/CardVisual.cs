@@ -20,7 +20,7 @@ public class CardVisual : MonoBehaviour
     private CardStatsSO cardStatsSO;
     
 
-    private void Start() {
+    public void InitVisual() {
         cardStatsSO = GetComponentInParent<Card>().GetCardStatsSO();
         cardName.text = cardStatsSO.cardName;
         description.text = cardStatsSO.description;

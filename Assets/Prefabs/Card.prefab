@@ -63,6 +63,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvas: {fileID: 0}
   cardVisual: {fileID: 7099628273227512100}
+  playerDropZone: {fileID: 0}
 --- !u!225 &5843665970187184343
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -88,6 +89,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardStatsSO: {fileID: 0}
+  cardVisual: {fileID: 7099628273227512100}
 --- !u!61 &3516883080462058706
 BoxCollider2D:
   m_ObjectHideFlags: 0
