@@ -13,8 +13,8 @@ TagManager:
   - UI
   - PlayedCard
   - OpponentPlayedCard
-  - 
-  - 
+  - Hero
+  - OpponentHero
   - 
   - 
   - 

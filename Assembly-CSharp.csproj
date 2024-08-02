@@ -67,13 +67,16 @@
     <Compile Include="Assets/Scripts/HandController.cs" />
     <Compile Include="Assets/Scripts/LineController.cs" />
     <Compile Include="Assets/Scripts/DragCardController.cs" />
-    <Compile Include="Assets/Scripts/BoardController.cs" />
+    <Compile Include="Assets/Scripts/Hero.cs" />
+    <Compile Include="Assets/Scripts/HeroVisual.cs" />
     <Compile Include="Assets/Scripts/Card.cs" />
     <Compile Include="Assets/Scripts/Player.cs" />
     <Compile Include="Assets/Scripts/GameManager.cs" />
+    <Compile Include="Assets/Scripts/Board.cs" />
     <Compile Include="Assets/Scripts/Types.cs" />
-    <Compile Include="Assets/Scripts/DropZone.cs" />
     <Compile Include="Assets/Scripts/ScriptableObjects/CardStatsSO.cs" />
+    <Compile Include="Assets/Scripts/CanAttackBase.cs" />
+    <Compile Include="Assets/Scripts/PlayerManaDisplay.cs" />
     <Compile Include="Assets/Scripts/CardVisual.cs" />
   </ItemGroup>
   <ItemGroup>

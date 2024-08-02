@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake() {
         Instance = this;
-        isHostsTurn = Random.Range(0, 1) == 0;
+        isHostsTurn = Random.Range(0, 2) == 0;
         turn = 0;
     }
 
@@ -23,27 +23,24 @@ public class GameManager : MonoBehaviour
         endTurnButton.onClick.AddListener(() => {
             EndTurn();
         });
-        hostPlayer.DrawCard();
-        hostPlayer.DrawCard();
-        hostPlayer.DrawCard();
-        clientPlayer.DrawCard();
-        clientPlayer.DrawCard();
-        clientPlayer.DrawCard();
-        clientPlayer.DrawCard();
+        hostPlayer.StartGame(isHostsTurn);
+        clientPlayer.StartGame(!isHostsTurn);
+        GetCurrentPlayerTurn().StartTurn();
     }
 
     public bool IsHostsTurn() {
         return isHostsTurn;
     }
 
-    private Player GetCurrentPlayerTurn() {
+    public Player GetCurrentPlayerTurn() {
         return isHostsTurn ? hostPlayer : clientPlayer;
     }
 
     private void EndTurn() {
+        GetCurrentPlayerTurn().ResetCardAttacks();
         isHostsTurn = !isHostsTurn;
         Player playerNextInTurn = GetCurrentPlayerTurn();
-        playerNextInTurn.IncrementMaxMana();
         playerNextInTurn.StartTurn();
+        turn += 1;
     }
 }

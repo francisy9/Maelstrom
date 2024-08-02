@@ -6,7 +6,7 @@ using static Types;
 public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     private Canvas canvas;
-    private DropZone playerDropZone;
+    private Board playerDropZone;
     [SerializeField] private CardVisual cardVisual;
     private Player player;
     public event EventHandler OnCardPlayed;
@@ -28,6 +28,12 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (!player.IsTurn()) {
+            Debug.Log("Not your turn");
+            eventData.pointerDrag = null;
+            return;
+        }
+
         switch (cardLocation) {
             case CardLocation.Hand:
                 if (!CanPlayCard()) {
@@ -39,6 +45,10 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
                 transform.SetParent(canvas.transform);
                 break;
             case CardLocation.Board:
+                if (!card.CanAttack()) {
+                    eventData.pointerDrag = null;
+                    return;
+                }
                 Vector3 attackFromVec3 = new Vector3(transform.position.x, transform.position.y, -1);
                 Vector3 attackToVec3 = new Vector3(eventData.position.x, eventData.position.y, -1);
                 LineController.Instance.Show();
@@ -97,7 +107,7 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
                 break;
             case CardLocation.Board:
                 if (currentlyDetectedCard) {
-                    gameObject.GetComponent<Card>().AttackCard(currentlyDetectedCard);
+                    gameObject.GetComponent<Card>().Attack(currentlyDetectedCard);
                 }
                 LineController.Instance.Hide();
                 break;
@@ -109,12 +119,7 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
 
     private bool CanPlayCard() {
         if (player.GetRemainingMana() < card.GetManaCost()) {
-            Debug.Log($"{player.GetRemainingMana()} card mana: {card.GetManaCost()}");
             Debug.Log("Insufficient mana to play card");
-            return false;
-        }
-        if (!player.IsTurn()) {
-            Debug.Log("Not your turn");
             return false;
         }
         return true;
