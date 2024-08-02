@@ -1156,6 +1156,7 @@
     <ProjectReference Include="Mirror.csproj" />
     <ProjectReference Include="Mirror.Transports.csproj" />
     <ProjectReference Include="Mirror.Components.csproj" />
+    <ProjectReference Include="ParrelSync.csproj" />
     <ProjectReference Include="Telepathy.csproj" />
     <ProjectReference Include="SimpleWebTransport.csproj" />
     <ProjectReference Include="Mirror.CompilerSymbols.csproj" />

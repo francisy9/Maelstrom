@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Telepathy", "Telepathy.cspr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleWebTransport", "SimpleWebTransport.csproj", "{D8C7F92A-799F-EDF1-05BE-7468360D6310}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParrelSync", "ParrelSync.csproj", "{E79B4FCD-B443-A940-5ED6-FA781AFEA69F}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kcp2k", "kcp2k.csproj", "{68EB0854-1847-EE9E-7411-BB3747081EED}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mirror.Authenticators", "Mirror.Authenticators.csproj", "{90885EFA-340F-FB04-A15A-7AD0389C918D}"
@@ -69,6 +71,10 @@ Global
 		{D8C7F92A-799F-EDF1-05BE-7468360D6310}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D8C7F92A-799F-EDF1-05BE-7468360D6310}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D8C7F92A-799F-EDF1-05BE-7468360D6310}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E79B4FCD-B443-A940-5ED6-FA781AFEA69F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E79B4FCD-B443-A940-5ED6-FA781AFEA69F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E79B4FCD-B443-A940-5ED6-FA781AFEA69F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E79B4FCD-B443-A940-5ED6-FA781AFEA69F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{68EB0854-1847-EE9E-7411-BB3747081EED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{68EB0854-1847-EE9E-7411-BB3747081EED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68EB0854-1847-EE9E-7411-BB3747081EED}.Release|Any CPU.ActiveCfg = Release|Any CPU
