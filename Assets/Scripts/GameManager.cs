@@ -1,44 +1,71 @@
 using System.Collections;
 using System.Collections.Generic;
+using Mirror;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameManager : MonoBehaviour
+public class GameManager : NetworkBehaviour
 {
     public static GameManager Instance;
-    [SerializeField] private Player hostPlayer;
-    [SerializeField] private Player clientPlayer;
+    [SerializeField] private Player playerOne;
+    private bool p1Assigned = false;
+    [SerializeField] private Player playerTwo;
+    private bool p2Assigned = false;
     [SerializeField] private Button endTurnButton;
 
     private int turn;
-    private bool isHostsTurn;
+    private bool isP1Turn;
 
-    private void Awake() {
+    public override void OnStartServer() {
         Instance = this;
-        isHostsTurn = Random.Range(0, 2) == 0;
+        isP1Turn = Random.Range(0, 2) == 0;
         turn = 0;
-    }
-
-    private void Start() {
+        base.OnStartServer();
         endTurnButton.onClick.AddListener(() => {
             EndTurn();
         });
-        hostPlayer.StartGame(isHostsTurn);
-        clientPlayer.StartGame(!isHostsTurn);
-        GetCurrentPlayerTurn().StartTurn();
     }
 
-    public bool IsHostsTurn() {
-        return isHostsTurn;
+    public Player GetPlayer() {
+        if (!p1Assigned) {
+            p1Assigned = true;
+            return playerOne;
+        } else if (!p2Assigned) {
+            p2Assigned = true;
+            return playerTwo;
+        } else {
+            Debug.LogError("Too many attempted connections");
+            return null;
+        }
+    }
+
+    public void StartGame() {
+        Debug.Log("start game");
+        
+        playerOne.CmdDrawCards(1);
+        playerTwo.CmdDrawCards(3);
+        // if (isP1Turn) {
+        //     playerOne.CmdDrawCards(3);
+        //     playerTwo.DrawCardsFromDeck(4);
+        // } else {
+        //     playerOne.CmdDrawCards(4);
+        //     playerTwo.DrawCardsFromDeck(3);
+        // }
+        // GetCurrentPlayerTurn().StartTurn();
+    }
+
+    public bool IsP1Turn() {
+        return isP1Turn;
     }
 
     public Player GetCurrentPlayerTurn() {
-        return isHostsTurn ? hostPlayer : clientPlayer;
+        return isP1Turn ? playerOne : playerTwo;
     }
 
     private void EndTurn() {
+        Debug.Log("end turn called");
         GetCurrentPlayerTurn().ResetCardAttacks();
-        isHostsTurn = !isHostsTurn;
+        isP1Turn = !isP1Turn;
         Player playerNextInTurn = GetCurrentPlayerTurn();
         playerNextInTurn.StartTurn();
         turn += 1;

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5843665970187184343}
   - component: {fileID: 8510968551358940025}
   - component: {fileID: 3516883080462058706}
+  - component: {fileID: 1752626929663723020}
   m_Layer: 5
   m_Name: Card
   m_TagString: Untagged
@@ -61,9 +62,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1810ad94bb7a44de8976295923e4d130, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvas: {fileID: 0}
   cardVisual: {fileID: 7099628273227512100}
-  playerDropZone: {fileID: 0}
 --- !u!225 &5843665970187184343
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -88,6 +87,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de049828cd92f44599227d6204fbb956, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  remainingAttacks: 0
+  totalAttacks: 0
+  attackVal: 0
+  remainingHp: 0
   cardStatsSO: {fileID: 0}
   cardVisual: {fileID: 7099628273227512100}
 --- !u!61 &3516883080462058706
@@ -135,6 +138,23 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 130, y: 150}
   m_EdgeRadius: 0
+--- !u!114 &1752626929663723020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7631930073733532281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  _assetId: 853518188
+  serverOnly: 0
+  visibility: 0
+  hasSpawned: 0
 --- !u!1001 &2756691506614879754
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -1,41 +1,40 @@
 using System;
 using System.Collections.Generic;
+using Mirror;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : NetworkBehaviour
 {
+    [SerializeField] private GameManager gameManager;
     [SerializeField] private Canvas canvas;
     [SerializeField] private int hp;
     public int remainingMana;
     private int maxMana;
     [SerializeField] private Board board;
-    [SerializeField] private bool isServer;
     [SerializeField] private Transform hand;
+    [SerializeField] private Board enemyBoard;
+    [SerializeField] private Transform enemyHand;
     [SerializeField] private List<CardStatsSO> deck;
     [SerializeField] private GameObject cardObject;
     public event EventHandler ManaConsumed;
     public event EventHandler OnStartTurn;
     public event EventHandler OnGameStart;
 
+    public override void OnStartLocalPlayer() {
+        base.OnStartLocalPlayer();
+        Debug.Log("Player script ran on Start local player");
+    }
+
+    [ClientRpc]
     public void StartGame(bool first) {
+        Debug.Log("Start game from Player.cs called");
         maxMana = 0;
         remainingMana = 0;
         OnGameStart?.Invoke(this, EventArgs.Empty);
-        int numCardsToDraw = 3;
-        if (!first) {
-            numCardsToDraw = 4;
-        }
-        for(int i = 0; i < numCardsToDraw; i++) {
-            DrawCard();
-        }
     }
 
     public Board GetDropZone() {
         return board;
-    }
-
-    public bool IsServer() {
-        return isServer;
     }
 
     public void SetMaxMana(int mana) {
@@ -48,16 +47,61 @@ public class Player : MonoBehaviour
         OnStartTurn?.Invoke(this, EventArgs.Empty);
     }
 
-    public void DrawCard() {
-        if (deck.Count > 0)
+    public void CmdDrawCards(int numCardsToDraw)
+    {
+        // Logic to draw a card from the deck
+        List<CardStatsSO> drawnCardStatsSOs = DrawCardsFromDeck(numCardsToDraw);
+
+        // Add the card to the local player's hand
+        AddCardsToHand(drawnCardStatsSOs);
+        RpcUpdateHand(netIdentity, drawnCardStatsSOs);
+    }
+
+    public List<CardStatsSO> DrawCardsFromDeck(int numCardsToDraw) {
+        List<CardStatsSO> cardStatsSOs = new List<CardStatsSO>();
+        for (int i = 0; i < numCardsToDraw; i++) {
+            if (deck.Count > 0)
+            {
+                int cardIndex = UnityEngine.Random.Range(0, deck.Count);
+                cardStatsSOs.Add(deck[cardIndex]);
+            } else {
+                cardStatsSOs.Add(null);
+            }
+        }
+        return cardStatsSOs;
+    }
+
+    [ClientRpc]
+    void RpcUpdateHand(NetworkIdentity playerId, List<CardStatsSO> cardStatsSOs)
+    {
+        if (isLocalPlayer)
         {
-            int cardIndex = UnityEngine.Random.Range(0, deck.Count);
-            CardStatsSO cardStatsSO = deck[cardIndex];
+            if (netIdentity == playerId) {
+                // Update the local player's hand
+                AddCardsToHand(cardStatsSOs);
+            }
+            else {
+                // Update the opponent's view with a card back
+                AddCardToOpponentHand(cardStatsSOs.Count);
+            }
+        }
+    }
+
+
+    // TODO: deal with overdraw
+    private void AddCardsToHand(List<CardStatsSO> cardStatsSOs) {
+        for (int i = 0; i < cardStatsSOs.Count; i++) {
             GameObject currentCardObject = Instantiate(cardObject, hand);
             Card cardComponent = currentCardObject.GetComponent<Card>();
             DragCardController dragCardControllerComponent = currentCardObject.GetComponent<DragCardController>();
-            cardComponent.InitCard(cardStatsSO);
+            cardComponent.InitCard(cardStatsSOs[i]);
             dragCardControllerComponent.InitDragCardController(this);
+        }
+    }
+
+    private void AddCardToOpponentHand(int numCards) {
+        for (int i = 0; i < numCards; i++) {
+            Instantiate(cardObject, enemyHand);
         }
     }
 
@@ -79,7 +123,7 @@ public class Player : MonoBehaviour
     }
 
     public bool IsTurn() {
-        bool isHostsTurn = GameManager.Instance.IsHostsTurn();
+        bool isHostsTurn = GameManager.Instance.IsP1Turn();
         if (isServer) {
             return isHostsTurn;
         } else {
