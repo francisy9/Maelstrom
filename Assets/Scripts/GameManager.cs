@@ -19,6 +19,10 @@ public class GameManager : NetworkBehaviour
     public override void OnStartServer() {
         Instance = this;
         isP1Turn = Random.Range(0, 2) == 0;
+
+        // TODO: Testing logic, remove when done
+        isP1Turn = true;
+
         turn = 0;
         base.OnStartServer();
         endTurnButton.onClick.AddListener(() => {
@@ -42,16 +46,24 @@ public class GameManager : NetworkBehaviour
     public void StartGame() {
         Debug.Log("start game");
         
-        playerOne.CmdDrawCards(1);
-        playerTwo.CmdDrawCards(3);
-        // if (isP1Turn) {
-        //     playerOne.CmdDrawCards(3);
-        //     playerTwo.DrawCardsFromDeck(4);
-        // } else {
-        //     playerOne.CmdDrawCards(4);
-        //     playerTwo.DrawCardsFromDeck(3);
-        // }
-        // GetCurrentPlayerTurn().StartTurn();
+        // playerOne.CmdDrawCards(1);
+        // playerTwo.CmdDrawCards(3);
+        if (isP1Turn) {
+            playerOne.DrawCards(3);
+            playerTwo.DrawCards(4);
+        } else {
+            playerOne.DrawCards(4);
+            playerTwo.DrawCards(3);
+        }
+        InitializeManaDisplays();
+        playerOne.StartGame(isP1Turn);
+        playerTwo.StartGame(!isP1Turn);
+        GetCurrentPlayerTurn().StartTurn();
+    }
+
+    private void InitializeManaDisplays() {
+        playerOne.InitializeManaDisplay();
+        playerTwo.InitializeManaDisplay();
     }
 
     public bool IsP1Turn() {

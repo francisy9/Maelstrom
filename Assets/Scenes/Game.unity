@@ -1167,7 +1167,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2402681596375902675, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: m_Name
-      value: Player (1)
+      value: PlayerTwo
       objectReference: {fileID: 0}
     - target: {fileID: 2402681596375902675, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: m_IsActive
@@ -1176,11 +1176,11 @@ PrefabInstance:
     - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: hand
       value: 
-      objectReference: {fileID: 723819819}
+      objectReference: {fileID: 1230017959}
     - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: board
       value: 
-      objectReference: {fileID: 340104462}
+      objectReference: {fileID: 322034015}
     - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: canvas
       value: 
@@ -1190,9 +1190,13 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 340104462}
     - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
+      propertyPath: opponent
+      value: 
+      objectReference: {fileID: 4637422271275783584}
+    - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: enemyHand
       value: 
-      objectReference: {fileID: 1230017959}
+      objectReference: {fileID: 723819819}
     - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: cardObject
       value: 
@@ -1200,15 +1204,27 @@ PrefabInstance:
     - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: enemyBoard
       value: 
-      objectReference: {fileID: 322034015}
+      objectReference: {fileID: 340104462}
     - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: gameManager
       value: 
       objectReference: {fileID: 2104311097}
     - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
+      propertyPath: manaDisplay
+      value: 
+      objectReference: {fileID: 1534469567}
+    - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
+      propertyPath: cardBackObject
+      value: 
+      objectReference: {fileID: 7631930073733532281, guid: 4e8fba49d5963453e99bc6efedc075b6, type: 3}
+    - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: deck.Array.size
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
+      propertyPath: enemyManaDisplay
+      value: 
+      objectReference: {fileID: 867263036}
     - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: deck.Array.data[0]
       value: 
@@ -1401,7 +1417,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manaText: {fileID: 1441475662}
-  player: {fileID: 583992372}
+  player: {fileID: 0}
 --- !u!1001 &1054928346
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1806,7 +1822,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manaText: {fileID: 439953215}
-  player: {fileID: 4637422271275783584}
+  player: {fileID: 0}
 --- !u!1 &1553693960
 GameObject:
   m_ObjectHideFlags: 0
@@ -2505,7 +2521,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2402681596375902675, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: m_Name
-      value: Player
+      value: PlayerOne
       objectReference: {fileID: 0}
     - target: {fileID: 2402681596375902675, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: m_IsActive
@@ -2532,6 +2548,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
+      propertyPath: opponent
+      value: 
+      objectReference: {fileID: 583992372}
+    - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: enemyHand
       value: 
       objectReference: {fileID: 723819819}
@@ -2548,9 +2568,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2104311097}
     - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
+      propertyPath: manaDisplay
+      value: 
+      objectReference: {fileID: 1534469567}
+    - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
+      propertyPath: cardBackObject
+      value: 
+      objectReference: {fileID: 7631930073733532281, guid: 4e8fba49d5963453e99bc6efedc075b6, type: 3}
+    - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: deck.Array.size
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
+      propertyPath: enemyManaDisplay
+      value: 
+      objectReference: {fileID: 867263036}
     - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: deck.Array.data[0]
       value: 

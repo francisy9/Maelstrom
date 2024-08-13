@@ -7,29 +7,38 @@ public class Player : NetworkBehaviour
 {
     [SerializeField] private GameManager gameManager;
     [SerializeField] private Canvas canvas;
+    [SerializeField] private Player opponent;
     [SerializeField] private int hp;
-    public int remainingMana;
-    private int maxMana;
+    public int remainingMana = 0;
+    private int maxMana = 0;
     [SerializeField] private Board board;
     [SerializeField] private Transform hand;
     [SerializeField] private Board enemyBoard;
     [SerializeField] private Transform enemyHand;
+    [SerializeField] private PlayerManaDisplay manaDisplay;
+    [SerializeField] private PlayerManaDisplay enemyManaDisplay;
     [SerializeField] private List<CardStatsSO> deck;
     [SerializeField] private GameObject cardObject;
+    [SerializeField] private GameObject cardBackObject;
     public event EventHandler ManaConsumed;
     public event EventHandler OnStartTurn;
     public event EventHandler OnGameStart;
 
     public override void OnStartLocalPlayer() {
         base.OnStartLocalPlayer();
-        Debug.Log("Player script ran on Start local player");
+    }
+
+    [ClientRpc]
+    public void InitializeManaDisplay() {
+        if (isLocalPlayer) {
+            manaDisplay.InitializeManaDisplay(this);
+            enemyManaDisplay.InitializeManaDisplay(opponent);
+        }
     }
 
     [ClientRpc]
     public void StartGame(bool first) {
         Debug.Log("Start game from Player.cs called");
-        maxMana = 0;
-        remainingMana = 0;
         OnGameStart?.Invoke(this, EventArgs.Empty);
     }
 
@@ -41,20 +50,22 @@ public class Player : NetworkBehaviour
         maxMana = mana;
     }
 
+    [ClientRpc]
     public void StartTurn() {
         maxMana += 1;
         remainingMana = maxMana;
-        OnStartTurn?.Invoke(this, EventArgs.Empty);
+        UpdateMana();
+        enemyManaDisplay.UpdateManaVisual(this, EventArgs.Empty);
     }
 
-    public void CmdDrawCards(int numCardsToDraw)
-    {
-        // Logic to draw a card from the deck
-        List<CardStatsSO> drawnCardStatsSOs = DrawCardsFromDeck(numCardsToDraw);
+    public void UpdateMana() {
+        manaDisplay.UpdateManaVisual(this, EventArgs.Empty);
+    }
 
-        // Add the card to the local player's hand
-        AddCardsToHand(drawnCardStatsSOs);
-        RpcUpdateHand(netIdentity, drawnCardStatsSOs);
+    public void DrawCards(int numCardsToDraw)
+    {
+        List<CardStatsSO> drawnCardStatsSOs = DrawCardsFromDeck(numCardsToDraw);
+        RpcUpdateHand(drawnCardStatsSOs);
     }
 
     public List<CardStatsSO> DrawCardsFromDeck(int numCardsToDraw) {
@@ -72,18 +83,14 @@ public class Player : NetworkBehaviour
     }
 
     [ClientRpc]
-    void RpcUpdateHand(NetworkIdentity playerId, List<CardStatsSO> cardStatsSOs)
+    void RpcUpdateHand(List<CardStatsSO> cardStatsSOs)
     {
         if (isLocalPlayer)
         {
-            if (netIdentity == playerId) {
-                // Update the local player's hand
-                AddCardsToHand(cardStatsSOs);
-            }
-            else {
-                // Update the opponent's view with a card back
-                AddCardToOpponentHand(cardStatsSOs.Count);
-            }
+            AddCardsToHand(cardStatsSOs);
+         } else {
+            // Update the opponent's view with a card back
+            AddCardToOpponentHand(cardStatsSOs.Count);
         }
     }
 
@@ -101,7 +108,7 @@ public class Player : NetworkBehaviour
 
     private void AddCardToOpponentHand(int numCards) {
         for (int i = 0; i < numCards; i++) {
-            Instantiate(cardObject, enemyHand);
+            Instantiate(cardBackObject, enemyHand);
         }
     }
 
