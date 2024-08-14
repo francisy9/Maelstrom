@@ -2,15 +2,12 @@ using System;
 using System.Collections.Generic;
 using Mirror;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : NetworkBehaviour
 {
-    [SerializeField] private GameManager gameManager;
     [SerializeField] private Canvas canvas;
     [SerializeField] private Player opponent;
-    [SerializeField] private int hp;
-    public int remainingMana = 0;
-    private int maxMana = 0;
     [SerializeField] private Board board;
     [SerializeField] private Transform hand;
     [SerializeField] private Board enemyBoard;
@@ -20,46 +17,70 @@ public class Player : NetworkBehaviour
     [SerializeField] private List<CardStatsSO> deck;
     [SerializeField] private GameObject cardObject;
     [SerializeField] private GameObject cardBackObject;
-    public event EventHandler ManaConsumed;
+    [SerializeField] private Button endTurnButton;
+    [SyncVar (hook = nameof(OnManaChange))]
+    private int mana = 0;
+    [SyncVar (hook = nameof(OnManaChange))]
+    private int maxMana = 0;
+    [SyncVar] private int health = 0;
     public event EventHandler OnStartTurn;
-    public event EventHandler OnGameStart;
 
     public override void OnStartLocalPlayer() {
         base.OnStartLocalPlayer();
+        endTurnButton.onClick.AddListener(() => {
+            RequestEndTurn();
+        });
     }
 
-    [ClientRpc]
-    public void InitializeManaDisplay() {
-        if (isLocalPlayer) {
-            manaDisplay.InitializeManaDisplay(this);
-            enemyManaDisplay.InitializeManaDisplay(opponent);
-        }
+    [TargetRpc]
+    public void TargetInitializeManaDisplay() {
+        manaDisplay.InitializeManaDisplay(this);
+        enemyManaDisplay.InitializeManaDisplay(opponent);
     }
 
-    [ClientRpc]
-    public void StartGame(bool first) {
+    [TargetRpc]
+    public void TargetStartGame(bool first) {
         Debug.Log("Start game from Player.cs called");
-        OnGameStart?.Invoke(this, EventArgs.Empty);
     }
 
     public Board GetDropZone() {
         return board;
     }
 
-    public void SetMaxMana(int mana) {
-        maxMana = mana;
+    [TargetRpc]
+    public void TargetStartTurn() {
+        Debug.Log($"{name} starting turn");
+        OnStartTurn?.Invoke(this, EventArgs.Empty);
     }
 
-    [ClientRpc]
-    public void StartTurn() {
-        maxMana += 1;
-        remainingMana = maxMana;
-        UpdateMana();
-        enemyManaDisplay.UpdateManaVisual(this, EventArgs.Empty);
+    private void OnManaChange(int _, int _a) {
+        manaDisplay.UpdateManaVisual();
+        enemyManaDisplay.UpdateManaVisual();
     }
 
-    public void UpdateMana() {
-        manaDisplay.UpdateManaVisual(this, EventArgs.Empty);
+    [TargetRpc]
+    public void TargetStartOpponentTurn() {
+        Debug.Log("Opponent Turn");
+    }
+
+    public void IncrementMaxMana() {
+        if (isServer)
+        {
+            maxMana += 1;
+        }
+    }
+
+    public void ConsumeMana(int mana) {
+        if (isServer)
+        {
+            this.mana -= mana;
+        }
+    }
+
+    public void RefreshMana() {
+        if (isServer) {
+            mana = maxMana;
+        }
     }
 
     public void DrawCards(int numCardsToDraw)
@@ -116,17 +137,12 @@ public class Player : NetworkBehaviour
         return canvas;
     }
 
-    public int GetRemainingMana() {
-        return remainingMana;
+    public int GetMana() {
+        return mana;
     }
 
     public int GetTotalMana() {
         return maxMana;
-    }
-
-    public void ConsumeMana(int manaCost) {
-        remainingMana -= manaCost;
-        ManaConsumed?.Invoke(this, EventArgs.Empty);
     }
 
     public bool IsTurn() {
@@ -138,7 +154,21 @@ public class Player : NetworkBehaviour
         }
     }
 
-    public void ResetCardAttacks() {
+    private void ResetCardAttacks() {
         board.ResetCardAttacks();
+    }
+
+    private void RequestEndTurn()
+    {
+        if (GameManager.Instance == null) {
+            Debug.LogError("Game manager instance is null");
+        }
+        GameManager.Instance.CmdEndTurn();
+    }
+
+    [TargetRpc]
+    public void TargetEndTurn() {
+        Debug.Log("handling end turn response");
+        ResetCardAttacks();
     }
 }

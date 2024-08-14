@@ -98,7 +98,7 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
                     Transform boardTransform = playerDropZone.transform;
                     transform.SetParent(boardTransform);
                     MoveCardToBoard(boardTransform);
-                    player.ConsumeMana(card.GetManaCost());
+                    // player.ConsumeMana(card.GetManaCost());
                 } else {
                     transform.SetParent(prevParentTransform);
                 }
@@ -118,7 +118,7 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
     }
 
     private bool CanPlayCard() {
-        if (player.GetRemainingMana() < card.GetManaCost()) {
+        if (player.GetMana() < card.GetManaCost()) {
             Debug.Log("Insufficient mana to play card");
             return false;
         }

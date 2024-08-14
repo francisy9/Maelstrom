@@ -1214,6 +1214,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1534469567}
     - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
+      propertyPath: endTurnButton
+      value: 
+      objectReference: {fileID: 165044326}
+    - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: cardBackObject
       value: 
       objectReference: {fileID: 7631930073733532281, guid: 4e8fba49d5963453e99bc6efedc075b6, type: 3}
@@ -1418,6 +1422,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   manaText: {fileID: 1441475662}
   player: {fileID: 0}
+  gameManager: {fileID: 2104311097}
 --- !u!1001 &1054928346
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1823,6 +1828,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   manaText: {fileID: 439953215}
   player: {fileID: 0}
+  gameManager: {fileID: 2104311097}
 --- !u!1 &1553693960
 GameObject:
   m_ObjectHideFlags: 0
@@ -2571,6 +2577,10 @@ PrefabInstance:
       propertyPath: manaDisplay
       value: 
       objectReference: {fileID: 1534469567}
+    - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
+      propertyPath: endTurnButton
+      value: 
+      objectReference: {fileID: 165044326}
     - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: cardBackObject
       value: 
