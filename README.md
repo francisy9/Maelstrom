@@ -1,5 +1,8 @@
 
 # Maelstrom
+To test the game
+1. Open 3 clients through ParrellSync 
+2. 1 client as server only, other 2 as client
 
 ## Francis
 Current:
