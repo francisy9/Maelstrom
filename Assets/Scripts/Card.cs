@@ -16,12 +16,12 @@ public class Card : CanAttackBase
         manaCost = cardStatsSO.manaCost;
     }
  
-    private void DragCardController_OnCardPlayed(object sender, EventArgs e)
+    public void DragCardController_OnCardPlayed(object sender, EventArgs e)
     {
-        remainingAttacks = 0;
-        totalAttacks = 1;
-        attackVal = cardStatsSO.attack;
-        remainingHp = cardStatsSO.hp;
+        inPlayStats.attacks = 0;
+        inPlayStats.totalAttacks = 1;
+        inPlayStats.attackVal = cardStatsSO.attack;
+        inPlayStats.hp = cardStatsSO.hp;
     }
 
     public CardStatsSO GetCardStatsSO() {
@@ -35,5 +35,9 @@ public class Card : CanAttackBase
 
     public override void Death() {
         // OnDeath?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void DestroySelf() {
+        Destroy(gameObject);
     }
 }

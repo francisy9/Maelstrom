@@ -2,32 +2,34 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Types;
 
 public abstract class CanAttackBase : MonoBehaviour
 {
-    public int remainingAttacks;
-    public int totalAttacks;
-    public int attackVal;
-    public int remainingHp;
+    public InPlayStats inPlayStats;
     public event EventHandler OnAttack;
     public event EventHandler OnBeingAttacked;
     public event EventHandler OnDeath;
 
+    private void Awake() {
+        inPlayStats = new InPlayStats();
+    }
+
     public int GetRemainingHp() {
-        return remainingHp;
+        return inPlayStats.hp;
     }
 
     public int GetAttackVal() {
-        return attackVal;
+        return inPlayStats.attackVal;
     }
 
     public bool CanAttack() {
-        if (attackVal <= 0) {
+        if (inPlayStats.attackVal <= 0) {
             Debug.Log("Unit's attack value is 0!");
             return false;
         }
 
-        if (remainingAttacks <= 0) {
+        if (inPlayStats.attacks <= 0) {
             Debug.Log("Wait until next turn to attack!");
             return false;
         }
@@ -36,22 +38,22 @@ public abstract class CanAttackBase : MonoBehaviour
     }
 
     public void Attack(CanAttackBase target) {
-        remainingHp -= target.GetAttackVal();
-        remainingAttacks -= 1;
+        inPlayStats.hp -= target.GetAttackVal();
+        inPlayStats.attacks -= 1;
         target.AttackedBy(this);
         OnAttack?.Invoke(this, EventArgs.Empty);
-        if (remainingHp <= 0) {
+        if (inPlayStats.hp <= 0) {
             Death();
         }
     }
 
     public void AttackedBy(CanAttackBase attacker) {
-        remainingHp -= attacker.GetAttackVal();
+        inPlayStats.hp -= attacker.GetAttackVal();
         OnBeingAttacked?.Invoke(this, EventArgs.Empty);
     }
 
     public void ResetAttack() {
-        remainingAttacks = totalAttacks;
+        inPlayStats.attacks = inPlayStats.totalAttacks;
     }
 
     public abstract void Death();

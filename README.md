@@ -6,12 +6,11 @@ To test the game
 
 ## Francis
 Current:
-- Implementing proper mirror logic for game start, i.e. mana displays, card distribution
+- Continuing mirror logic in play, refactoring code to better suit request response structure
+- Complete opponent play card function and initialize enemy board
 
 TODO:
-- Mirror logic when in play
 - Convert end turn button to authority of person being in turn
-- Card playing logic properly reflected
 - Card in hand display (tap to zoom, by default shrunk fanned out visual)
 - Card positions (ensure boards are mirrored + preview of card placement by player)
 

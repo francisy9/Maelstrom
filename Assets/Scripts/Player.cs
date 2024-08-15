@@ -16,20 +16,25 @@ public class Player : NetworkBehaviour
     [SerializeField] private PlayerManaDisplay enemyManaDisplay;
     [SerializeField] private List<CardStatsSO> deck;
     [SerializeField] private GameObject cardObject;
+    [SerializeField] private HandController handController;
     [SerializeField] private GameObject cardBackObject;
     [SerializeField] private Button endTurnButton;
     [SyncVar (hook = nameof(OnManaChange))]
     private int mana = 0;
     [SyncVar (hook = nameof(OnManaChange))]
     private int maxMana = 0;
-    [SyncVar] private int health = 0;
+    [SyncVar]
+    private int hp = 0;
     public event EventHandler OnStartTurn;
+    private bool inTurn;
 
     public override void OnStartLocalPlayer() {
         base.OnStartLocalPlayer();
         endTurnButton.onClick.AddListener(() => {
             RequestEndTurn();
         });
+        handController.SetPlayer(this);
+        board.SetPlayer(this);
     }
 
     [TargetRpc]
@@ -50,6 +55,7 @@ public class Player : NetworkBehaviour
     [TargetRpc]
     public void TargetStartTurn() {
         Debug.Log($"{name} starting turn");
+        inTurn = true;
         OnStartTurn?.Invoke(this, EventArgs.Empty);
     }
 
@@ -83,54 +89,14 @@ public class Player : NetworkBehaviour
         }
     }
 
-    public void DrawCards(int numCardsToDraw)
-    {
-        List<CardStatsSO> drawnCardStatsSOs = DrawCardsFromDeck(numCardsToDraw);
-        RpcUpdateHand(drawnCardStatsSOs);
+    [TargetRpc]
+    public void AddCardToHand(CardStatsSO cardStatsSO) {
+        handController.AddCardToHand(cardStatsSO);
     }
 
-    public List<CardStatsSO> DrawCardsFromDeck(int numCardsToDraw) {
-        List<CardStatsSO> cardStatsSOs = new List<CardStatsSO>();
-        for (int i = 0; i < numCardsToDraw; i++) {
-            if (deck.Count > 0)
-            {
-                int cardIndex = UnityEngine.Random.Range(0, deck.Count);
-                cardStatsSOs.Add(deck[cardIndex]);
-            } else {
-                cardStatsSOs.Add(null);
-            }
-        }
-        return cardStatsSOs;
-    }
-
-    [ClientRpc]
-    void RpcUpdateHand(List<CardStatsSO> cardStatsSOs)
-    {
-        if (isLocalPlayer)
-        {
-            AddCardsToHand(cardStatsSOs);
-         } else {
-            // Update the opponent's view with a card back
-            AddCardToOpponentHand(cardStatsSOs.Count);
-        }
-    }
-
-
-    // TODO: deal with overdraw
-    private void AddCardsToHand(List<CardStatsSO> cardStatsSOs) {
-        for (int i = 0; i < cardStatsSOs.Count; i++) {
-            GameObject currentCardObject = Instantiate(cardObject, hand);
-            Card cardComponent = currentCardObject.GetComponent<Card>();
-            DragCardController dragCardControllerComponent = currentCardObject.GetComponent<DragCardController>();
-            cardComponent.InitCard(cardStatsSOs[i]);
-            dragCardControllerComponent.InitDragCardController(this);
-        }
-    }
-
-    private void AddCardToOpponentHand(int numCards) {
-        for (int i = 0; i < numCards; i++) {
-            Instantiate(cardBackObject, enemyHand);
-        }
+    [TargetRpc]
+    public void AddCardToOpponentHand() {
+        Instantiate(cardBackObject, enemyHand);
     }
 
     public Canvas GetCanvas() {
@@ -145,13 +111,12 @@ public class Player : NetworkBehaviour
         return maxMana;
     }
 
+    public int GetHp() {
+        return hp;
+    }
+
     public bool IsTurn() {
-        bool isHostsTurn = GameManager.Instance.IsP1Turn();
-        if (isServer) {
-            return isHostsTurn;
-        } else {
-            return !isHostsTurn;
-        }
+        return inTurn;
     }
 
     private void ResetCardAttacks() {
@@ -170,5 +135,36 @@ public class Player : NetworkBehaviour
     public void TargetEndTurn() {
         Debug.Log("handling end turn response");
         ResetCardAttacks();
+        inTurn = false;
+    }
+
+    [TargetRpc]
+    public void TargetInsufficientManaToPlayCard() {
+        Debug.Log("Insufficient mana to play card");
+    }
+
+    [TargetRpc]
+    public void TargetPlayCard(int handIndex) {
+        CardStatsSO cardStatsSO = handController.GetCardStatsSOOnIndex(handIndex);
+        if (isServer) {
+            ConsumeMana(cardStatsSO.manaCost);
+            Debug.Log($"Playing card {cardStatsSO.cardName}");
+        }
+
+        handController.PlayCard(handIndex);
+    }
+
+    [TargetRpc]
+    public void TargetOpponentPlayCard(CardStatsSO cardStatsSO) {
+        if (isServer) {
+            Debug.Log("opponent played card");
+        }
+        return;
+    }
+
+    internal void RequestPlayCard(int handIndex)
+    {
+        GameManager.Instance.CmdPlayCard(handIndex);
+        return;
     }
 }

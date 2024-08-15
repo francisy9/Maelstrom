@@ -9,8 +9,11 @@ public class GameManager : NetworkBehaviour
 {
     public static GameManager Instance;
     [SerializeField] private Player playerOne;
+    // TODO: @max figure out how to load this in on run time based on user
+    [SerializeField] private List<CardStatsSO> p1Deck;
     private bool p1Assigned = false;
     [SerializeField] private Player playerTwo;
+    [SerializeField] private List<CardStatsSO> p2Deck;
     private bool p2Assigned = false;
     [SerializeField] private Button endTurnButton;
     public event EventHandler OnGameStart;
@@ -52,22 +55,36 @@ public class GameManager : NetworkBehaviour
 
     public void StartGame() {
         Debug.Log("start game");
+        ServerUpdate.Instance.SetPlayerOneRef(playerOne);
 
         Player starter = GetInTurnPlayer();
         Player nextPlayer = GetNextPlayer();
+        int numCardsToBeDrawnByFirstPlayer = 3;
+        int numCardsToBeDrawnBySecondPlayer = 4;
 
-        starter.DrawCards(3);
-        nextPlayer.DrawCards(4);
+        for (int i = 0; i < numCardsToBeDrawnByFirstPlayer; i++) {
+            CardStatsSO cardDrawn = DrawCardStatSO(starter);
+            starter.AddCardToHand(cardDrawn);
+            nextPlayer.AddCardToOpponentHand();
+            ServerUpdate.Instance.AddCardToHand(cardDrawn, starter);
+        }
+
+        for (int j = 0; j < numCardsToBeDrawnBySecondPlayer; j++) {
+            CardStatsSO cardDrawn = DrawCardStatSO(nextPlayer);
+            nextPlayer.AddCardToHand(cardDrawn);
+            starter.AddCardToOpponentHand();
+            ServerUpdate.Instance.AddCardToHand(cardDrawn, nextPlayer);
+        }
+
         InitializeManaDisplays();
         starter.IncrementMaxMana();
         starter.RefreshMana();
-
-        Debug.Log($"Player one mana: {playerOne.GetMana()}/{playerOne.GetTotalMana()}");
 
         starter.TargetStartGame(true);
         nextPlayer.TargetStartGame(false);
         OnGameStart?.Invoke(this, EventArgs.Empty);
         StartTurn();
+        ServerUpdate.Instance.PrintServerGameState();
     }
 
     private void InitializeManaDisplays() {
@@ -92,21 +109,88 @@ public class GameManager : NetworkBehaviour
         return isP1Turn ? playerTwo : playerOne;
     }
 
+    private bool IsPlayerInTurn(Player requestingPlayer) {
+        return GetInTurnPlayer() == requestingPlayer;
+    }
+
     [Command(requiresAuthority = false)]
     public void CmdEndTurn(NetworkConnectionToClient sender = null) {
         Debug.Log($"end turn called, sender: {sender.identity}");
         Player requestingPlayer = sender.identity.GetComponent<Player>();
-        Player currentInTurnPlayer = GetInTurnPlayer();
-        if (currentInTurnPlayer == requestingPlayer) {
-            currentInTurnPlayer.TargetEndTurn();
+        
+        if (IsPlayerInTurn(requestingPlayer)) {
+            requestingPlayer.TargetEndTurn();
             isP1Turn = !isP1Turn;
             Player playerNextInTurn = GetInTurnPlayer();
             playerNextInTurn.IncrementMaxMana();
             playerNextInTurn.RefreshMana();
             playerNextInTurn.TargetStartTurn();
             turn += 1;
+
         } else {
             Debug.LogError("Wrong player was able to request end turn");
         }
     }
+
+    [Command(requiresAuthority = false)]
+    public void CmdPlayCard(int handIndex, NetworkConnectionToClient sender = null) {
+        Player requestingPlayer = sender.identity.GetComponent<Player>();
+        Debug.Log($"{requestingPlayer.name} is requesting to play card");
+        
+        if(IsPlayerInTurn(requestingPlayer)) {
+            CardStatsSO cardToBePlayed = ServerUpdate.Instance.GetCardStatSoAtHandIndex(handIndex, requestingPlayer);
+            if (requestingPlayer.GetMana() < cardToBePlayed.manaCost) {
+                Debug.Log($"{requestingPlayer.name} is trying to play card {cardToBePlayed.cardName}");
+                Debug.Log($"player has {requestingPlayer.GetMana()} and the card cost {cardToBePlayed.manaCost}");
+                requestingPlayer.TargetInsufficientManaToPlayCard();
+            }
+            requestingPlayer.TargetPlayCard(handIndex);
+            GetNextPlayer().TargetOpponentPlayCard(cardToBePlayed);
+        } else {
+            Debug.LogError("Player isn't in turn");
+        }
+    }
+
+    [Server]
+    private CardStatsSO DrawCardStatSO(Player player) {
+        List<CardStatsSO> deckToDrawFrom = player == playerOne ? p1Deck : p2Deck;
+        int cardIndex = UnityEngine.Random.Range(0, deckToDrawFrom.Count);
+        CardStatsSO cardDrawn = deckToDrawFrom[cardIndex];
+        deckToDrawFrom.RemoveAt(cardIndex);
+        return cardDrawn;
+    }
+
+    // Server functions for debugging purposes
+    public int GetP1Health() {
+        return playerOne.GetHp();
+    }
+
+    public int GetP2Health() {
+        return playerTwo.GetHp();
+    }
+
+    public int GetP1Mana() {
+        return playerOne.GetMana();
+    }
+
+    public int GetP2Mana() {
+        return playerTwo.GetMana();
+    }
+
+    public int GetP1MaxMana() {
+        return playerOne.GetTotalMana();
+    }
+
+    public int GetP2MaxMana() {
+        return playerTwo.GetTotalMana();
+    }
+
+    public Player GetPlayerOne() {
+        return playerOne;
+    }
+
+    public Player GetPlayerTwo() {
+        return playerTwo;
+    }
+    // End of server debug functions
 }

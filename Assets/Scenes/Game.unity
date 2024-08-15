@@ -580,6 +580,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b16fc79d6476e41d49f7e86e6cb87ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onBoardCardObject: {fileID: 7631930073733532281, guid: 87ab1ee4fa3ff47558707a85efbcf87a, type: 3}
 --- !u!114 &322034016
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -855,6 +856,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b16fc79d6476e41d49f7e86e6cb87ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onBoardCardObject: {fileID: 0}
 --- !u!114 &340104464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1221,6 +1223,10 @@ PrefabInstance:
       propertyPath: cardBackObject
       value: 
       objectReference: {fileID: 7631930073733532281, guid: 4e8fba49d5963453e99bc6efedc075b6, type: 3}
+    - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
+      propertyPath: handController
+      value: 
+      objectReference: {fileID: 1230017963}
     - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: deck.Array.size
       value: 4
@@ -1618,6 +1624,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8090bc50f2824ac3b7b4374a18d451e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cardObject: {fileID: 7631930073733532281, guid: a9efe0960a41e42a5987cd71e2cad70e, type: 3}
+  board: {fileID: 322034015}
 --- !u!114 &1230017964
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2316,6 +2324,7 @@ GameObject:
   - component: {fileID: 2104311097}
   - component: {fileID: 2104311098}
   - component: {fileID: 2104311099}
+  - component: {fileID: 2104311100}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2354,7 +2363,17 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   playerOne: {fileID: 4637422271275783584}
+  p1Deck:
+  - {fileID: 11400000, guid: 8110fe7adfc9d4bf7b031a8a11e57d39, type: 2}
+  - {fileID: 11400000, guid: 8110fe7adfc9d4bf7b031a8a11e57d39, type: 2}
+  - {fileID: 11400000, guid: 1dc969e45e9d14c9193ee8ea18d1b0b6, type: 2}
+  - {fileID: 11400000, guid: 1dc969e45e9d14c9193ee8ea18d1b0b6, type: 2}
   playerTwo: {fileID: 583992372}
+  p2Deck:
+  - {fileID: 11400000, guid: ef74403afe02f4e30b69c94a4a9941a0, type: 2}
+  - {fileID: 11400000, guid: ef74403afe02f4e30b69c94a4a9941a0, type: 2}
+  - {fileID: 11400000, guid: 4fe030bde14974684934fada6d7f98fa, type: 2}
+  - {fileID: 11400000, guid: 4fe030bde14974684934fada6d7f98fa, type: 2}
   endTurnButton: {fileID: 165044326}
 --- !u!114 &2104311098
 MonoBehaviour:
@@ -2402,6 +2421,21 @@ MonoBehaviour:
   serverOnly: 0
   visibility: 0
   hasSpawned: 0
+--- !u!114 &2104311100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2104311095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df2f711b16f0d417eaf289d7a2e6af30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
 --- !u!1 &2147104435
 GameObject:
   m_ObjectHideFlags: 0
@@ -2585,6 +2619,10 @@ PrefabInstance:
       propertyPath: cardBackObject
       value: 
       objectReference: {fileID: 7631930073733532281, guid: 4e8fba49d5963453e99bc6efedc075b6, type: 3}
+    - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
+      propertyPath: handController
+      value: 
+      objectReference: {fileID: 1230017963}
     - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: deck.Array.size
       value: 4
