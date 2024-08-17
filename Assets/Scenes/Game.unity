@@ -581,6 +581,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onBoardCardObject: {fileID: 7631930073733532281, guid: 87ab1ee4fa3ff47558707a85efbcf87a, type: 3}
+  cardPlaceHolderObject: {fileID: 7631930073733532281, guid: a983c4b4ea945428c8c1437082f2c949, type: 3}
 --- !u!114 &322034016
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -857,6 +858,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onBoardCardObject: {fileID: 0}
+  cardPlaceHolderObject: {fileID: 0}
 --- !u!114 &340104464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2325,6 +2327,7 @@ GameObject:
   - component: {fileID: 2104311098}
   - component: {fileID: 2104311099}
   - component: {fileID: 2104311100}
+  - component: {fileID: 2104311101}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2436,6 +2439,18 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
+--- !u!114 &2104311101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2104311095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b21702b601884900a7609583ff4bb18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2147104435
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Mirror;
 using UnityEngine;
 using static Types;
+using System.Text;
 
 public class ServerUpdate : NetworkBehaviour
 {
@@ -48,35 +49,53 @@ public class ServerUpdate : NetworkBehaviour
     }
 
     [Server]
-    public void MoveP1CardToBoard(int index, InPlayStats inPlayStats) {
-        p1Board.Add((p1Hand[index], inPlayStats));
-        p1Hand.RemoveAt(index);
-    }
-
-    [Server]
-    public void MoveP2CardToBoard(int index, InPlayStats inPlayStats) {
-        p2Board.Add((p1Hand[index], inPlayStats));
-        p2Hand.RemoveAt(index);
+    public void MoveCardToBoard(Player player, int handIndex, InPlayStats inPlayStats, int boardIndex) {
+        Debug.Log(boardIndex);
+        Debug.Log($"p1 board size: {p1Board.Count} p2 board size: {p2Board.Count}");
+        Debug.Log(handIndex);
+        Debug.Log($"p1 hand size: {p1Hand.Count} p2 hand size: {p2Hand.Count}");
+        if (player == playerOne) {
+            p1Board.Insert(boardIndex, (p1Hand[handIndex], inPlayStats));
+            p1Hand.RemoveAt(handIndex);
+        } else {
+            p2Board.Insert(boardIndex, (p2Hand[handIndex], inPlayStats));
+            p2Hand.RemoveAt(handIndex);
+        }
     }
 
     [Server]
     public void PrintServerGameState() {
-        Debug.Log($"{GameManager.Instance.GetInTurnPlayer().name}'s turn\n");
-        Debug.Log($"p1: {gameManager.GetP1Health()}hp {gameManager.GetP1Mana()}/{gameManager.GetP1MaxMana()} mana");
-        Debug.Log($"p2: {gameManager.GetP2Health()}hp {gameManager.GetP2Mana()}/{gameManager.GetP2MaxMana()} mana");
+        Debug.Log($"{GameManager.Instance.GetInTurnPlayer().name}'s turn " +
+        $"p1: {gameManager.GetP1Health()}hp {gameManager.GetP1Mana()}/{gameManager.GetP1MaxMana()} mana" +
+        $" p2: {gameManager.GetP2Health()}hp {gameManager.GetP2Mana()}/{gameManager.GetP2MaxMana()} mana");
 
-        Debug.Log("p2 hand:");
+        StringBuilder p2HandText = new StringBuilder();
+        p2HandText.Append("p2 hand: ");
         foreach (CardStatsSO cardStatsSO in p2Hand) {
-            Debug.Log(GetCardInfoString(cardStatsSO));
+            p2HandText.Append(GetCardInfoString(cardStatsSO) + " ");
         }
+        Debug.Log(p2HandText);
 
-        Debug.Log(p2Board);
-        Debug.Log(p1Board);
+        StringBuilder p2BoardText = new StringBuilder();
+        p2BoardText.Append("p2 board: ");
+        foreach ((CardStatsSO, InPlayStats) tup in p2Board) {
+            p2BoardText.Append(GetOnBoardCardInfoString(tup) + " ");
+        }
+        Debug.Log(p2BoardText);
 
-        Debug.Log("p1 hand");
+        StringBuilder p1BoardText = new StringBuilder();
+        p1BoardText.Append("p1 board: ");
+        foreach ((CardStatsSO, InPlayStats) tup in p1Board) {
+            p1BoardText.Append(GetOnBoardCardInfoString(tup) + " ");
+        }
+        Debug.Log(p1BoardText);
+
+        StringBuilder p1HandText = new StringBuilder();
+        p1HandText.Append("p1 hand: ");
         foreach (CardStatsSO cardStatsSO in p1Hand) {
-            Debug.Log(GetCardInfoString(cardStatsSO));
+            p1HandText.Append(GetCardInfoString(cardStatsSO) + " ");
         }
+        Debug.Log(p1HandText);
     }
 
     [Server]
@@ -86,5 +105,9 @@ public class ServerUpdate : NetworkBehaviour
 
     private string GetCardInfoString(CardStatsSO cardStatsSO) {
         return $"{cardStatsSO.cardName} mana: {cardStatsSO.manaCost}";
+    } 
+
+    private string GetOnBoardCardInfoString((CardStatsSO, InPlayStats) stats) {
+        return $"{stats.Item1.cardName} mana: {stats.Item1.manaCost} hp: {stats.Item2.hp} atk: {stats.Item2.attackVal}";
     } 
 }

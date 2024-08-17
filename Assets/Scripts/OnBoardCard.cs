@@ -1,20 +1,16 @@
 using System;
 using UnityEngine;
+using static Types;
 
 public class OnBoardCard : CanAttackBase
 {
     private CardStatsSO cardStatsSO;
     [SerializeField] private OnBoardCardVisual onBoardCardVisual;
-    private OnBoardDragController dragCardController;
 
-    public void InitCard(CardStatsSO cardStatsSO) {
+    public void InitCard(CardStatsSO cardStatsSO, InPlayStats inPlayStats) {
         this.cardStatsSO = cardStatsSO;
-        dragCardController = GetComponent<OnBoardDragController>();
         onBoardCardVisual.InitVisual();
-        inPlayStats.attacks = 0;
-        inPlayStats.totalAttacks = 1;
-        inPlayStats.attackVal = cardStatsSO.attack;
-        inPlayStats.hp = cardStatsSO.hp;
+        this.inPlayStats = inPlayStats;
     }
 
     public CardStatsSO GetCardStatsSO() {

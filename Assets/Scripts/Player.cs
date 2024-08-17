@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using Mirror;
 using UnityEngine;
 using UnityEngine.UI;
+using static Types;
 
 public class Player : NetworkBehaviour
 {
     [SerializeField] private Canvas canvas;
     [SerializeField] private Player opponent;
     [SerializeField] private Board board;
-    [SerializeField] private Transform hand;
     [SerializeField] private Board enemyBoard;
     [SerializeField] private Transform enemyHand;
     [SerializeField] private PlayerManaDisplay manaDisplay;
@@ -26,7 +26,7 @@ public class Player : NetworkBehaviour
     [SyncVar]
     private int hp = 0;
     public event EventHandler OnStartTurn;
-    private bool inTurn;
+    [SyncVar] private bool inTurn;
 
     public override void OnStartLocalPlayer() {
         base.OnStartLocalPlayer();
@@ -76,17 +76,14 @@ public class Player : NetworkBehaviour
         }
     }
 
+    [Server]
     public void ConsumeMana(int mana) {
-        if (isServer)
-        {
-            this.mana -= mana;
-        }
+        this.mana -= mana;
     }
 
+    [Server]
     public void RefreshMana() {
-        if (isServer) {
-            mana = maxMana;
-        }
+        mana = maxMana;
     }
 
     [TargetRpc]
@@ -139,32 +136,21 @@ public class Player : NetworkBehaviour
     }
 
     [TargetRpc]
-    public void TargetInsufficientManaToPlayCard() {
-        Debug.Log("Insufficient mana to play card");
+    public void TargetPlayCard(InPlayStats inPlayStats, int boardIndex) {
+        handController.PlayCard(inPlayStats, boardIndex);
     }
 
     [TargetRpc]
-    public void TargetPlayCard(int handIndex) {
-        CardStatsSO cardStatsSO = handController.GetCardStatsSOOnIndex(handIndex);
-        if (isServer) {
-            ConsumeMana(cardStatsSO.manaCost);
-            Debug.Log($"Playing card {cardStatsSO.cardName}");
-        }
-
-        handController.PlayCard(handIndex);
-    }
-
-    [TargetRpc]
-    public void TargetOpponentPlayCard(CardStatsSO cardStatsSO) {
+    public void TargetOpponentPlayCard(CardStatsSO cardStatsSO, InPlayStats inPlayStats) {
         if (isServer) {
             Debug.Log("opponent played card");
         }
         return;
     }
 
-    internal void RequestPlayCard(int handIndex)
+    internal void RequestPlayCard(int handIndex, CardStatsSO cardStatsSO, int boardIndex)
     {
-        GameManager.Instance.CmdPlayCard(handIndex);
+        GameManager.Instance.CmdPlayCard(handIndex, cardStatsSO, boardIndex);
         return;
     }
 }

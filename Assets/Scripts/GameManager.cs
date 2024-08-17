@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using Mirror;
 using UnityEngine;
 using UnityEngine.UI;
+using static Types;
 
 public class GameManager : NetworkBehaviour
 {
@@ -27,6 +29,8 @@ public class GameManager : NetworkBehaviour
 
         // TODO: Testing logic, remove when done
         isP1Turn = true;
+
+
         turn = 0;
         base.OnStartServer();
     }
@@ -78,6 +82,25 @@ public class GameManager : NetworkBehaviour
 
         InitializeManaDisplays();
         starter.IncrementMaxMana();
+
+
+        // TODO: testing, remove when done
+        starter.IncrementMaxMana();
+        starter.IncrementMaxMana();
+        starter.IncrementMaxMana();
+        starter.IncrementMaxMana();
+        starter.IncrementMaxMana();
+        starter.IncrementMaxMana();
+        starter.IncrementMaxMana();
+        nextPlayer.IncrementMaxMana();
+        nextPlayer.IncrementMaxMana();
+        nextPlayer.IncrementMaxMana();
+        nextPlayer.IncrementMaxMana();
+        nextPlayer.IncrementMaxMana();
+        nextPlayer.IncrementMaxMana();
+
+
+
         starter.RefreshMana();
 
         starter.TargetStartGame(true);
@@ -133,19 +156,28 @@ public class GameManager : NetworkBehaviour
     }
 
     [Command(requiresAuthority = false)]
-    public void CmdPlayCard(int handIndex, NetworkConnectionToClient sender = null) {
+    public void CmdPlayCard(int handIndex, CardStatsSO cardStatsSO, int boardIndex, NetworkConnectionToClient sender = null) {
         Player requestingPlayer = sender.identity.GetComponent<Player>();
         Debug.Log($"{requestingPlayer.name} is requesting to play card");
         
         if(IsPlayerInTurn(requestingPlayer)) {
             CardStatsSO cardToBePlayed = ServerUpdate.Instance.GetCardStatSoAtHandIndex(handIndex, requestingPlayer);
-            if (requestingPlayer.GetMana() < cardToBePlayed.manaCost) {
-                Debug.Log($"{requestingPlayer.name} is trying to play card {cardToBePlayed.cardName}");
-                Debug.Log($"player has {requestingPlayer.GetMana()} and the card cost {cardToBePlayed.manaCost}");
-                requestingPlayer.TargetInsufficientManaToPlayCard();
+            if (!cardToBePlayed.EqualValues(cardStatsSO)) {
+                Debug.LogError("Server mismatch");
             }
-            requestingPlayer.TargetPlayCard(handIndex);
-            GetNextPlayer().TargetOpponentPlayCard(cardToBePlayed);
+            if (requestingPlayer.GetMana() < cardToBePlayed.manaCost) {
+                Debug.LogError("Insufficient mana to play card but still able to make request");
+            }
+
+            Debug.Log($"{requestingPlayer.name} successfully played card {cardStatsSO.cardName} mana cost: {cardStatsSO.manaCost}");
+            
+            InPlayStats inPlayStats = OnPlay.Instance.GetInPlayStatsFromCardStatsSO(cardStatsSO);
+            requestingPlayer.ConsumeMana(cardToBePlayed.manaCost);
+            requestingPlayer.TargetPlayCard(inPlayStats, boardIndex);
+            GetNextPlayer().TargetOpponentPlayCard(cardToBePlayed, inPlayStats);
+            ServerUpdate.Instance.MoveCardToBoard(requestingPlayer, handIndex, inPlayStats, boardIndex);
+
+            ServerUpdate.Instance.PrintServerGameState();
         } else {
             Debug.LogError("Player isn't in turn");
         }
