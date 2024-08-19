@@ -16,8 +16,7 @@ public class OnBoardCardVisual : MonoBehaviour
         attackText.text = cardStats.CurrentAttack.ToString();
         hpText.text = cardStats.CurrentHP.ToString();
 
-        card.OnAttack += UpdateVisualStats;
-        card.OnBeingAttacked += UpdateVisualStats;
+        card.OnCardStatsUpdate += UpdateVisualStats;
     }
 
     private void UpdateVisualStats(object sender, EventArgs e) {

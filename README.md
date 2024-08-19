@@ -6,13 +6,12 @@ To test the game
 
 ## Francis
 Current:
-- Continuing mirror logic in play, refactoring code to better suit request response structure
-- Complete opponent play card function and initialize enemy board
+- Fix certain cards being buggy (unable to drag on certain conditions)
 
 TODO:
 - Convert end turn button to authority of person being in turn
 - Card in hand display (tap to zoom, by default shrunk fanned out visual)
-- Card positions (ensure boards are mirrored + preview of card placement by player)
+- Hover over on board card for card visual
 
 
 ## Max
