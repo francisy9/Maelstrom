@@ -10,7 +10,7 @@ public class Player : NetworkBehaviour
     [SerializeField] private Canvas canvas;
     [SerializeField] private Player opponent;
     [SerializeField] private Board board;
-    [SerializeField] private Board enemyBoard;
+    [SerializeField] private EnemyBoard enemyBoard;
     [SerializeField] private Transform enemyHand;
     [SerializeField] private PlayerManaDisplay manaDisplay;
     [SerializeField] private PlayerManaDisplay enemyManaDisplay;
@@ -45,7 +45,7 @@ public class Player : NetworkBehaviour
 
     [TargetRpc]
     public void TargetStartGame(bool first) {
-        Debug.Log("Start game from Player.cs called");
+        // Debug.Log("Start game from Player.cs called");
     }
 
     public Board GetDropZone() {
@@ -54,7 +54,7 @@ public class Player : NetworkBehaviour
 
     [TargetRpc]
     public void TargetStartTurn() {
-        Debug.Log($"{name} starting turn");
+        // Debug.Log($"{name} starting turn");
         inTurn = true;
         OnStartTurn?.Invoke(this, EventArgs.Empty);
     }
@@ -66,7 +66,7 @@ public class Player : NetworkBehaviour
 
     [TargetRpc]
     public void TargetStartOpponentTurn() {
-        Debug.Log("Opponent Turn");
+        // Debug.Log("Opponent Turn");
     }
 
     public void IncrementMaxMana() {
@@ -88,7 +88,8 @@ public class Player : NetworkBehaviour
 
     [TargetRpc]
     public void AddCardToHand(CardStatsSO cardStatsSO) {
-        handController.AddCardToHand(cardStatsSO);
+        CardStats cardStats = new CardStats(cardStatsSO);
+        handController.AddCardToHand(cardStats);
     }
 
     [TargetRpc]
@@ -130,27 +131,41 @@ public class Player : NetworkBehaviour
 
     [TargetRpc]
     public void TargetEndTurn() {
-        Debug.Log("handling end turn response");
+        // Debug.Log("handling end turn response");
         ResetCardAttacks();
         inTurn = false;
     }
 
     [TargetRpc]
-    public void TargetPlayCard(InPlayStats inPlayStats, int boardIndex) {
-        handController.PlayCard(inPlayStats, boardIndex);
+    public void TargetPlayCard(int boardIndex) {
+        handController.PlayCard(boardIndex);
     }
 
     [TargetRpc]
-    public void TargetOpponentPlayCard(CardStatsSO cardStatsSO, InPlayStats inPlayStats) {
-        if (isServer) {
-            Debug.Log("opponent played card");
-        }
+    public void TargetOpponentPlayCard(byte[] cardData, int boardIndex) {
+        CardStats cardStats = CardStats.Deserialize(cardData);
+        enemyBoard.PlaceCardOnBoard(cardStats, boardIndex);
         return;
     }
 
-    internal void RequestPlayCard(int handIndex, CardStatsSO cardStatsSO, int boardIndex)
+    [TargetRpc]
+    public void TargetAttackCard(int boardIndex, int opponentBoardIndex, byte[] cardData, byte[] opponentCardData) {
+        CardStats cardStats = CardStats.Deserialize(cardData);
+        CardStats opponentCardStats = CardStats.Deserialize(opponentCardData);
+
+        board.UpdateCardAfterAttack(boardIndex, cardStats);
+        enemyBoard.UpdateCardAfterAttack(opponentBoardIndex, opponentCardStats);
+    }
+
+    internal void RequestPlayCard(int handIndex, int boardIndex)
     {
-        GameManager.Instance.CmdPlayCard(handIndex, cardStatsSO, boardIndex);
+        GameManager.Instance.CmdPlayCard(handIndex, boardIndex);
+        return;
+    }
+
+    internal void RequestAttack(int boardIndex, int opponentBoardIndex)
+    {
+        GameManager.Instance.CmdAttack(boardIndex, opponentBoardIndex);
         return;
     }
 }

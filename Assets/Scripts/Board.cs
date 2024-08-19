@@ -3,19 +3,19 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using static Types;
 
-public class Board : MonoBehaviour
+public class Board : BoardBase
 {
+    public static Board Instance;
     private Player player;
-    private List<OnBoardCard> onBoardCards;
     private List<float> cardXPos;
-    [SerializeField] private GameObject onBoardCardObject;
     [SerializeField] private GameObject cardPlaceHolderObject;
     private GameObject cardPlaceHolder;
     private int proposedIndex;
 
-    private void Awake() {
-        onBoardCards = new List<OnBoardCard>();
+    public override void Awake() {
+        base.Awake();
         cardXPos = new List<float>();
+        Instance = this;
     }
 
     public void SetPlayer(Player player) {
@@ -27,18 +27,15 @@ public class Board : MonoBehaviour
             OnBoardCard card = child.GetComponent<OnBoardCard>();
             card.ResetAttack();
         }
-            
     }
 
-    public void PlaceCardOnBoard(CardStatsSO cardStatsSO, InPlayStats inPlayStats, int boardIndex) {
-        GameObject cardObject = Instantiate(onBoardCardObject, transform);
-        cardObject.transform.SetSiblingIndex(boardIndex);
-        OnBoardCard cardComponent = cardObject.GetComponent<OnBoardCard>();
-        OnBoardDragController dragCardControllerComponent = cardObject.GetComponent<OnBoardDragController>();
-        cardComponent.InitCard(cardStatsSO, inPlayStats);
+    public override void PlaceCardOnBoard(CardStats cardStats, int boardIndex) {
+        base.PlaceCardOnBoard(cardStats, boardIndex);
+        OnBoardDragController dragCardControllerComponent = onBoardCards[boardIndex].GetComponent<OnBoardDragController>();
         dragCardControllerComponent.InitDragCardController(player);
-        onBoardCards.Insert(boardIndex, cardComponent);
+        cardPlaceHolder.transform.SetParent(null); // Need this since Destroy isn't immediate
         DestroyPlaceHolder();
+        UpdateBoardIndexHashMap();
     }
 
     public void UpdateXPos() {
@@ -52,13 +49,12 @@ public class Board : MonoBehaviour
     public int GetProposedBoardIndex(PointerEventData eventData) {
         if (!RectTransformUtility.RectangleContainsScreenPoint(transform as RectTransform, eventData.position, eventData.pressEventCamera)) {
             DestroyPlaceHolder();
-            Debug.Log("Place holder destroyed since mouse not over drop zone");
             return -1;
         };
 
         Vector2 mouseOverPos;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(transform as RectTransform, eventData.position, eventData.pressEventCamera, out mouseOverPos);
-        Debug.Log(mouseOverPos.x);
+
         int index = 0;
         for (int i = 0; i < cardXPos.Count; i++) {
             if (mouseOverPos.x > cardXPos[i]) {

@@ -5,7 +5,7 @@ using static Types;
 
 public class HandController : MonoBehaviour
 {
-    private static HandController Instance;
+    public static HandController Instance;
     private Dictionary<int, Card> cardHashMap;
     [SerializeField] private GameObject cardObject;
     private Player player;
@@ -27,23 +27,23 @@ public class HandController : MonoBehaviour
         this.player = player;
     }
 
-    public void AddCardToHand(CardStatsSO cardStatsSO) {
+    public void AddCardToHand(CardStats cardStats) {
         GameObject currentCardObject = Instantiate(cardObject, transform);
         Card cardComponent = currentCardObject.GetComponent<Card>();
         DragCardController dragCardControllerComponent = currentCardObject.GetComponent<DragCardController>();
-        cardComponent.InitCard(cardStatsSO);
+        cardComponent.InitCard(cardStats);
         dragCardControllerComponent.InitDragCardController(player, this, cardUid);
         cardHashMap.Add(cardUid, cardComponent);
         cardUid += 1;
     }
 
-    public void PlayCard(InPlayStats inPlayStats, int boardIndex) {
+    public void PlayCard(int boardIndex) {
         Card card = cardHashMap[tryingToPlayCardUID];
-        CardStatsSO cardStatsSO = card.GetCardStatsSO();
+        CardStats cardStats = card.GetCardStats();
         cardHashMap.Remove(tryingToPlayCardUID);
         tryingToPlayCardUID = -1;
         currentlyDraggingCardHandIndex = -1;
-        board.PlaceCardOnBoard(cardStatsSO, inPlayStats, boardIndex);
+        board.PlaceCardOnBoard(cardStats, boardIndex);
         card.DestroySelf();
         handlingAction = false;
     }
@@ -74,6 +74,6 @@ public class HandController : MonoBehaviour
 
         Card card = cardHashMap[cardUid];
         // TODO: Make it so that DragCardController passed card statso so here !
-        player.RequestPlayCard(currentlyDraggingCardHandIndex, card.GetCardStatsSO(), boardIndex);
+        player.RequestPlayCard(currentlyDraggingCardHandIndex, boardIndex);
     }
 }

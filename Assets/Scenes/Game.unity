@@ -580,6 +580,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b16fc79d6476e41d49f7e86e6cb87ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onBoardCards: []
   onBoardCardObject: {fileID: 7631930073733532281, guid: 87ab1ee4fa3ff47558707a85efbcf87a, type: 3}
   cardPlaceHolderObject: {fileID: 7631930073733532281, guid: a983c4b4ea945428c8c1437082f2c949, type: 3}
 --- !u!114 &322034016
@@ -778,9 +779,8 @@ GameObject:
   - component: {fileID: 340104458}
   - component: {fileID: 340104460}
   - component: {fileID: 340104459}
-  - component: {fileID: 340104462}
-  - component: {fileID: 340104464}
   - component: {fileID: 340104465}
+  - component: {fileID: 340104466}
   m_Layer: 5
   m_Name: EnemyBoard
   m_TagString: Untagged
@@ -845,32 +845,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 340104457}
   m_CullTransparentMesh: 1
---- !u!114 &340104462
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 340104457}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b16fc79d6476e41d49f7e86e6cb87ddf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onBoardCardObject: {fileID: 0}
-  cardPlaceHolderObject: {fileID: 0}
---- !u!114 &340104464
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 340104457}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e729bef27e157442d9dd0de06554008c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &340104465
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -889,12 +863,26 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 4
-  m_StartCorner: 0
+  m_StartCorner: 1
   m_StartAxis: 0
   m_CellSize: {x: 150, y: 100}
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 2
   m_ConstraintCount: 1
+--- !u!114 &340104466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 340104457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae544f8e19c954a3abcc9027740286c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onBoardCards: []
+  onBoardCardObject: {fileID: 7631930073733532281, guid: 28d48e31d19fe4231bea4a3e12901291, type: 3}
 --- !u!1 &439953213
 GameObject:
   m_ObjectHideFlags: 0
@@ -1192,7 +1180,7 @@ PrefabInstance:
     - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: dropZone
       value: 
-      objectReference: {fileID: 340104462}
+      objectReference: {fileID: 0}
     - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: opponent
       value: 
@@ -1208,7 +1196,7 @@ PrefabInstance:
     - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: enemyBoard
       value: 
-      objectReference: {fileID: 340104462}
+      objectReference: {fileID: 340104466}
     - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: gameManager
       value: 
@@ -2617,7 +2605,7 @@ PrefabInstance:
     - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: enemyBoard
       value: 
-      objectReference: {fileID: 340104462}
+      objectReference: {fileID: 340104466}
     - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: gameManager
       value: 

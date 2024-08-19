@@ -7,7 +7,7 @@ public class OnBoardDragController : MonoBehaviour, IBeginDragHandler, IDragHand
 {
     private Player player;
     private OnBoardCard onBoardCard;
-    private Card currentlyDetectedCard;
+    private OnBoardCard currentlyDetectedCard;
 
     public void InitDragCardController(Player player) {
         this.player = player;
@@ -28,6 +28,7 @@ public class OnBoardDragController : MonoBehaviour, IBeginDragHandler, IDragHand
             eventData.pointerDrag = null;
             return;
         }
+
         Vector3 attackFromVec3 = new Vector3(transform.position.x, transform.position.y, -1);
         Vector3 attackToVec3 = new Vector3(eventData.position.x, eventData.position.y, -1);
         LineController.Instance.Show();
@@ -42,8 +43,7 @@ public class OnBoardDragController : MonoBehaviour, IBeginDragHandler, IDragHand
         Vector2 pointerWorldPos = Camera.main.ScreenToWorldPoint(eventData.position);
 
         if (opponentCard != null) {
-            currentlyDetectedCard = opponentCard.GetComponent<Card>();
-            Debug.Log(opponentCard.name);
+            currentlyDetectedCard = opponentCard.GetComponent<OnBoardCard>();
             pointerWorldPos = opponentCard.transform.position;
         } else {
             currentlyDetectedCard = null;
@@ -51,13 +51,12 @@ public class OnBoardDragController : MonoBehaviour, IBeginDragHandler, IDragHand
 
         Vector3 attackToVec3 = new Vector3(pointerWorldPos.x, pointerWorldPos.y, -1);
         LineController.Instance.SetAttackLine(attackFromVec3, attackToVec3);
-
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
         if (currentlyDetectedCard) {
-            gameObject.GetComponent<Card>().Attack(currentlyDetectedCard);
+            RequestAttack();
         }
         LineController.Instance.Hide();
     }
@@ -75,5 +74,11 @@ public class OnBoardDragController : MonoBehaviour, IBeginDragHandler, IDragHand
 
     private void Card_OnDeath(object sender, EventArgs e) {
         throw new NotImplementedException();
+    }
+
+    private void RequestAttack() {
+        int boardIndex = Board.Instance.GetBoardIndex(onBoardCard.GetCardUid());
+        int enemyCardBoardIndex = EnemyBoard.Instance.GetBoardIndex(currentlyDetectedCard.GetCardUid());
+        player.RequestAttack(boardIndex, enemyCardBoardIndex);
     }
 }

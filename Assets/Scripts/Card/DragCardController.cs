@@ -35,7 +35,7 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
             return;
         }
 
-        if (player.GetMana() < card.GetCardStatsSO().manaCost) {
+        if (player.GetMana() < card.GetCardStats().CurrentManaCost) {
             Debug.Log("Insufficient mana");
             eventData.pointerDrag = null;
             return;
@@ -61,7 +61,6 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
         transform.position = canvas.transform.TransformPoint(pos);
 
         proposedBoardIndex = playerDropZone.GetProposedBoardIndex(eventData);
-        Debug.Log(proposedBoardIndex);
     }
 
     public void OnEndDrag(PointerEventData eventData)

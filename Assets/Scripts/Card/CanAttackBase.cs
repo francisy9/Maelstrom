@@ -1,36 +1,30 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using static Types;
 
 public abstract class CanAttackBase : MonoBehaviour
 {
-    public InPlayStats inPlayStats;
+    public CardStats cardStats;
     public event EventHandler OnAttack;
     public event EventHandler OnBeingAttacked;
     public event EventHandler OnDeath;
 
-    private void Awake() {
-        inPlayStats = new InPlayStats();
-    }
-
     public int GetRemainingHp() {
-        return inPlayStats.hp;
+        return cardStats.CurrentHP;
     }
 
     public int GetAttackVal() {
-        return inPlayStats.attackVal;
+        return cardStats.CurrentAttack;
     }
 
     public bool CanAttack() {
-        if (inPlayStats.attackVal <= 0) {
+        if (cardStats.CurrentAttack <= 0) {
             Debug.Log("Unit's attack value is 0!");
             return false;
         }
 
-        if (inPlayStats.attacks <= 0) {
-            Debug.Log("Wait until next turn to attack!");
+        if (cardStats.NumAttacks <= 0) {
+            Debug.Log("No attacks remaining");
             return false;
         }
 
@@ -38,22 +32,26 @@ public abstract class CanAttackBase : MonoBehaviour
     }
 
     public void Attack(CanAttackBase target) {
-        inPlayStats.hp -= target.GetAttackVal();
-        inPlayStats.attacks -= 1;
+        cardStats.CurrentHP -= target.GetAttackVal();
+        cardStats.NumAttacks -= 1;
         target.AttackedBy(this);
         OnAttack?.Invoke(this, EventArgs.Empty);
-        if (inPlayStats.hp <= 0) {
+        if (cardStats.CurrentHP <= 0) {
             Death();
         }
     }
 
     public void AttackedBy(CanAttackBase attacker) {
-        inPlayStats.hp -= attacker.GetAttackVal();
+        cardStats.CurrentHP -= attacker.GetAttackVal();
         OnBeingAttacked?.Invoke(this, EventArgs.Empty);
     }
 
     public void ResetAttack() {
-        inPlayStats.attacks = inPlayStats.totalAttacks;
+        cardStats.NumAttacks = cardStats.TotalNumAttacks;
+    }
+
+    public CardStats GetCardStats() {
+        return cardStats;
     }
 
     public abstract void Death();

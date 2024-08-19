@@ -20,8 +20,8 @@ public class GameManager : NetworkBehaviour
     [SerializeField] private Button endTurnButton;
     public event EventHandler OnGameStart;
 
-    private int turn;
-    private bool isP1Turn;
+    [SyncVar] private int turn;
+    [SyncVar] private bool isP1Turn;
 
     public override void OnStartServer() {
         Instance = this;
@@ -59,7 +59,7 @@ public class GameManager : NetworkBehaviour
 
     public void StartGame() {
         Debug.Log("start game");
-        ServerUpdate.Instance.SetPlayerOneRef(playerOne);
+        ServerUpdate.Instance.SetPlayerRefs(playerOne, playerTwo);
 
         Player starter = GetInTurnPlayer();
         Player nextPlayer = GetNextPlayer();
@@ -142,6 +142,7 @@ public class GameManager : NetworkBehaviour
         Player requestingPlayer = sender.identity.GetComponent<Player>();
         
         if (IsPlayerInTurn(requestingPlayer)) {
+            ServerUpdate.Instance.EndTurn(requestingPlayer);
             requestingPlayer.TargetEndTurn();
             isP1Turn = !isP1Turn;
             Player playerNextInTurn = GetInTurnPlayer();
@@ -149,33 +150,71 @@ public class GameManager : NetworkBehaviour
             playerNextInTurn.RefreshMana();
             playerNextInTurn.TargetStartTurn();
             turn += 1;
-
         } else {
             Debug.LogError("Wrong player was able to request end turn");
         }
     }
 
     [Command(requiresAuthority = false)]
-    public void CmdPlayCard(int handIndex, CardStatsSO cardStatsSO, int boardIndex, NetworkConnectionToClient sender = null) {
+    public void CmdPlayCard(int handIndex, int boardIndex, NetworkConnectionToClient sender = null) {
         Player requestingPlayer = sender.identity.GetComponent<Player>();
-        Debug.Log($"{requestingPlayer.name} is requesting to play card");
         
+
+        if (handIndex < 0 || handIndex > 9 || boardIndex < 0 || boardIndex > 6) {
+            Debug.LogError($"{requestingPlayer.name} supplied argument handIndex: {handIndex} boardIndex: {boardIndex}");
+        }
+
         if(IsPlayerInTurn(requestingPlayer)) {
-            CardStatsSO cardToBePlayed = ServerUpdate.Instance.GetCardStatSoAtHandIndex(handIndex, requestingPlayer);
-            if (!cardToBePlayed.EqualValues(cardStatsSO)) {
-                Debug.LogError("Server mismatch");
-            }
-            if (requestingPlayer.GetMana() < cardToBePlayed.manaCost) {
+            CardStats cardToBePlayed = ServerUpdate.Instance.GetCardStatsAtHandIndex(handIndex, requestingPlayer);
+
+            if (requestingPlayer.GetMana() < cardToBePlayed.CurrentManaCost) {
                 Debug.LogError("Insufficient mana to play card but still able to make request");
+                return;
             }
 
-            Debug.Log($"{requestingPlayer.name} successfully played card {cardStatsSO.cardName} mana cost: {cardStatsSO.manaCost}");
-            
-            InPlayStats inPlayStats = OnPlay.Instance.GetInPlayStatsFromCardStatsSO(cardStatsSO);
-            requestingPlayer.ConsumeMana(cardToBePlayed.manaCost);
-            requestingPlayer.TargetPlayCard(inPlayStats, boardIndex);
-            GetNextPlayer().TargetOpponentPlayCard(cardToBePlayed, inPlayStats);
-            ServerUpdate.Instance.MoveCardToBoard(requestingPlayer, handIndex, inPlayStats, boardIndex);
+            ServerUpdate.Instance.MoveCardToBoard(requestingPlayer, handIndex, cardToBePlayed, boardIndex);
+
+            requestingPlayer.ConsumeMana(cardToBePlayed.CurrentManaCost);
+            requestingPlayer.TargetPlayCard(boardIndex);
+
+            byte[] cardData = cardToBePlayed.Serialize();
+            GetNextPlayer().TargetOpponentPlayCard(cardData, boardIndex);
+
+
+            ServerUpdate.Instance.PrintServerGameState();
+        } else {
+            Debug.LogError("Player isn't in turn");
+        }
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CmdAttack(int boardIndex, int opponentBoardIndex, NetworkConnectionToClient sender = null) {
+        Player requestingPlayer = sender.identity.GetComponent<Player>();
+        Debug.Log($"{requestingPlayer.name} is requesting to attack card own board index: {boardIndex} opponent board index: {opponentBoardIndex}");
+        
+        if(IsPlayerInTurn(requestingPlayer)) {
+            CardStats card = ServerUpdate.Instance.GetCardStatsAtBoardIndex(boardIndex, requestingPlayer);
+
+            if (card.CurrentAttack <= 0) {
+                Debug.LogError("Unit's attack value is 0!");
+                return;
+            }
+
+            if (card.NumAttacks <= 0) {
+                Debug.LogError("Insufficient attacks remaining");
+            }
+
+
+            Player opponent = GetNextPlayer();
+
+            CardStats opponentCard = ServerUpdate.Instance.GetCardStatsAtBoardIndex(opponentBoardIndex, opponent);
+
+            CardStats[] cardsPostAttack = ServerUpdate.Instance.Attack(boardIndex, opponentBoardIndex, requestingPlayer);
+
+            byte[] cardData = cardsPostAttack[0].Serialize();
+            byte[] opponentCardData = cardsPostAttack[1].Serialize();
+            requestingPlayer.TargetAttackCard(boardIndex, opponentBoardIndex, cardData, opponentCardData);
+            GetNextPlayer().TargetAttackCard(opponentBoardIndex, boardIndex, opponentCardData, cardData);
 
             ServerUpdate.Instance.PrintServerGameState();
         } else {
