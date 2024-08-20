@@ -7,10 +7,14 @@ public class PlayerManager : NetworkManager
 {
     [SerializeField] private GameManager gameManager;
     private int numPlayersConnected;
+    [SerializeField] private bool isTesting;
 
     public override void OnStartServer() {
         autoCreatePlayer = false;
         gameManager.gameObject.SetActive(true);
+        if (isTesting) {
+            gameManager.TestingCards();
+        }
         return;
     }
 

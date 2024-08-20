@@ -69,11 +69,10 @@ public class Player : NetworkBehaviour
         // Debug.Log("Opponent Turn");
     }
 
+    [Server]
     public void IncrementMaxMana() {
-        if (isServer)
-        {
-            maxMana += 1;
-        }
+        maxMana += 1;
+        Debug.Log("max mana incremented");
     }
 
     [Server]
@@ -167,5 +166,19 @@ public class Player : NetworkBehaviour
     {
         GameManager.Instance.CmdAttack(boardIndex, opponentBoardIndex);
         return;
+    }
+
+
+
+    // Functions for running functions on server
+    [Server]
+    public void ServerAddCardToHand(CardStatsSO cardStatsSO) {
+        CardStats cardStats = new CardStats(cardStatsSO);
+        handController.AddCardToHand(cardStats);
+    }
+
+    [Server]
+    public void SetPlayerInTurn() {
+        inTurn = true;
     }
 }

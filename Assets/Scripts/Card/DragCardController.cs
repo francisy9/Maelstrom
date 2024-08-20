@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using static Types;
 
 public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
@@ -29,6 +28,7 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        Debug.Log($"Attempting to drag {card.GetCardStats().CardName}");
         if (!player.IsTurn()) {
             Debug.Log("Not your turn");
             eventData.pointerDrag = null;
@@ -36,6 +36,7 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
         }
 
         if (player.GetMana() < card.GetCardStats().CurrentManaCost) {
+            Debug.Log($"player has {player.GetMana()}");
             Debug.Log("Insufficient mana");
             eventData.pointerDrag = null;
             return;

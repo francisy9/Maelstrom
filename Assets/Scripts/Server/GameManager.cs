@@ -231,6 +231,25 @@ public class GameManager : NetworkBehaviour
         return cardDrawn;
     }
 
+    // Functions to test on server client
+    public void TestingCards() {
+        isP1Turn = true;
+        playerOne.SetPlayerInTurn();
+        playerOne.IncrementMaxMana();
+        playerOne.IncrementMaxMana();
+        playerOne.IncrementMaxMana();
+        playerOne.IncrementMaxMana();
+        playerOne.IncrementMaxMana();
+        playerOne.IncrementMaxMana();
+        playerOne.IncrementMaxMana();
+        playerOne.RefreshMana();
+        HandController.Instance.SetPlayer(playerOne);
+        playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
+        playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
+        playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
+        playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
+    }
+
     // Server functions for debugging purposes
     public int GetP1Health() {
         return playerOne.GetHp();
