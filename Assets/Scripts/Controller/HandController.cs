@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +16,7 @@ public class HandController : MonoBehaviour
     private int tryingToPlayCardUID;
     // Used to prevent race condition
     private bool handlingAction;
+    public event EventHandler CardAddedToHand;
     
 
     private void Awake() {
@@ -35,6 +37,7 @@ public class HandController : MonoBehaviour
         dragCardControllerComponent.InitDragCardController(player, this, cardUid);
         cardHashMap.Add(cardUid, cardComponent);
         cardUid += 1;
+        CardAddedToHand.Invoke(this, EventArgs.Empty);
     }
 
     public void PlayCard(int boardIndex) {
@@ -72,8 +75,10 @@ public class HandController : MonoBehaviour
             Debug.LogError("Previously dragging card and currently attempting to play card seem to be different");
         }
 
-        Card card = cardHashMap[cardUid];
-        // TODO: Make it so that DragCardController passed card statso so here !
         player.RequestPlayCard(currentlyDraggingCardHandIndex, boardIndex);
+    }
+
+    public int GetNumCards() {
+        return cardHashMap.Count;
     }
 }

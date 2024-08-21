@@ -248,6 +248,12 @@ public class GameManager : NetworkBehaviour
         playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
         playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
         playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
+        playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
+        playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
+        playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
+        playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
+        playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
+        playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
     }
 
     // Server functions for debugging purposes
