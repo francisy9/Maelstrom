@@ -2,8 +2,9 @@ using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
+    [SerializeField] private CardVisual cardVisual;
     private Canvas canvas;
     private Board playerDropZone;
     private Player player;
@@ -14,6 +15,11 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
     private Card card;
     private int uid;
     private int proposedBoardIndex;
+    private UnityEngine.Vector3 collapsedPos;
+    private float collapsedRotation;
+    private UnityEngine.Vector3 expandedPos;
+    private float expandedRotation;
+    private bool canBeDragged;
 
     public void InitDragCardController(Player player, HandController handController, int uid) {
         canvas = player.GetCanvas();
@@ -22,12 +28,41 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
         canvasGroup = GetComponent<CanvasGroup>();
         prevParentTransform = transform.parent;
         this.handController = handController;
-        this.card = GetComponent<Card>();
+        card = GetComponent<Card>();
         this.uid = uid;
+        canBeDragged = false;
+    }
+
+    public void OnPointerEnter(PointerEventData eventData) {
+        if (HandVisual.Instance.IsExpanded()) {
+            cardVisual.ProjectCardOnHover();
+            canBeDragged = true;
+        }
+    }
+
+    // TODO: Handle edge case where card was being hovered when another card was drawn
+    public void OnPointerExit(PointerEventData eventData) {
+        cardVisual.UnHoverCard();
+        canBeDragged = false;
+    }
+
+    public void SetCollapsedPos(Vector3 pos, float angle) {
+        collapsedPos = pos;
+        collapsedRotation = angle;
+    }
+
+    public void SetExpandedPos(Vector3 pos, float angle) {
+        expandedPos = pos;
+        expandedRotation = angle;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (!canBeDragged) {
+            eventData.pointerDrag = null;
+            Debug.Log($"{card.GetCardStats().CardName} canBeDragged set to false");
+            return;
+        }
         Debug.Log($"Attempting to drag {card.GetCardStats().CardName}");
         if (!player.IsTurn()) {
             Debug.Log("Not your turn");
@@ -48,10 +83,15 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
             return;
         }
 
+        cardVisual.BeingDrag();
+
+        HandController.Instance.UnblockRayCasts();
+
         canvasGroup.alpha = .6f;
         canvasGroup.blocksRaycasts = false;
         handController.LocalTryingToPlayCard(uid);
         playerDropZone.UpdateXPos();
+        transform.localEulerAngles = Vector3.zero;
         transform.SetParent(canvas.transform);
     }
 
@@ -75,6 +115,7 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
         }
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
+        HandController.Instance.BlockRayCasts();
     }
 
     private bool DropZoneIsPointerOver(PointerEventData eventData) {
@@ -85,5 +126,11 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
     public void ReturnCardToHand(int previousHandIndex) {
         transform.SetParent(prevParentTransform);
         transform.SetSiblingIndex(previousHandIndex);
+        if (HandVisual.Instance.IsExpanded()) {
+            transform.SetLocalPositionAndRotation(expandedPos, Quaternion.Euler(0, 0, expandedRotation));
+        } else {
+            transform.SetLocalPositionAndRotation(collapsedPos, Quaternion.Euler(0, 0, collapsedRotation));
+        }
+        cardVisual.EndDrag();
     }
 }

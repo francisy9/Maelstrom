@@ -59,7 +59,7 @@
     <UnityVersion>2022.3.32f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Analyzer Include="/Users/francisyang/.vscode/extensions/visualstudiotoolsforunity.vstuc-1.0.2/Analyzers/Microsoft.Unity.Analyzers.dll" />
+    <Analyzer Include="/Users/francisyang/.vscode/extensions/visualstudiotoolsforunity.vstuc-1.0.3/Analyzers/Microsoft.Unity.Analyzers.dll" />
     <Analyzer Include="/Applications/Unity/Hub/Editor/2022.3.32f1/Unity.app/Contents/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll" />
     <Analyzer Include="/Applications/Unity/Hub/Editor/2022.3.32f1/Unity.app/Contents/Tools/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
@@ -79,6 +79,7 @@
     <Compile Include="Assets/Scripts/Controller/EnemyBoard.cs" />
     <Compile Include="Assets/Scripts/Player.cs" />
     <Compile Include="Assets/Scripts/Types.cs" />
+    <Compile Include="Assets/Scripts/Card/CardVisualPlaceHolder.cs" />
     <Compile Include="Assets/Scripts/Server/LineController.cs" />
     <Compile Include="Assets/Scripts/Card/OnBoardCard.cs" />
     <Compile Include="Assets/Scripts/Controller/HandController.cs" />

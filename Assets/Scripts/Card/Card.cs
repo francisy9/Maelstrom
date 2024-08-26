@@ -20,6 +20,7 @@ public class Card : CanAttackBase
     }
 
     public void DestroySelf() {
+        transform.SetParent(null);
         Destroy(gameObject);
     }
 }

@@ -35,6 +35,7 @@ public class Board : BoardBase
         dragCardControllerComponent.InitDragCardController(player);
         cardPlaceHolder.transform.SetParent(null); // Need this since Destroy isn't immediate
         DestroyPlaceHolder();
+        onBoardCards[boardIndex].gameObject.layer = LayerMask.NameToLayer(PLAYER_CARD_LAYER);
         UpdateBoardIndexHashMap();
     }
 

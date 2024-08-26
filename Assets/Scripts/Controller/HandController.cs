@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static Types;
@@ -17,6 +16,7 @@ public class HandController : MonoBehaviour
     // Used to prevent race condition
     private bool handlingAction;
     public event EventHandler CardAddedToHand;
+    public event EventHandler OnCardPlayed;
     
 
     private void Awake() {
@@ -36,6 +36,7 @@ public class HandController : MonoBehaviour
         cardComponent.InitCard(cardStats);
         dragCardControllerComponent.InitDragCardController(player, this, cardUid);
         cardHashMap.Add(cardUid, cardComponent);
+        currentCardObject.layer = LayerMask.NameToLayer(IN_HAND_CARD);
         cardUid += 1;
         CardAddedToHand.Invoke(this, EventArgs.Empty);
     }
@@ -48,6 +49,7 @@ public class HandController : MonoBehaviour
         currentlyDraggingCardHandIndex = -1;
         board.PlaceCardOnBoard(cardStats, boardIndex);
         card.DestroySelf();
+        OnCardPlayed.Invoke(this, EventArgs.Empty);
         handlingAction = false;
     }
 
@@ -80,5 +82,15 @@ public class HandController : MonoBehaviour
 
     public int GetNumCards() {
         return cardHashMap.Count;
+    }
+
+    public void BlockRayCasts() {
+        CanvasGroup canvasGroup = GetComponent<CanvasGroup>();
+        canvasGroup.blocksRaycasts = true;
+    }
+
+    public void UnblockRayCasts() {
+        CanvasGroup canvasGroup = GetComponent<CanvasGroup>();
+        canvasGroup.blocksRaycasts = false;
     }
 }

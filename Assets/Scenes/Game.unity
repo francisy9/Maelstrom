@@ -195,7 +195,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 400, y: 400}
+  m_SizeDelta: {x: 125, y: 125}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &149604038
 MonoBehaviour:
@@ -1537,8 +1537,8 @@ GameObject:
   - component: {fileID: 1230017961}
   - component: {fileID: 1230017960}
   - component: {fileID: 1230017963}
-  - component: {fileID: 1230017964}
   - component: {fileID: 1230017966}
+  - component: {fileID: 1230017967}
   m_Layer: 5
   m_Name: PlayerHand
   m_TagString: Untagged
@@ -1617,30 +1617,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardObject: {fileID: 7631930073733532281, guid: a9efe0960a41e42a5987cd71e2cad70e, type: 3}
   board: {fileID: 322034015}
---- !u!114 &1230017964
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1230017958}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
-  m_ChildAlignment: 4
-  m_StartCorner: 0
-  m_StartAxis: 0
-  m_CellSize: {x: 150, y: 100}
-  m_Spacing: {x: 0, y: 0}
-  m_Constraint: 2
-  m_ConstraintCount: 1
 --- !u!114 &1230017966
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1656,12 +1632,26 @@ MonoBehaviour:
   canvas: {fileID: 1916382466}
   mask: {fileID: 1813818986}
   expandedWidth: 1400
-  collapsedFanAngle: 30
-  expandedFanAngle: 20
+  collapsedFanAngleMin: -5
+  collapsedFanAngleMax: 30
+  expandedFanAngleMin: -2
+  expandedFanAngleMax: 20
   collapsedWidthOffset: 250
   expandedWidthXOffset: 200
   collapsedYOffset: 450
   expandedYOffset: 1400
+--- !u!225 &1230017967
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1230017958}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1441475660
 GameObject:
   m_ObjectHideFlags: 0
@@ -2016,7 +2006,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 400, y: 400}
+  m_SizeDelta: {x: 125, y: 125}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1811228235
 MonoBehaviour:
@@ -2223,7 +2213,7 @@ MonoBehaviour:
   evaluationInterval: 3
   timeInterpolationGui: 0
   gameManager: {fileID: 2104311097}
-  isTesting: 1
+  isTesting: 0
 --- !u!4 &1865784521
 Transform:
   m_ObjectHideFlags: 0

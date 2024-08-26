@@ -6,12 +6,11 @@ To test the game
 
 ## Francis
 Current:
-- Fix certain cards being buggy (unable to drag on certain conditions)
+- Change enemy hand to fanned visual
 
 TODO:
 - Convert end turn button to authority of person being in turn
-- Card in hand display (tap to zoom, by default shrunk fanned out visual)
-- Hover over on board card for card visual
+- Convert onplay, ondeath etc. mechanics to cardStats type? (figure out design)
 
 
 ## Max

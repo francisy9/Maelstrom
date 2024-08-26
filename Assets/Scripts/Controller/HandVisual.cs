@@ -4,7 +4,9 @@ using UnityEngine.EventSystems;
 
 public class HandVisual : MonoBehaviour
 {
+    public static HandVisual Instance;
     [SerializeField] private Canvas canvas;
+    private CanvasGroup canvasGroup;
     [SerializeField] private Mask mask;
     private HandController handController;
     private float collapsedWidth;
@@ -13,8 +15,10 @@ public class HandVisual : MonoBehaviour
     private bool expanded;
     private RectTransform rectTransform;
     private float fanAngle;
-    [SerializeField] private float collapsedFanAngle;
-    [SerializeField] private float expandedFanAngle;
+    [SerializeField] private float collapsedFanAngleMin;
+    [SerializeField] private float collapsedFanAngleMax;
+    [SerializeField] private float expandedFanAngleMin;
+    [SerializeField] private float expandedFanAngleMax;
     [SerializeField] private float collapsedWidthOffset;
     [SerializeField] private float expandedWidthXOffset;
     [SerializeField] private float collapsedYOffset;
@@ -25,17 +29,26 @@ public class HandVisual : MonoBehaviour
         expanded = false;
         rectTransform = transform as RectTransform;
         collapsedWidth = rectTransform.rect.width;
+        Instance = this;
     }
     
     private void Start() {
         handController = GetComponent<HandController>();
+        canvasGroup = GetComponent<CanvasGroup>();
         handController.CardAddedToHand += HandController_CardAddedToHand;
+        handController.OnCardPlayed += HandController_OnCardPlayed;
         mask.HandTapped += Mask_HandTapped;
+    }
+
+    private void HandController_OnCardPlayed(object sender, EventArgs e)
+    {
+        UpdateVisual();
     }
 
     private void Mask_HandTapped(object sender, EventArgs e)
     {
         ExpandHandArea();
+        UpdateVisual();
     }
 
     private void HandController_CardAddedToHand(object sender, EventArgs e)
@@ -47,7 +60,7 @@ public class HandVisual : MonoBehaviour
     {
         numCards = handController.GetNumCards();
         int i  = 0;
-        fanAngle = expanded ? expandedFanAngle : collapsedFanAngle;
+        fanAngle = GetFanAngle();
 
         if (numCards > 1) {
             angleStep = fanAngle * 2 / (numCards - 1);
@@ -63,6 +76,14 @@ public class HandVisual : MonoBehaviour
         return;
     }
 
+    private float GetFanAngle(){
+        if (expanded) {
+            return Mathf.Lerp(expandedFanAngleMin, expandedFanAngleMax, (float) numCards/10);
+        } else {
+            return Mathf.Lerp(collapsedFanAngleMin, collapsedFanAngleMax, (float) numCards/10);
+        }
+    } 
+
     private void ArrangeCard(int cardIndex, Transform cardTransform) {
         float width = expanded ? expandedWidth : (collapsedWidth - collapsedWidthOffset);
         float angle = -fanAngle + angleStep * cardIndex;
@@ -71,12 +92,17 @@ public class HandVisual : MonoBehaviour
 
         float x = width * Mathf.Sin(rad);
         float y = width * Mathf.Cos(rad) - yOffset;
+        DragCardController dragCardController = cardTransform.GetComponent<DragCardController>();
 
         if (expanded) {
             x = (width - expandedWidthXOffset) * Mathf.Sin(rad);
+            dragCardController.SetExpandedPos(new Vector3(x , y, 0), -angle);
+        } else {
+            dragCardController.SetCollapsedPos(new Vector3(x , y, 0), -angle);
         }
 
-        cardTransform.SetLocalPositionAndRotation(new UnityEngine.Vector3(x , y, 0), UnityEngine.Quaternion.Euler(0, 0, -angle));
+
+        cardTransform.SetLocalPositionAndRotation(new Vector3(x , y, 0), Quaternion.Euler(0, 0, -angle));
         return;
     }
 
@@ -84,10 +110,9 @@ public class HandVisual : MonoBehaviour
         if (Input.GetMouseButtonDown(0)) {
             if (expanded && !IsPointerOverHandArea()) {
                 CollapseHandArea();
+                UpdateVisual();
             }
         }
-
-        UpdateVisual();
     }
 
     private bool IsPointerOverHandArea() {
@@ -96,8 +121,8 @@ public class HandVisual : MonoBehaviour
 
     public void ExpandHandArea() {
         expanded = true;
-        UnityEngine.Vector2 sizeDelta = rectTransform.sizeDelta;
-        UnityEngine.Vector3 pos = rectTransform.localPosition;
+        Vector2 sizeDelta = rectTransform.sizeDelta;
+        Vector3 pos = rectTransform.localPosition;
 
         sizeDelta.x = expandedWidth;
         rectTransform.sizeDelta = sizeDelta;
@@ -108,8 +133,8 @@ public class HandVisual : MonoBehaviour
 
     public void CollapseHandArea() {
         expanded = false;
-        UnityEngine.Vector2 sizeDelta = rectTransform.sizeDelta;
-        UnityEngine.Vector3 pos = rectTransform.localPosition;
+        Vector2 sizeDelta = rectTransform.sizeDelta;
+        Vector3 pos = rectTransform.localPosition;
 
         sizeDelta.x = collapsedWidth;
         rectTransform.sizeDelta = sizeDelta;
@@ -117,5 +142,9 @@ public class HandVisual : MonoBehaviour
         pos.x += (canvas.GetComponent<RectTransform>().rect.width - collapsedWidth) / 2;
         rectTransform.localPosition = pos;
         mask.EnableMask();
+    }
+
+    public bool IsExpanded() {
+        return expanded;
     }
 }
