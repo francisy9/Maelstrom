@@ -9,6 +9,7 @@ public abstract class BoardBase : MonoBehaviour
     // cardUid -> boardIndex
     public Dictionary<int, int> boardIndexHashMap;
     [SerializeField] private GameObject onBoardCardObject;
+    [SerializeField] private BoardBase enemyBoard;
     private int cardUid;
 
     public virtual void Awake() {
@@ -52,6 +53,17 @@ public abstract class BoardBase : MonoBehaviour
             onBoardCards.RemoveAt(boardIndex);
             UpdateBoardIndexHashMap();
         };
+    }
+
+    // Distinction between the two for animation purposes
+    public void CardAttack(int boardIndex, int opponentBoardIndex, CardStats cardStats, CardStats opponentCardStats) {
+        UpdateCardAfterAttack(boardIndex, cardStats);
+        enemyBoard.UpdateCardAfterAttack(opponentBoardIndex, opponentCardStats);
+    }
+
+    public void CardAttackedBy(int boardIndex, int opponentBoardIndex, CardStats cardStats, CardStats opponentCardStats) {
+        UpdateCardAfterAttack(boardIndex, cardStats);
+        enemyBoard.UpdateCardAfterAttack(opponentBoardIndex, opponentCardStats);
     }
 
     public void RemoveFromHashMap(int cardUid) {

@@ -9,9 +9,11 @@ public class Player : NetworkBehaviour
 {
     [SerializeField] private Canvas canvas;
     [SerializeField] private Player opponent;
+    [SerializeField] private Hero hero;
+    [SerializeField] private EnemyHero enemyHero;
     [SerializeField] private Board board;
     [SerializeField] private EnemyBoard enemyBoard;
-    [SerializeField] private Transform enemyHand;
+    [SerializeField] private EnemyHand enemyHand;
     [SerializeField] private PlayerManaDisplay manaDisplay;
     [SerializeField] private PlayerManaDisplay enemyManaDisplay;
     [SerializeField] private List<CardStatsSO> deck;
@@ -44,8 +46,10 @@ public class Player : NetworkBehaviour
     }
 
     [TargetRpc]
-    public void TargetStartGame(bool first) {
+    public void TargetStartGame(bool first, int heroStartHp, int enemyHeroStartHp) {
         // Debug.Log("Start game from Player.cs called");
+        hero.InitHero(heroStartHp);
+        enemyHero.InitHero(enemyHeroStartHp);
     }
 
     public Board GetDropZone() {
@@ -54,7 +58,6 @@ public class Player : NetworkBehaviour
 
     [TargetRpc]
     public void TargetStartTurn() {
-        // Debug.Log($"{name} starting turn");
         inTurn = true;
         OnStartTurn?.Invoke(this, EventArgs.Empty);
     }
@@ -93,7 +96,7 @@ public class Player : NetworkBehaviour
 
     [TargetRpc]
     public void AddCardToOpponentHand() {
-        Instantiate(cardBackObject, enemyHand);
+        enemyHand.AddCardToHand();
     }
 
     public Canvas GetCanvas() {
@@ -141,10 +144,8 @@ public class Player : NetworkBehaviour
     }
 
     [TargetRpc]
-    public void TargetOpponentPlayCard(byte[] cardData, int boardIndex) {
-        CardStats cardStats = CardStats.Deserialize(cardData);
-        enemyBoard.PlaceCardOnBoard(cardStats, boardIndex);
-        return;
+    public void TargetOpponentPlayCard(byte[] cardData, int handIndex, int boardIndex) {
+        enemyHand.PlayCard(cardData, handIndex, boardIndex);
     }
 
     [TargetRpc]
@@ -152,8 +153,15 @@ public class Player : NetworkBehaviour
         CardStats cardStats = CardStats.Deserialize(cardData);
         CardStats opponentCardStats = CardStats.Deserialize(opponentCardData);
 
-        board.UpdateCardAfterAttack(boardIndex, cardStats);
-        enemyBoard.UpdateCardAfterAttack(opponentBoardIndex, opponentCardStats);
+        board.CardAttack(boardIndex, opponentBoardIndex, cardStats, opponentCardStats);
+    }
+
+    [TargetRpc]
+    public void TargetOpponentAttackCard(int boardIndex, int opponentBoardIndex, byte[] cardData, byte[] opponentCardData) {
+        CardStats cardStats = CardStats.Deserialize(cardData);
+        CardStats opponentCardStats = CardStats.Deserialize(opponentCardData);
+
+        board.CardAttackedBy(boardIndex, opponentBoardIndex, cardStats, opponentCardStats);
     }
 
     internal void RequestPlayCard(int handIndex, int boardIndex)
@@ -175,6 +183,11 @@ public class Player : NetworkBehaviour
     public void ServerAddCardToHand(CardStatsSO cardStatsSO) {
         CardStats cardStats = new CardStats(cardStatsSO);
         handController.AddCardToHand(cardStats);
+    }
+
+    [Server]
+    public void ServerAddCardToOpponentHand() {
+        enemyHand.AddCardToHand();
     }
 
     [Server]

@@ -36,7 +36,7 @@ public class HandController : MonoBehaviour
         cardComponent.InitCard(cardStats);
         dragCardControllerComponent.InitDragCardController(player, this, cardUid);
         cardHashMap.Add(cardUid, cardComponent);
-        currentCardObject.layer = LayerMask.NameToLayer(IN_HAND_CARD);
+        currentCardObject.layer = LayerMask.NameToLayer(IN_HAND_CARD_LAYER);
         cardUid += 1;
         CardAddedToHand.Invoke(this, EventArgs.Empty);
     }

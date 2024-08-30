@@ -65,13 +65,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets/Scripts/Controller/BoardBase.cs" />
+    <Compile Include="Assets/Scripts/EnemyHero.cs" />
     <Compile Include="Assets/Scripts/Server/OnPlay.cs" />
     <Compile Include="Assets/Scripts/Controller/HandVisual.cs" />
     <Compile Include="Assets/Scripts/Card/CanAttackBase.cs" />
+    <Compile Include="Assets/Scripts/Controller/EnemyHandVisual.cs" />
     <Compile Include="Assets/Scripts/Card/OnBoardDragController.cs" />
     <Compile Include="Assets/Scripts/Mask.cs" />
     <Compile Include="Assets/Scripts/Server/ServerUpdate.cs" />
     <Compile Include="Assets/Scripts/Hero.cs" />
+    <Compile Include="Assets/Scripts/HeroBase.cs" />
     <Compile Include="Assets/Scripts/Server/PlayerManager.cs" />
     <Compile Include="Assets/Scripts/Controller/Board.cs" />
     <Compile Include="Assets/Scripts/HeroVisual.cs" />
@@ -79,6 +82,7 @@
     <Compile Include="Assets/Scripts/Controller/EnemyBoard.cs" />
     <Compile Include="Assets/Scripts/Player.cs" />
     <Compile Include="Assets/Scripts/Types.cs" />
+    <Compile Include="Assets/Scripts/Controller/EnemyHand.cs" />
     <Compile Include="Assets/Scripts/Card/CardVisualPlaceHolder.cs" />
     <Compile Include="Assets/Scripts/Server/LineController.cs" />
     <Compile Include="Assets/Scripts/Card/OnBoardCard.cs" />

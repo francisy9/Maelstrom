@@ -110,5 +110,7 @@ public static class Types
 
     public static string PLAYER_CARD_LAYER = "PlayedCard";
     public static string OPPONENT_PLAYED_CARD_LAYER = "OpponentPlayedCard";
-    public static string IN_HAND_CARD = "InHandCard";
+    public static string IN_HAND_CARD_LAYER = "InHandCard";
+    public static string HERO_LAYER = "Hero";
+    public static string OPPONENT_HERO_LAYER = "OpponentHero";
 }

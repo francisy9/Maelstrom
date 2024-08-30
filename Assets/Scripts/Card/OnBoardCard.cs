@@ -7,6 +7,7 @@ public class OnBoardCard : CanAttackBase
     [SerializeField] private OnBoardCardVisual onBoardCardVisual;
     private int uid;
     public event EventHandler OnCardStatsUpdate;
+    public CardStats cardStats;
 
     public void InitCard(CardStats cardStats, int cardUid) {
         this.cardStats = cardStats;
@@ -26,6 +27,25 @@ public class OnBoardCard : CanAttackBase
         return uid;
     }
 
+    public CardStats GetCardStats() {
+        return cardStats;
+    }
+
+    public override int GetRemainingHp() {
+        return cardStats.CurrentHP;
+    }
+
+    public override int GetAttackVal() {
+        return cardStats.CurrentAttack;
+    }
+
+    public override int GetRemainingNumAttacks() {
+        return cardStats.NumAttacks;
+    }
+
+    public override void ResetAttack() {
+        cardStats.NumAttacks = cardStats.TotalNumAttacks;
+    }
 
     // Updates current stats then returns true if supposed to be destroyed
     public bool UpdateSelf(CardStats cardStats) {

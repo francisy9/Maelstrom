@@ -13,9 +13,13 @@ public class GameManager : NetworkBehaviour
     [SerializeField] private Player playerOne;
     // TODO: @max figure out how to load this in on run time based on user
     [SerializeField] private List<CardStatsSO> p1Deck;
+    [SerializeField] private Sprite p1HeroSprite;
+    [SerializeField] private int p1HeroMaxHp;
     private bool p1Assigned = false;
     [SerializeField] private Player playerTwo;
     [SerializeField] private List<CardStatsSO> p2Deck;
+    [SerializeField] private Sprite p2HeroSprite;
+    [SerializeField] private int p2HeroMaxHp;
     private bool p2Assigned = false;
     [SerializeField] private Button endTurnButton;
     public event EventHandler OnGameStart;
@@ -103,8 +107,17 @@ public class GameManager : NetworkBehaviour
 
         starter.RefreshMana();
 
-        starter.TargetStartGame(true);
-        nextPlayer.TargetStartGame(false);
+        int starterHeroHp = isP1Turn ? p1HeroMaxHp : p2HeroMaxHp;
+        int nextPlayerHeroHp = isP1Turn ? p2HeroMaxHp : p1HeroMaxHp;
+        // Sprite starterHeroSprite = isP1Turn ? p1HeroSprite : p2HeroSprite;
+        // Sprite nextPlayerHeroSprite = isP1Turn ? p2HeroSprite : p1HeroSprite;
+
+        // starter.TargetStartGame(true, starterHeroHp, starterHeroSprite, nextPlayerHeroHp, nextPlayerHeroSprite);
+        // nextPlayer.TargetStartGame(false, nextPlayerHeroHp, nextPlayerHeroSprite, starterHeroHp, starterHeroSprite);
+
+        starter.TargetStartGame(true, starterHeroHp, nextPlayerHeroHp);
+        nextPlayer.TargetStartGame(false, nextPlayerHeroHp, starterHeroHp);
+
         OnGameStart?.Invoke(this, EventArgs.Empty);
         StartTurn();
         ServerUpdate.Instance.PrintServerGameState();
@@ -178,7 +191,7 @@ public class GameManager : NetworkBehaviour
             requestingPlayer.TargetPlayCard(boardIndex);
 
             byte[] cardData = cardToBePlayed.Serialize();
-            GetNextPlayer().TargetOpponentPlayCard(cardData, boardIndex);
+            GetNextPlayer().TargetOpponentPlayCard(cardData, handIndex, boardIndex);
 
 
             ServerUpdate.Instance.PrintServerGameState();
@@ -204,17 +217,12 @@ public class GameManager : NetworkBehaviour
                 Debug.LogError("Insufficient attacks remaining");
             }
 
-
-            Player opponent = GetNextPlayer();
-
-            CardStats opponentCard = ServerUpdate.Instance.GetCardStatsAtBoardIndex(opponentBoardIndex, opponent);
-
             CardStats[] cardsPostAttack = ServerUpdate.Instance.Attack(boardIndex, opponentBoardIndex, requestingPlayer);
 
             byte[] cardData = cardsPostAttack[0].Serialize();
             byte[] opponentCardData = cardsPostAttack[1].Serialize();
             requestingPlayer.TargetAttackCard(boardIndex, opponentBoardIndex, cardData, opponentCardData);
-            GetNextPlayer().TargetAttackCard(opponentBoardIndex, boardIndex, opponentCardData, cardData);
+            GetNextPlayer().TargetOpponentAttackCard(opponentBoardIndex, boardIndex, opponentCardData, cardData);
 
             ServerUpdate.Instance.PrintServerGameState();
         } else {
@@ -245,15 +253,26 @@ public class GameManager : NetworkBehaviour
         playerOne.RefreshMana();
         HandController.Instance.SetPlayer(playerOne);
         playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
-        playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
-        playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
-        playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
-        playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
-        playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
-        playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
-        playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
-        playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
-        playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
+        // playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
+        // playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
+        // playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
+        // playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
+        // playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
+        // playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
+        // playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
+        // playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
+        // playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
+
+        playerTwo.ServerAddCardToOpponentHand();
+        playerTwo.ServerAddCardToOpponentHand();
+        playerTwo.ServerAddCardToOpponentHand();
+        playerTwo.ServerAddCardToOpponentHand();
+        playerTwo.ServerAddCardToOpponentHand();
+        // playerTwo.ServerAddCardToOpponentHand();
+        // playerTwo.ServerAddCardToOpponentHand();
+        // playerTwo.ServerAddCardToOpponentHand();
+        // playerTwo.ServerAddCardToOpponentHand();
+        // playerTwo.ServerAddCardToOpponentHand();
     }
 
     // Server functions for debugging purposes

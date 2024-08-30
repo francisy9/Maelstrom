@@ -582,6 +582,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   onBoardCards: []
   onBoardCardObject: {fileID: 7631930073733532281, guid: 87ab1ee4fa3ff47558707a85efbcf87a, type: 3}
+  enemyBoard: {fileID: 340104466}
   cardPlaceHolderObject: {fileID: 7631930073733532281, guid: a983c4b4ea945428c8c1437082f2c949, type: 3}
 --- !u!114 &322034016
 MonoBehaviour:
@@ -820,7 +821,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.4009434, b: 0.4009434, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -883,6 +884,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   onBoardCards: []
   onBoardCardObject: {fileID: 7631930073733532281, guid: 28d48e31d19fe4231bea4a3e12901291, type: 3}
+  enemyBoard: {fileID: 322034015}
 --- !u!1 &439953213
 GameObject:
   m_ObjectHideFlags: 0
@@ -1170,6 +1172,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1230017959}
     - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
+      propertyPath: hero
+      value: 
+      objectReference: {fileID: 1126251585}
+    - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: board
       value: 
       objectReference: {fileID: 322034015}
@@ -1188,7 +1194,11 @@ PrefabInstance:
     - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: enemyHand
       value: 
-      objectReference: {fileID: 723819819}
+      objectReference: {fileID: 723819826}
+    - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
+      propertyPath: enemyHero
+      value: 
+      objectReference: {fileID: 1921626989}
     - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: cardObject
       value: 
@@ -1273,6 +1283,8 @@ GameObject:
   - component: {fileID: 723819821}
   - component: {fileID: 723819820}
   - component: {fileID: 723819824}
+  - component: {fileID: 723819825}
+  - component: {fileID: 723819826}
   m_Layer: 5
   m_Name: EnemyHand
   m_TagString: Untagged
@@ -1344,7 +1356,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 723819818}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
   m_Name: 
@@ -1361,6 +1373,35 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 2
   m_ConstraintCount: 1
+--- !u!114 &723819825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 723819818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 547c10f0b4a6544ea96130d25fe3f700, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fanAngleMin: -2
+  fanAngleMax: 20
+  YOffset: 700
+--- !u!114 &723819826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 723819818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f21168e9303944544b53aba0b8a4e789, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cardBackObject: {fileID: 7631930073733532281, guid: 4e8fba49d5963453e99bc6efedc075b6, type: 3}
+  enemyBoard: {fileID: 340104466}
 --- !u!224 &844529401 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1300535573084733576, guid: b7e13319fea6e4bac98873d6583fc826, type: 3}
@@ -1508,6 +1549,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1529052624489383462, guid: b7e13319fea6e4bac98873d6583fc826, type: 3}
+      propertyPath: hero
+      value: 
+      objectReference: {fileID: 1921626989}
+    - target: {fileID: 1529052624489383462, guid: b7e13319fea6e4bac98873d6583fc826, type: 3}
       propertyPath: heroSprite
       value: 
       objectReference: {fileID: 21300000, guid: 298ea2e01cef24b51916a9818dd603e3, type: 3}
@@ -1515,16 +1560,42 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hero
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5031355700643872493, guid: b7e13319fea6e4bac98873d6583fc826, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4767540540116239615, guid: b7e13319fea6e4bac98873d6583fc826, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1921626989}
   m_SourcePrefab: {fileID: 100100000, guid: b7e13319fea6e4bac98873d6583fc826, type: 3}
 --- !u!224 &1054928347 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1300535573084733576, guid: b7e13319fea6e4bac98873d6583fc826, type: 3}
   m_PrefabInstance: {fileID: 1054928346}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1126251585 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5031355700643872493, guid: b7e13319fea6e4bac98873d6583fc826, type: 3}
+  m_PrefabInstance: {fileID: 6065215568539496567}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 543992a5499da4ebfbc5a89f6f2b8407, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1193544002 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1529052624489383462, guid: b7e13319fea6e4bac98873d6583fc826, type: 3}
+  m_PrefabInstance: {fileID: 6065215568539496567}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ad601e301b0e47c187383568cb51fa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1230017958
 GameObject:
   m_ObjectHideFlags: 0
@@ -1907,6 +1978,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1637154186 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1529052624489383462, guid: b7e13319fea6e4bac98873d6583fc826, type: 3}
+  m_PrefabInstance: {fileID: 1054928346}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ad601e301b0e47c187383568cb51fa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1721024589
 GameObject:
   m_ObjectHideFlags: 0
@@ -2378,6 +2460,24 @@ RectTransform:
   m_AnchoredPosition: {x: 365, y: 205.5}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1921626985 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4767540540116239615, guid: b7e13319fea6e4bac98873d6583fc826, type: 3}
+  m_PrefabInstance: {fileID: 1054928346}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1921626989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1921626985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9adeaa4d6a16b42608bc89454462ab09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  heroVisual: {fileID: 1637154186}
 --- !u!1 &2103038540
 GameObject:
   m_ObjectHideFlags: 0
@@ -2480,12 +2580,22 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1dc969e45e9d14c9193ee8ea18d1b0b6, type: 2}
   - {fileID: 11400000, guid: 1dc969e45e9d14c9193ee8ea18d1b0b6, type: 2}
   - {fileID: 11400000, guid: 1dc969e45e9d14c9193ee8ea18d1b0b6, type: 2}
+  p1HeroSprite: {fileID: 21300000, guid: 2e11b460161b04b978d5134d0d344d89, type: 3}
+  p1HeroMaxHp: 30
   playerTwo: {fileID: 583992372}
   p2Deck:
   - {fileID: 11400000, guid: ef74403afe02f4e30b69c94a4a9941a0, type: 2}
   - {fileID: 11400000, guid: ef74403afe02f4e30b69c94a4a9941a0, type: 2}
   - {fileID: 11400000, guid: 4fe030bde14974684934fada6d7f98fa, type: 2}
   - {fileID: 11400000, guid: 4fe030bde14974684934fada6d7f98fa, type: 2}
+  - {fileID: 11400000, guid: 4fe030bde14974684934fada6d7f98fa, type: 2}
+  - {fileID: 11400000, guid: 4fe030bde14974684934fada6d7f98fa, type: 2}
+  - {fileID: 11400000, guid: 4fe030bde14974684934fada6d7f98fa, type: 2}
+  - {fileID: 11400000, guid: 4fe030bde14974684934fada6d7f98fa, type: 2}
+  - {fileID: 11400000, guid: 4fe030bde14974684934fada6d7f98fa, type: 2}
+  - {fileID: 11400000, guid: 4fe030bde14974684934fada6d7f98fa, type: 2}
+  p2HeroSprite: {fileID: 21300000, guid: 298ea2e01cef24b51916a9818dd603e3, type: 3}
+  p2HeroMaxHp: 30
   endTurnButton: {fileID: 165044326}
 --- !u!114 &2104311098
 MonoBehaviour:
@@ -2572,12 +2682,12 @@ GameObject:
   - component: {fileID: 2147104438}
   - component: {fileID: 2147104437}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2147104436
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2696,6 +2806,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1230017959}
     - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
+      propertyPath: hero
+      value: 
+      objectReference: {fileID: 1126251585}
+    - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: board
       value: 
       objectReference: {fileID: 322034015}
@@ -2718,7 +2832,11 @@ PrefabInstance:
     - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: enemyHand
       value: 
-      objectReference: {fileID: 723819819}
+      objectReference: {fileID: 723819826}
+    - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
+      propertyPath: enemyHero
+      value: 
+      objectReference: {fileID: 1921626989}
     - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: cardObject
       value: 
@@ -2887,6 +3005,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hero
       objectReference: {fileID: 0}
+    - target: {fileID: 5031355700643872493, guid: b7e13319fea6e4bac98873d6583fc826, type: 3}
+      propertyPath: heroVisual
+      value: 
+      objectReference: {fileID: 1193544002}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
