@@ -50,7 +50,7 @@ public class ServerUpdate : NetworkBehaviour
     }
 
     [Server]
-    public void MoveCardToBoard(Player player, int handIndex, UnitCardStats cardStats, int boardIndex) {
+    public void MoveUnitCardToBoard(Player player, int handIndex, UnitCardStats cardStats, int boardIndex) {
         Debug.Log(boardIndex);
         Debug.Log($"p1 board size: {p1Board.Count} p2 board size: {p2Board.Count}");
         Debug.Log(handIndex);

@@ -9,6 +9,15 @@ public static class Types
         Spell,
     }
 
+    public enum CardVisualEffect {
+        None,
+        Taunt,
+        MultiStrike,
+        Silenced,
+        Enraged,
+        PersistentEffect,
+    }
+
     public class BaseCard 
     {
         // Shared traits across all cards
@@ -39,6 +48,11 @@ public static class Types
         public int CurrentAttack { get; set; }
         public int CurrentHP { get; set; }
         public int MaxHP { get; set; }
+        public List<CardVisualEffect> cardVisualEffects { get; set; }
+
+
+        // Only stored on server
+        public CardEffect[] cardEffects { get; set; }
 
         public UnitCardStats() {}
 
@@ -58,8 +72,16 @@ public static class Types
             NumAttacks = 0;
             TotalNumAttacks = 1;
             MaxHP = BaseHP;
-        }
+            cardVisualEffects = new List<CardVisualEffect>
+            {
+                CardVisualEffect.None
+            };
 
+            cardEffects = cardStatsSO.cardEffects;
+        }
+        
+        // Note Serializing and deserializing only used to send number and text related stuff to client
+        // So card specific logic is only stored on server
         public byte[] Serialize()
         {
             List<byte> serializedData = new List<byte>();
@@ -84,6 +106,12 @@ public static class Types
             serializedData.Add((byte) CurrentHp); 
 
             serializedData.Add((byte)MaxHP);
+
+            serializedData.Add((byte)cardVisualEffects.Count);
+            foreach (var visualEffect in cardVisualEffects)
+            {
+                serializedData.Add((byte)visualEffect);
+            }
 
             return serializedData.ToArray();
         }
@@ -115,6 +143,13 @@ public static class Types
             cardStats.CurrentHP = currentHpSbyte;
 
             cardStats.MaxHP = serialized[currentIndex++];
+
+            int visualEffectsLength = serialized[currentIndex++];
+            cardStats.cardVisualEffects = new List<CardVisualEffect>();
+            for (int i = 0; i < visualEffectsLength; i++)
+            {
+                cardStats.cardVisualEffects.Add((CardVisualEffect)serialized[currentIndex++]);
+            }
             
             return cardStats;
         }

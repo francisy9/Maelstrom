@@ -72,16 +72,16 @@ public class GameManager : NetworkBehaviour
 
         for (int i = 0; i < numCardsToBeDrawnByFirstPlayer; i++) {
             UnitCardStatsSO cardDrawn = DrawCardStatSO(starter);
+            ServerUpdate.Instance.AddCardToHand(cardDrawn, starter);
             starter.AddCardToHand(cardDrawn);
             nextPlayer.AddCardToOpponentHand();
-            ServerUpdate.Instance.AddCardToHand(cardDrawn, starter);
         }
 
         for (int j = 0; j < numCardsToBeDrawnBySecondPlayer; j++) {
             UnitCardStatsSO cardDrawn = DrawCardStatSO(nextPlayer);
+            ServerUpdate.Instance.AddCardToHand(cardDrawn, nextPlayer);
             nextPlayer.AddCardToHand(cardDrawn);
             starter.AddCardToOpponentHand();
-            ServerUpdate.Instance.AddCardToHand(cardDrawn, nextPlayer);
         }
 
         InitializeManaDisplays();
@@ -181,7 +181,7 @@ public class GameManager : NetworkBehaviour
                 return;
             }
 
-            ServerUpdate.Instance.MoveCardToBoard(requestingPlayer, handIndex, cardToBePlayed, boardIndex);
+            ServerUpdate.Instance.MoveUnitCardToBoard(requestingPlayer, handIndex, cardToBePlayed, boardIndex);
 
             requestingPlayer.ConsumeMana(cardToBePlayed.CurrentManaCost);
             requestingPlayer.TargetPlayCard(boardIndex);

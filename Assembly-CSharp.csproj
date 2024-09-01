@@ -65,6 +65,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets/Scripts/Controller/BoardBase.cs" />
+    <Compile Include="Assets/Scripts/ScriptableObjects/UnitCardStatsSO.cs" />
+    <Compile Include="Assets/Scripts/CardEffect.cs" />
     <Compile Include="Assets/Scripts/EnemyHero.cs" />
     <Compile Include="Assets/Scripts/Server/OnPlay.cs" />
     <Compile Include="Assets/Scripts/Controller/HandVisual.cs" />
@@ -87,7 +89,6 @@
     <Compile Include="Assets/Scripts/Server/LineController.cs" />
     <Compile Include="Assets/Scripts/Card/OnBoardCard.cs" />
     <Compile Include="Assets/Scripts/Controller/HandController.cs" />
-    <Compile Include="Assets/Scripts/ScriptableObjects/CardStatsSO.cs" />
     <Compile Include="Assets/Scripts/PlayerManaDisplay.cs" />
     <Compile Include="Assets/Scripts/ScriptableObjects/WeaponStatsSO.cs" />
     <Compile Include="Assets/Scripts/Server/GameManager.cs" />

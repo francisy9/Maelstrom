@@ -17,3 +17,17 @@ MonoBehaviour:
   manaCost: 1
   attack: 1
   hp: 1
+  cardEffect:
+  - effectTargetType: 1
+    effectType: 1
+    triggerTime: 1
+    targetSelection: 1
+    targetable: 2
+    damageVal: 1
+    healVal: 0
+    attackBuffVal: 0
+    hpBuffVal: 0
+    buffEffect: 0
+    needsTargeting: 1
+    numTargets: 1
+    spawnUnitCardStatsSO: {fileID: 0}
