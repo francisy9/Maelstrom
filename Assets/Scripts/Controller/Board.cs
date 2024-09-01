@@ -29,10 +29,8 @@ public class Board : BoardBase
         }
     }
 
-    public override void PlaceCardOnBoard(CardStats cardStats, int boardIndex) {
-        base.PlaceCardOnBoard(cardStats, boardIndex);
-        OnBoardDragController dragCardControllerComponent = onBoardCards[boardIndex].GetComponent<OnBoardDragController>();
-        dragCardControllerComponent.InitDragCardController(player);
+    public override void PlaceCardOnBoard(UnitCardStats cardStats, int boardIndex, Player player) {
+        base.PlaceCardOnBoard(cardStats, boardIndex, player);
         cardPlaceHolder.transform.SetParent(null); // Need this since Destroy isn't immediate
         DestroyPlaceHolder();
         onBoardCards[boardIndex].gameObject.layer = LayerMask.NameToLayer(PLAYER_CARD_LAYER);

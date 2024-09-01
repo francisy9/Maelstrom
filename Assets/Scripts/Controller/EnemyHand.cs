@@ -17,8 +17,8 @@ public class EnemyHand : MonoBehaviour
     }
 
     public void PlayCard(byte[] cardData, int handIndex, int boardIndex) {
-        CardStats cardStats = CardStats.Deserialize(cardData);
-        enemyBoard.PlaceCardOnBoard(cardStats, boardIndex);
+        UnitCardStats cardStats = UnitCardStats.Deserialize(cardData);
+        enemyBoard.PlaceCardOnBoard(cardStats, boardIndex, null);
         DestroyCardAtIndex(handIndex);
         OnCardPlayed.Invoke(this, EventArgs.Empty);
         return;

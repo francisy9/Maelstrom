@@ -89,6 +89,7 @@
     <Compile Include="Assets/Scripts/Controller/HandController.cs" />
     <Compile Include="Assets/Scripts/ScriptableObjects/CardStatsSO.cs" />
     <Compile Include="Assets/Scripts/PlayerManaDisplay.cs" />
+    <Compile Include="Assets/Scripts/ScriptableObjects/WeaponStatsSO.cs" />
     <Compile Include="Assets/Scripts/Server/GameManager.cs" />
     <Compile Include="Assets/Scripts/Card/OnBoardCardVisual.cs" />
     <Compile Include="Assets/Scripts/Card/DragCardController.cs" />

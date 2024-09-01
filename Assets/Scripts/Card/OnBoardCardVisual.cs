@@ -8,7 +8,7 @@ public class OnBoardCardVisual : MonoBehaviour
     [SerializeField] private OnBoardCard card;
     [SerializeField] private TextMeshProUGUI attackText;
     [SerializeField] private TextMeshProUGUI hpText;
-    private CardStats cardStats;
+    private UnitCardStats cardStats;
     
 
     public void InitVisual() {

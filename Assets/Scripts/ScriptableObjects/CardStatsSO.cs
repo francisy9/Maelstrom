@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu()]
-public class CardStatsSO : ScriptableObject
+public class UnitCardStatsSO : ScriptableObject
 {
     public string cardName;
     public string description;
@@ -14,7 +14,7 @@ public class CardStatsSO : ScriptableObject
         if (other == null || GetType() != other.GetType())
             return false;
 
-        CardStatsSO otherCard = (CardStatsSO)other;
+        UnitCardStatsSO otherCard = (UnitCardStatsSO)other;
 
         return cardName == otherCard.cardName &&
                description == otherCard.description &&

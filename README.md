@@ -6,11 +6,11 @@ To test the game
 
 ## Francis
 Current:
-- Change enemy hand to fanned visual
+- Add support to different card types (spells and weapons)
+- Support on play, on death effects
 
 TODO:
 - Convert end turn button to authority of person being in turn
-- Convert onplay, ondeath etc. mechanics to cardStats type? (figure out design)
 
 
 ## Max

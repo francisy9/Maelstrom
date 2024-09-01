@@ -29,7 +29,7 @@ public class HandController : MonoBehaviour
         this.player = player;
     }
 
-    public void AddCardToHand(CardStats cardStats) {
+    public void AddCardToHand(UnitCardStats cardStats) {
         GameObject currentCardObject = Instantiate(cardObject, transform);
         Card cardComponent = currentCardObject.GetComponent<Card>();
         DragCardController dragCardControllerComponent = currentCardObject.GetComponent<DragCardController>();
@@ -43,11 +43,11 @@ public class HandController : MonoBehaviour
 
     public void PlayCard(int boardIndex) {
         Card card = cardHashMap[tryingToPlayCardUID];
-        CardStats cardStats = card.GetCardStats();
+        UnitCardStats cardStats = card.GetCardStats();
         cardHashMap.Remove(tryingToPlayCardUID);
         tryingToPlayCardUID = -1;
         currentlyDraggingCardHandIndex = -1;
-        board.PlaceCardOnBoard(cardStats, boardIndex);
+        board.PlaceCardOnBoard(cardStats, boardIndex, player);
         card.DestroySelf();
         OnCardPlayed.Invoke(this, EventArgs.Empty);
         handlingAction = false;

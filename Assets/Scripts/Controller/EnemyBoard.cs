@@ -11,8 +11,8 @@ public class EnemyBoard : BoardBase
         Instance = this;
     }
 
-    public override void PlaceCardOnBoard(CardStats cardStats, int boardIndex) {
-        base.PlaceCardOnBoard(cardStats, boardIndex);
+    public override void PlaceCardOnBoard(UnitCardStats cardStats, int boardIndex, Player _) {
+        base.PlaceCardOnBoard(cardStats, boardIndex, _);
         onBoardCards[boardIndex].gameObject.layer = LayerMask.NameToLayer(OPPONENT_PLAYED_CARD_LAYER);
         UpdateBoardIndexHashMap();
     }

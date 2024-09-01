@@ -12,12 +12,12 @@ public class GameManager : NetworkBehaviour
     public static GameManager Instance;
     [SerializeField] private Player playerOne;
     // TODO: @max figure out how to load this in on run time based on user
-    [SerializeField] private List<CardStatsSO> p1Deck;
+    [SerializeField] private List<UnitCardStatsSO> p1Deck;
     [SerializeField] private Sprite p1HeroSprite;
     [SerializeField] private int p1HeroMaxHp;
     private bool p1Assigned = false;
     [SerializeField] private Player playerTwo;
-    [SerializeField] private List<CardStatsSO> p2Deck;
+    [SerializeField] private List<UnitCardStatsSO> p2Deck;
     [SerializeField] private Sprite p2HeroSprite;
     [SerializeField] private int p2HeroMaxHp;
     private bool p2Assigned = false;
@@ -71,14 +71,14 @@ public class GameManager : NetworkBehaviour
         int numCardsToBeDrawnBySecondPlayer = 4;
 
         for (int i = 0; i < numCardsToBeDrawnByFirstPlayer; i++) {
-            CardStatsSO cardDrawn = DrawCardStatSO(starter);
+            UnitCardStatsSO cardDrawn = DrawCardStatSO(starter);
             starter.AddCardToHand(cardDrawn);
             nextPlayer.AddCardToOpponentHand();
             ServerUpdate.Instance.AddCardToHand(cardDrawn, starter);
         }
 
         for (int j = 0; j < numCardsToBeDrawnBySecondPlayer; j++) {
-            CardStatsSO cardDrawn = DrawCardStatSO(nextPlayer);
+            UnitCardStatsSO cardDrawn = DrawCardStatSO(nextPlayer);
             nextPlayer.AddCardToHand(cardDrawn);
             starter.AddCardToOpponentHand();
             ServerUpdate.Instance.AddCardToHand(cardDrawn, nextPlayer);
@@ -109,12 +109,8 @@ public class GameManager : NetworkBehaviour
 
         int starterHeroHp = isP1Turn ? p1HeroMaxHp : p2HeroMaxHp;
         int nextPlayerHeroHp = isP1Turn ? p2HeroMaxHp : p1HeroMaxHp;
-        // Sprite starterHeroSprite = isP1Turn ? p1HeroSprite : p2HeroSprite;
-        // Sprite nextPlayerHeroSprite = isP1Turn ? p2HeroSprite : p1HeroSprite;
-
-        // starter.TargetStartGame(true, starterHeroHp, starterHeroSprite, nextPlayerHeroHp, nextPlayerHeroSprite);
-        // nextPlayer.TargetStartGame(false, nextPlayerHeroHp, nextPlayerHeroSprite, starterHeroHp, starterHeroSprite);
-
+        
+        ServerUpdate.Instance.InitHeroes(p1HeroMaxHp, p2HeroMaxHp);
         starter.TargetStartGame(true, starterHeroHp, nextPlayerHeroHp);
         nextPlayer.TargetStartGame(false, nextPlayerHeroHp, starterHeroHp);
 
@@ -178,7 +174,7 @@ public class GameManager : NetworkBehaviour
         }
 
         if(IsPlayerInTurn(requestingPlayer)) {
-            CardStats cardToBePlayed = ServerUpdate.Instance.GetCardStatsAtHandIndex(handIndex, requestingPlayer);
+            UnitCardStats cardToBePlayed = ServerUpdate.Instance.GetCardStatsAtHandIndex(handIndex, requestingPlayer);
 
             if (requestingPlayer.GetMana() < cardToBePlayed.CurrentManaCost) {
                 Debug.LogError("Insufficient mana to play card but still able to make request");
@@ -206,23 +202,53 @@ public class GameManager : NetworkBehaviour
         Debug.Log($"{requestingPlayer.name} is requesting to attack card own board index: {boardIndex} opponent board index: {opponentBoardIndex}");
         
         if(IsPlayerInTurn(requestingPlayer)) {
-            CardStats card = ServerUpdate.Instance.GetCardStatsAtBoardIndex(boardIndex, requestingPlayer);
+            bool attackerIsCard;
+            if (IsCardAtBoardIndex(boardIndex)) {
+                // Attacker is card type
+                attackerIsCard = true;
+                UnitCardStats card = ServerUpdate.Instance.GetCardStatsAtBoardIndex(boardIndex, requestingPlayer);
 
-            if (card.CurrentAttack <= 0) {
-                Debug.LogError("Unit's attack value is 0!");
-                return;
+                if (card.CurrentAttack <= 0) {
+                    Debug.LogError("Unit's attack value is 0!");
+                    return;
+                }
+
+                if (card.NumAttacks <= 0) {
+                    Debug.LogError("Insufficient attacks remaining");
+                }
+            } else {
+                // Attacker is hero
+                attackerIsCard = false;
+                HeroStats hero = ServerUpdate.Instance.GetHeroStats(requestingPlayer);
+
+                if (hero.CurrentAttack <= 0) {
+                    Debug.LogError("Hero's attack value is 0!");
+                    return;
+                }
+
+                if (hero.NumAttacks <= 0) {
+                    Debug.LogError("Insufficient attacks remaining");
+                }
             }
 
-            if (card.NumAttacks <= 0) {
-                Debug.LogError("Insufficient attacks remaining");
+            byte[] attackerData;
+            byte[] targetData;
+            object[] serverUpdateResponses = ServerUpdate.Instance.Attack(boardIndex, opponentBoardIndex, requestingPlayer);
+
+            if (attackerIsCard) {
+                attackerData = (serverUpdateResponses[0] as UnitCardStats).Serialize();
+            } else {
+                attackerData = (serverUpdateResponses[0] as HeroStats).Serialize();
             }
 
-            CardStats[] cardsPostAttack = ServerUpdate.Instance.Attack(boardIndex, opponentBoardIndex, requestingPlayer);
+            if (IsCardAtBoardIndex(opponentBoardIndex)) {
+                targetData = (serverUpdateResponses[1] as UnitCardStats).Serialize();
+            } else {
+                targetData = (serverUpdateResponses[1] as HeroStats).Serialize();
+            }
 
-            byte[] cardData = cardsPostAttack[0].Serialize();
-            byte[] opponentCardData = cardsPostAttack[1].Serialize();
-            requestingPlayer.TargetAttackCard(boardIndex, opponentBoardIndex, cardData, opponentCardData);
-            GetNextPlayer().TargetOpponentAttackCard(opponentBoardIndex, boardIndex, opponentCardData, cardData);
+            requestingPlayer.TargetAttackResponse(boardIndex, opponentBoardIndex, attackerData, targetData);
+            GetNextPlayer().TargetOpponentAttackResponse(opponentBoardIndex, boardIndex, targetData, attackerData);
 
             ServerUpdate.Instance.PrintServerGameState();
         } else {
@@ -230,11 +256,18 @@ public class GameManager : NetworkBehaviour
         }
     }
 
+    public bool IsCardAtBoardIndex(int boardIndex) {
+        if (boardIndex >= 0 & boardIndex <= 6) {
+            return true;
+        }
+        return false;
+    }
+
     [Server]
-    private CardStatsSO DrawCardStatSO(Player player) {
-        List<CardStatsSO> deckToDrawFrom = player == playerOne ? p1Deck : p2Deck;
+    private UnitCardStatsSO DrawCardStatSO(Player player) {
+        List<UnitCardStatsSO> deckToDrawFrom = player == playerOne ? p1Deck : p2Deck;
         int cardIndex = UnityEngine.Random.Range(0, deckToDrawFrom.Count);
-        CardStatsSO cardDrawn = deckToDrawFrom[cardIndex];
+        UnitCardStatsSO cardDrawn = deckToDrawFrom[cardIndex];
         deckToDrawFrom.RemoveAt(cardIndex);
         return cardDrawn;
     }
@@ -276,14 +309,6 @@ public class GameManager : NetworkBehaviour
     }
 
     // Server functions for debugging purposes
-    public int GetP1Health() {
-        return playerOne.GetHp();
-    }
-
-    public int GetP2Health() {
-        return playerTwo.GetHp();
-    }
-
     public int GetP1Mana() {
         return playerOne.GetMana();
     }

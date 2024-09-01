@@ -13,7 +13,7 @@ public class CardVisual : MonoBehaviour
     [SerializeField] private GameObject cardVisualPlaceHolderObject;
     private CanvasGroup canvasGroup;
     private GameObject cardVisualPlaceHolder;
-    private CardStats cardStats;
+    private UnitCardStats cardStats;
     private bool enlarged;
     private bool beingDragged;
     

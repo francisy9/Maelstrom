@@ -3,15 +3,27 @@ using System.Collections.Generic;
 
 public static class Types
 {
-    public enum CardState {
-        CardBack,
-        CardFront,
-        OnBoard,
+    public enum CardType {
+        Unit,
+        Weapon,
+        Spell,
+    }
+
+    public class BaseCard 
+    {
+        // Shared traits across all cards
+        public CardType CardType { get; private set; }
+        public string CardName { get; private set; }
+        public string Description { get; private set; }
+        public int BaseManaCost { get; private set; }
+        public int CurrentManaCost { get; set; }
+
+        public BaseCard() {}
     }
 
 
-    [System.Serializable]
-    public class CardStats
+    [Serializable]
+    public class UnitCardStats
     {
         // Base stats that do not change
         public string CardName { get; private set; }
@@ -28,10 +40,10 @@ public static class Types
         public int CurrentHP { get; set; }
         public int MaxHP { get; set; }
 
-        public CardStats() {}
+        public UnitCardStats() {}
 
         // Constructor to initialize the base stats
-        public CardStats(CardStatsSO cardStatsSO)
+        public UnitCardStats(UnitCardStatsSO cardStatsSO)
         {
             CardName = cardStatsSO.cardName;
             Description = cardStatsSO.description;
@@ -76,9 +88,9 @@ public static class Types
             return serializedData.ToArray();
         }
 
-        public static CardStats Deserialize(byte[] serialized)
+        public static UnitCardStats Deserialize(byte[] serialized)
         {
-            CardStats cardStats = new CardStats();
+            UnitCardStats cardStats = new UnitCardStats();
 
             int currentIndex = 0;
 
@@ -108,9 +120,83 @@ public static class Types
         }
     }
 
+    [Serializable]
+    public class HeroStats
+    {
+        public int NumAttacks { get; set; }
+        public int TotalNumAttacks { get; set; }
+        public int CurrentAttack { get; set; }
+        public int CurrentHP { get; set; }
+        public int MaxHP { get; set; }
+
+        public HeroStats() {}
+
+        // Constructor
+        public HeroStats(int hp) {
+            NumAttacks = 0;
+            TotalNumAttacks = 0;
+            CurrentAttack = 0;
+            MaxHP = hp;
+            CurrentHP = hp;
+        }
+
+        public byte[] Serialize()
+        {
+            List<byte> serializedData = new List<byte>
+            {
+                (byte)NumAttacks,
+                (byte)TotalNumAttacks,
+                (byte)CurrentAttack
+            };
+
+            sbyte CurrentHp = (sbyte)CurrentHP;
+            serializedData.Add((byte) CurrentHp); 
+            
+            serializedData.Add((byte)MaxHP);
+
+            return serializedData.ToArray();
+        }
+
+        public static HeroStats Deserialize(byte[] serialized)
+        {
+
+            HeroStats heroStats = new HeroStats();
+
+            int currentIndex = 0;
+
+            heroStats.NumAttacks = serialized[currentIndex++];
+            heroStats.TotalNumAttacks = serialized[currentIndex++];
+            heroStats.CurrentAttack = serialized[currentIndex++];
+
+            byte currentHpByte = serialized[currentIndex++];
+            sbyte currentHpSbyte = (sbyte) currentHpByte;
+            heroStats.CurrentHP = currentHpSbyte;
+
+            heroStats.MaxHP = serialized[currentIndex++];
+            
+            return heroStats;
+        }
+    }
+
+    public class WeaponStats
+    {
+        public string CardName { get; private set; }
+        public string Description { get; private set; }
+        public int Attack { get; set; }
+        public int Durability { get; set; }
+
+        public WeaponStats(WeaponStatsSO weaponStatsSO) {
+            CardName = weaponStatsSO.CardName;
+            Description = weaponStatsSO.Description;
+            Attack = weaponStatsSO.Attack;
+            Durability = weaponStatsSO.Durability;
+        }
+    }
+
     public static string PLAYER_CARD_LAYER = "PlayedCard";
     public static string OPPONENT_PLAYED_CARD_LAYER = "OpponentPlayedCard";
     public static string IN_HAND_CARD_LAYER = "InHandCard";
     public static string HERO_LAYER = "Hero";
     public static string OPPONENT_HERO_LAYER = "OpponentHero";
+    public static int HERO_BOARD_INDEX = 7;
 }

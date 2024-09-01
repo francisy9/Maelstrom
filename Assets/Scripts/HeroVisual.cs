@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -12,5 +13,20 @@ public class HeroVisual : MonoBehaviour
 
     public void InitVisual() {
         hpText.text = hero.GetTotalHp().ToString();
+        hero.OnChange += Hero_OnChange;
+    }
+
+    private void Hero_OnChange(object sender, EventArgs e)
+    {
+        UpdateVisual();
+    }
+
+    private void UpdateVisual() {
+        int hp = hero.GetRemainingHp();
+        hpText.text = hp.ToString();
+
+        if (hp < hero.GetTotalHp()) {
+            hpText.color = Color.red;
+        }
     }
 }

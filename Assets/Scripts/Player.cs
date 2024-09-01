@@ -16,7 +16,7 @@ public class Player : NetworkBehaviour
     [SerializeField] private EnemyHand enemyHand;
     [SerializeField] private PlayerManaDisplay manaDisplay;
     [SerializeField] private PlayerManaDisplay enemyManaDisplay;
-    [SerializeField] private List<CardStatsSO> deck;
+    [SerializeField] private List<UnitCardStatsSO> deck;
     [SerializeField] private GameObject cardObject;
     [SerializeField] private HandController handController;
     [SerializeField] private GameObject cardBackObject;
@@ -25,8 +25,6 @@ public class Player : NetworkBehaviour
     private int mana = 0;
     [SyncVar (hook = nameof(OnManaChange))]
     private int maxMana = 0;
-    [SyncVar]
-    private int hp = 0;
     public event EventHandler OnStartTurn;
     [SyncVar] private bool inTurn;
 
@@ -89,8 +87,8 @@ public class Player : NetworkBehaviour
     }
 
     [TargetRpc]
-    public void AddCardToHand(CardStatsSO cardStatsSO) {
-        CardStats cardStats = new CardStats(cardStatsSO);
+    public void AddCardToHand(UnitCardStatsSO cardStatsSO) {
+        UnitCardStats cardStats = new UnitCardStats(cardStatsSO);
         handController.AddCardToHand(cardStats);
     }
 
@@ -109,10 +107,6 @@ public class Player : NetworkBehaviour
 
     public int GetTotalMana() {
         return maxMana;
-    }
-
-    public int GetHp() {
-        return hp;
     }
 
     public bool IsTurn() {
@@ -149,19 +143,52 @@ public class Player : NetworkBehaviour
     }
 
     [TargetRpc]
-    public void TargetAttackCard(int boardIndex, int opponentBoardIndex, byte[] cardData, byte[] opponentCardData) {
-        CardStats cardStats = CardStats.Deserialize(cardData);
-        CardStats opponentCardStats = CardStats.Deserialize(opponentCardData);
+    public void TargetAttackResponse(int boardIndex, int opponentBoardIndex, byte[] cardData, byte[] opponentCardData) {
+        bool attackerIsCard = GameManager.Instance.IsCardAtBoardIndex(boardIndex);
+        bool targetIsCard = GameManager.Instance.IsCardAtBoardIndex(opponentBoardIndex);
 
-        board.CardAttack(boardIndex, opponentBoardIndex, cardStats, opponentCardStats);
+        object attackerStats;
+        object targetStats;
+
+        if (attackerIsCard) {
+            attackerStats = UnitCardStats.Deserialize(cardData);
+        } else {
+            attackerStats = HeroStats.Deserialize(cardData);
+        }
+
+        if (targetIsCard) {
+            targetStats = UnitCardStats.Deserialize(opponentCardData);
+        } else {
+            targetStats = HeroStats.Deserialize(opponentCardData);
+        }
+
+        board.CardAttack(boardIndex, opponentBoardIndex, attackerStats, targetStats);
     }
 
     [TargetRpc]
-    public void TargetOpponentAttackCard(int boardIndex, int opponentBoardIndex, byte[] cardData, byte[] opponentCardData) {
-        CardStats cardStats = CardStats.Deserialize(cardData);
-        CardStats opponentCardStats = CardStats.Deserialize(opponentCardData);
+    public void TargetOpponentAttackResponse(int boardIndex, int opponentBoardIndex, byte[] cardData, byte[] opponentCardData) {
+        // Note the flip in boardIndex and opponentBoardIndex
+        // attacker is the opponent
+        // self unit is target
+        bool targetIsCard = GameManager.Instance.IsCardAtBoardIndex(boardIndex);
+        bool attackerIsCard = GameManager.Instance.IsCardAtBoardIndex(opponentBoardIndex);
 
-        board.CardAttackedBy(boardIndex, opponentBoardIndex, cardStats, opponentCardStats);
+        object targetStats;
+        object attackerStats;
+
+        if (targetIsCard) {
+            targetStats = UnitCardStats.Deserialize(cardData);
+        } else {
+            targetStats = HeroStats.Deserialize(cardData);
+        }
+
+        if (attackerIsCard) {
+            attackerStats = UnitCardStats.Deserialize(opponentCardData);
+        } else {
+            attackerStats = HeroStats.Deserialize(opponentCardData);
+        }
+
+        board.CardAttackedBy(boardIndex, opponentBoardIndex, targetStats, attackerStats);
     }
 
     internal void RequestPlayCard(int handIndex, int boardIndex)
@@ -180,8 +207,8 @@ public class Player : NetworkBehaviour
 
     // Functions for running functions on server
     [Server]
-    public void ServerAddCardToHand(CardStatsSO cardStatsSO) {
-        CardStats cardStats = new CardStats(cardStatsSO);
+    public void ServerAddCardToHand(UnitCardStatsSO cardStatsSO) {
+        UnitCardStats cardStats = new UnitCardStats(cardStatsSO);
         handController.AddCardToHand(cardStats);
     }
 
