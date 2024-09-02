@@ -581,6 +581,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onBoardCards: []
+  hashMapVis: []
   onBoardCardObject: {fileID: 7631930073733532281, guid: 87ab1ee4fa3ff47558707a85efbcf87a, type: 3}
   enemyBoard: {fileID: 340104466}
   cardPlaceHolderObject: {fileID: 7631930073733532281, guid: a983c4b4ea945428c8c1437082f2c949, type: 3}
@@ -883,6 +884,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onBoardCards: []
+  hashMapVis: []
   onBoardCardObject: {fileID: 7631930073733532281, guid: 28d48e31d19fe4231bea4a3e12901291, type: 3}
   enemyBoard: {fileID: 322034015}
 --- !u!1 &439953213
@@ -2572,30 +2574,17 @@ MonoBehaviour:
   syncInterval: 0
   playerOne: {fileID: 4637422271275783584}
   p1Deck:
-  - {fileID: 11400000, guid: 8110fe7adfc9d4bf7b031a8a11e57d39, type: 2}
-  - {fileID: 11400000, guid: 8110fe7adfc9d4bf7b031a8a11e57d39, type: 2}
-  - {fileID: 11400000, guid: 1dc969e45e9d14c9193ee8ea18d1b0b6, type: 2}
-  - {fileID: 11400000, guid: 1dc969e45e9d14c9193ee8ea18d1b0b6, type: 2}
-  - {fileID: 11400000, guid: 1dc969e45e9d14c9193ee8ea18d1b0b6, type: 2}
-  - {fileID: 11400000, guid: 1dc969e45e9d14c9193ee8ea18d1b0b6, type: 2}
-  - {fileID: 11400000, guid: 1dc969e45e9d14c9193ee8ea18d1b0b6, type: 2}
-  - {fileID: 11400000, guid: 1dc969e45e9d14c9193ee8ea18d1b0b6, type: 2}
-  - {fileID: 11400000, guid: 1dc969e45e9d14c9193ee8ea18d1b0b6, type: 2}
-  - {fileID: 11400000, guid: 1dc969e45e9d14c9193ee8ea18d1b0b6, type: 2}
+  - {fileID: 11400000, guid: 1eeb45098ffb6450a9efae1d03e4bb59, type: 2}
+  - {fileID: 11400000, guid: c57e259b633194b3a9c098fe89d8c963, type: 2}
+  - {fileID: 11400000, guid: 520eafb5d1fdc4706856ade4185c2e76, type: 2}
   p1HeroSprite: {fileID: 21300000, guid: 2e11b460161b04b978d5134d0d344d89, type: 3}
   p1HeroMaxHp: 30
   playerTwo: {fileID: 583992372}
   p2Deck:
-  - {fileID: 11400000, guid: ef74403afe02f4e30b69c94a4a9941a0, type: 2}
-  - {fileID: 11400000, guid: ef74403afe02f4e30b69c94a4a9941a0, type: 2}
-  - {fileID: 11400000, guid: 4fe030bde14974684934fada6d7f98fa, type: 2}
-  - {fileID: 11400000, guid: 4fe030bde14974684934fada6d7f98fa, type: 2}
-  - {fileID: 11400000, guid: 4fe030bde14974684934fada6d7f98fa, type: 2}
-  - {fileID: 11400000, guid: 4fe030bde14974684934fada6d7f98fa, type: 2}
-  - {fileID: 11400000, guid: 4fe030bde14974684934fada6d7f98fa, type: 2}
-  - {fileID: 11400000, guid: 4fe030bde14974684934fada6d7f98fa, type: 2}
-  - {fileID: 11400000, guid: 4fe030bde14974684934fada6d7f98fa, type: 2}
-  - {fileID: 11400000, guid: 4fe030bde14974684934fada6d7f98fa, type: 2}
+  - {fileID: 11400000, guid: f14da11481de24819bb94ddc76cf2364, type: 2}
+  - {fileID: 11400000, guid: 6821320dd4a304f588c88afd381da798, type: 2}
+  - {fileID: 11400000, guid: a90d570e7d33640e192851f77fa82085, type: 2}
+  - {fileID: 11400000, guid: b0b2f7c4a59254632ab73a44e725b7c6, type: 2}
   p2HeroSprite: {fileID: 21300000, guid: 298ea2e01cef24b51916a9818dd603e3, type: 3}
   p2HeroMaxHp: 30
   endTurnButton: {fileID: 165044326}

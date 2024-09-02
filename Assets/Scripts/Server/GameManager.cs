@@ -71,18 +71,42 @@ public class GameManager : NetworkBehaviour
         int numCardsToBeDrawnBySecondPlayer = 4;
 
         for (int i = 0; i < numCardsToBeDrawnByFirstPlayer; i++) {
-            BaseCardSO cardDrawn = DrawCardStatSO(starter);
+            BaseCardSO cardDrawn = DrawBaseCardSO(starter);
+            CardType cardType = cardDrawn.GetCardType();
             BaseCard baseCard = ServerUpdate.Instance.GetBaseCardFromSO(cardDrawn);
             ServerUpdate.Instance.AddCardToHand(baseCard, starter);
-            starter.AddCardToHand(baseCard);
+
+
+            switch (cardType)
+            {
+                case CardType.Unit:
+                    byte[] serializedUnitCardData = (baseCard as UnitCardStats).Serialize();
+                    starter.AddCardToHand(serializedUnitCardData);
+                    break;
+                default:
+                    Debug.LogError("Card type not implemented");
+                    break;
+            }
             nextPlayer.AddCardToOpponentHand();
         }
 
         for (int j = 0; j < numCardsToBeDrawnBySecondPlayer; j++) {
-            BaseCardSO cardDrawn = DrawCardStatSO(nextPlayer);
+            BaseCardSO cardDrawn = DrawBaseCardSO(nextPlayer);
+            CardType cardType = cardDrawn.GetCardType();
             BaseCard baseCard = ServerUpdate.Instance.GetBaseCardFromSO(cardDrawn);
             ServerUpdate.Instance.AddCardToHand(baseCard, nextPlayer);
-            nextPlayer.AddCardToHand(baseCard);
+
+            switch (cardType)
+            {
+                case CardType.Unit:
+                    byte[] serializedUnitCardData = (baseCard as UnitCardStats).Serialize();
+                    nextPlayer.AddCardToHand(serializedUnitCardData);
+                    break;
+                default:
+                    Debug.LogError("Card type not implemented");
+                    break;
+            }
+
             starter.AddCardToOpponentHand();
         }
 
@@ -113,8 +137,8 @@ public class GameManager : NetworkBehaviour
         int nextPlayerHeroHp = isP1Turn ? p2HeroMaxHp : p1HeroMaxHp;
         
         ServerUpdate.Instance.InitHeroes(p1HeroMaxHp, p2HeroMaxHp);
-        starter.TargetStartGame(true, starterHeroHp, nextPlayerHeroHp);
-        nextPlayer.TargetStartGame(false, nextPlayerHeroHp, starterHeroHp);
+        starter.TargetBeginGame(true, starterHeroHp, nextPlayerHeroHp);
+        nextPlayer.TargetBeginGame(false, nextPlayerHeroHp, starterHeroHp);
 
         OnGameStart?.Invoke(this, EventArgs.Empty);
         StartTurn();
@@ -149,7 +173,6 @@ public class GameManager : NetworkBehaviour
 
     [Command(requiresAuthority = false)]
     public void CmdEndTurn(NetworkConnectionToClient sender = null) {
-        Debug.Log($"end turn called, sender: {sender.identity}");
         Player requestingPlayer = sender.identity.GetComponent<Player>();
         
         if (IsPlayerInTurn(requestingPlayer)) {
@@ -258,7 +281,7 @@ public class GameManager : NetworkBehaviour
             requestingPlayer.TargetAttackResponse(boardIndex, opponentBoardIndex, attackerData, targetData);
             GetNextPlayer().TargetOpponentAttackResponse(opponentBoardIndex, boardIndex, targetData, attackerData);
 
-            ServerUpdate.Instance.PrintServerGameState();
+            // ServerUpdate.Instance.PrintServerGameState();
         } else {
             Debug.LogError("Player isn't in turn");
         }
@@ -272,7 +295,7 @@ public class GameManager : NetworkBehaviour
     }
 
     [Server]
-    private BaseCardSO DrawCardStatSO(Player player) {
+    private BaseCardSO DrawBaseCardSO(Player player) {
         List<BaseCardSO> deckToDrawFrom = player == playerOne ? p1Deck : p2Deck;
         int cardIndex = UnityEngine.Random.Range(0, deckToDrawFrom.Count);
         BaseCardSO cardDrawn = deckToDrawFrom[cardIndex];

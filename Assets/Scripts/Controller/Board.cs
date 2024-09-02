@@ -5,7 +5,6 @@ using static Types;
 
 public class Board : BoardBase
 {
-    public static Board Instance;
     private Player player;
     private List<float> cardXPos;
     [SerializeField] private GameObject cardPlaceHolderObject;
@@ -15,7 +14,6 @@ public class Board : BoardBase
     public override void Awake() {
         base.Awake();
         cardXPos = new List<float>();
-        Instance = this;
     }
 
     public void SetPlayer(Player player) {

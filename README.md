@@ -29,4 +29,3 @@ TODO:
 - Set limit on mana
 - Draw card per turn
 - Pack openings (start looking at crypto integration)
-

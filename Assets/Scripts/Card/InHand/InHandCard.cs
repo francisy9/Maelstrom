@@ -8,6 +8,9 @@ public class InHandCard : MonoBehaviour
 
     public void InitCard(BaseCard cardStats) {
         this.cardStats = cardStats;
+        if (cardStats == null) {
+            Debug.LogError("Init card card stats is null");
+        }
         cardVisual.InitVisual();
     }
 

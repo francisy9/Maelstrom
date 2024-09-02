@@ -34,6 +34,7 @@ public class Player : NetworkBehaviour
             RequestEndTurn();
         });
         handController.SetPlayer(this);
+        enemyHand.SetPlayer(opponent);
         board.SetPlayer(this);
     }
 
@@ -44,8 +45,7 @@ public class Player : NetworkBehaviour
     }
 
     [TargetRpc]
-    public void TargetStartGame(bool first, int heroStartHp, int enemyHeroStartHp) {
-        // Debug.Log("Start game from Player.cs called");
+    public void TargetBeginGame(bool first, int heroStartHp, int enemyHeroStartHp) {
         hero.InitHero(heroStartHp);
         enemyHero.InitHero(enemyHeroStartHp);
     }
@@ -67,13 +67,11 @@ public class Player : NetworkBehaviour
 
     [TargetRpc]
     public void TargetStartOpponentTurn() {
-        // Debug.Log("Opponent Turn");
     }
 
     [Server]
     public void IncrementMaxMana() {
         maxMana += 1;
-        Debug.Log("max mana incremented");
     }
 
     [Server]
@@ -87,7 +85,8 @@ public class Player : NetworkBehaviour
     }
 
     [TargetRpc]
-    public void AddCardToHand(BaseCard baseCard) {
+    public void AddCardToHand(byte[] serializedCardArray) {
+        BaseCard baseCard = BaseCard.Deserialize(serializedCardArray);
         handController.AddCardToHand(baseCard);
     }
 
@@ -118,15 +117,11 @@ public class Player : NetworkBehaviour
 
     private void RequestEndTurn()
     {
-        if (GameManager.Instance == null) {
-            Debug.LogError("Game manager instance is null");
-        }
         GameManager.Instance.CmdEndTurn();
     }
 
     [TargetRpc]
     public void TargetEndTurn() {
-        // Debug.Log("handling end turn response");
         ResetCardAttacks();
         inTurn = false;
     }
@@ -188,6 +183,14 @@ public class Player : NetworkBehaviour
         }
 
         board.CardAttackedBy(boardIndex, opponentBoardIndex, targetStats, attackerStats);
+    }
+
+    public BoardBase GetBoard() {
+        return board;
+    }
+
+    public BoardBase GetEnemyBoard() {
+        return enemyBoard;
     }
 
     internal void RequestPlayCard(int handIndex, int boardIndex)

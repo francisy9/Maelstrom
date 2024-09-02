@@ -9,7 +9,11 @@ public class EnemyHand : MonoBehaviour
     public event EventHandler OnCardDrawn;
     public event EventHandler OnCardPlayed;
     private int numCards;
+    private Player player;
 
+    public void SetPlayer(Player player) {
+        this.player = player;
+    }
     public void AddCardToHand() {
         numCards += 1;
         Instantiate(cardBackObject, transform);
@@ -17,8 +21,16 @@ public class EnemyHand : MonoBehaviour
     }
 
     public void PlayCard(byte[] cardData, int handIndex, int boardIndex) {
-        UnitCardStats cardStats = UnitCardStats.Deserialize(cardData);
-        enemyBoard.PlaceCardOnBoard(cardStats, boardIndex, null);
+        BaseCard baseCard = BaseCard.Deserialize(cardData);
+        switch (baseCard.GetCardType())
+        {
+            case CardType.Unit:
+                enemyBoard.PlaceCardOnBoard(baseCard as UnitCardStats, boardIndex, player);
+                break;
+            default:
+                Debug.LogError("Card type not implemented");
+                break;
+        }
         DestroyCardAtIndex(handIndex);
         OnCardPlayed.Invoke(this, EventArgs.Empty);
         return;

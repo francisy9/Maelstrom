@@ -1,6 +1,7 @@
 using UnityEngine;
 using static Types;
 using System.Collections.Generic;
+using System;
 
 public abstract class BoardBase : MonoBehaviour
 {
@@ -8,9 +9,16 @@ public abstract class BoardBase : MonoBehaviour
     public List<OnBoardCard> onBoardCards;
     // cardUid -> boardIndex
     public Dictionary<int, int> boardIndexHashMap;
+    public HashMapVisItem[] hashMapVis;
     [SerializeField] private GameObject onBoardCardObject;
     [SerializeField] private BoardBase enemyBoard;
     private int cardUid;
+
+    [Serializable]
+    public struct HashMapVisItem {
+        public int cUid;
+        public int boardIndex;
+    }
 
     public virtual void Awake() {
         onBoardCards = new List<OnBoardCard>();
@@ -38,21 +46,36 @@ public abstract class BoardBase : MonoBehaviour
 
     public void UpdateBoardIndexHashMap() {
         Dictionary<int, int> newBoardIndexHashMap = new Dictionary<int, int>();
+        List<HashMapVisItem> hashMapVisItems = new List<HashMapVisItem>();
         foreach (Transform child in transform) {
             OnBoardCard card = child.GetComponent<OnBoardCard>();
             newBoardIndexHashMap.Add(card.GetCardUid(), child.GetSiblingIndex());
+            HashMapVisItem hashMapVisItem = new()
+            {
+                cUid = card.GetCardUid(),
+                boardIndex = child.GetSiblingIndex(),
+            };
+            hashMapVisItems.Add(hashMapVisItem);
         }
         boardIndexHashMap = newBoardIndexHashMap;
+        hashMapVis = hashMapVisItems.ToArray();
     }
 
     public void UpdateCardAfterAttack(int boardIndex, UnitCardStats cardStats) {
-        if (onBoardCards[boardIndex].UpdateSelf(cardStats)) {
-            int cardUid = onBoardCards[boardIndex].GetCardUid();
+        OnBoardCard card = onBoardCards[boardIndex];
+        card.UpdateSelf(cardStats);
+
+        if (cardStats.CurrentHP <= 0) {
+            // Unit needs to be removed from board
+            int cardUid = card.GetCardUid();
             RemoveFromHashMap(cardUid);
             onBoardCards[boardIndex].transform.SetParent(null);
             onBoardCards.RemoveAt(boardIndex);
+            card.DestroySelf();
             UpdateBoardIndexHashMap();
-        };
+        }
+
+
     }
 
     // Distinction between the two for animation purposes

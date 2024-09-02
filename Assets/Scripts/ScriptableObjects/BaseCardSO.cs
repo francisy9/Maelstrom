@@ -10,4 +10,8 @@ public class BaseCardSO : ScriptableObject
     public string description;
     public int manaCost;
     public CardEffect[] cardEffects;
+
+    public CardType GetCardType() {
+        return cardType;
+    }
 }

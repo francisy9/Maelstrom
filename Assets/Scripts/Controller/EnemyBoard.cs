@@ -4,11 +4,8 @@ using static Types;
 
 public class EnemyBoard : BoardBase
 {
-    public static EnemyBoard Instance;
-
     public override void Awake() {
         base.Awake();
-        Instance = this;
     }
 
     public override void PlaceCardOnBoard(UnitCardStats cardStats, int boardIndex, Player _) {

@@ -61,10 +61,6 @@ public class ServerUpdate : NetworkBehaviour
 
     [Server]
     public void MoveUnitCardToBoard(Player player, int handIndex, UnitCardStats cardStats, int boardIndex) {
-        Debug.Log(boardIndex);
-        Debug.Log($"p1 board size: {p1Board.Count} p2 board size: {p2Board.Count}");
-        Debug.Log(handIndex);
-        Debug.Log($"p1 hand size: {p1Hand.Count} p2 hand size: {p2Hand.Count}");
         if (player == playerOne) {
             p1Board.Insert(boardIndex, cardStats);
             p1Hand.RemoveAt(handIndex);

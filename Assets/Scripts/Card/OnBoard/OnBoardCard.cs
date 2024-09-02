@@ -23,6 +23,8 @@ public class OnBoardCard : CanAttackBase
     }
 
     public void DestroySelf() {
+        // Need this step since destroy isn't instant
+        transform.SetParent(null);
         Destroy(gameObject);
     }
 
@@ -54,10 +56,6 @@ public class OnBoardCard : CanAttackBase
     public bool UpdateSelf(UnitCardStats cardStats) {
         this.cardStats = cardStats;
         OnCardStatsUpdate.Invoke(this, EventArgs.Empty);
-        if (this.cardStats.CurrentHP <= 0) {
-            DestroySelf();
-            return true;
-        }
         return false;
     }
 
@@ -102,7 +100,6 @@ public class OnBoardCard : CanAttackBase
 
     public override void OnEndDrag(PointerEventData eventData)
     {
-        Debug.Log($"On end drag target is not null: {currentlyDetectedTarget != null}");
         if (currentlyDetectedTarget) {
             RequestAttack();
         }

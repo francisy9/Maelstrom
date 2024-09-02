@@ -19,7 +19,7 @@ public class InHandCardVisual : MonoBehaviour
     
 
     public void InitVisual() {
-        cardStats = card.GetCardStats();
+        cardStats = card.GetCardStats() as UnitCardStats;
         cardName.text = cardStats.CardName;
         description.text = cardStats.Description;
         manaText.text = cardStats.CurrentManaCost.ToString();

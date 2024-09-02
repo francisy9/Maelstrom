@@ -48,19 +48,18 @@ public abstract class CanAttackBase : MonoBehaviour, IBeginDragHandler, IDragHan
         Vector2 pointerWorldPos = Camera.main.ScreenToWorldPoint(pointerEventData.position);
         LayerMask opponentCardLayerMask = LayerMask.GetMask(OPPONENT_PLAYED_CARD_LAYER);
         LayerMask opponentHeroLayerMask = LayerMask.GetMask(OPPONENT_HERO_LAYER);
-        Debug.Log($"card mask: {opponentCardLayerMask} hero mask: {opponentHeroLayerMask}");
+
         RaycastHit2D hit = Physics2D.Raycast(pointerWorldPos, Vector2.zero, 1.0f, opponentCardLayerMask | opponentHeroLayerMask);
         if (hit.collider != null) {
-            Debug.Log("Target detected");
             GameObject opponentCardGameObject = hit.collider.gameObject;
             return opponentCardGameObject;
         }
         return null;
     }
 
-    public int GetBoardIndex() {
+    public int GetSelfBoardIndex() {
         if (TryGetComponent<OnBoardCard>(out OnBoardCard card)) {
-            return Board.Instance.GetBoardIndex(card.GetCardUid());
+            return player.GetBoard().GetBoardIndex(card.GetCardUid());
         } else {
             // Caller is of hero type
             return HERO_BOARD_INDEX;
@@ -68,8 +67,23 @@ public abstract class CanAttackBase : MonoBehaviour, IBeginDragHandler, IDragHan
     }
 
     public void RequestAttack() {
-        int attackerBoardIndex = GetBoardIndex();
-        int targetBoardIndex = currentlyDetectedTarget.GetComponent<CanAttackBase>().GetBoardIndex();
+        int attackerBoardIndex;
+
+        if (TryGetComponent<OnBoardCard>(out OnBoardCard card)) {
+            attackerBoardIndex = player.GetBoard().GetBoardIndex(card.GetCardUid());
+        } else {
+            // Caller is of hero type
+            attackerBoardIndex = HERO_BOARD_INDEX;
+        }
+
+        int targetBoardIndex;
+        if (currentlyDetectedTarget.TryGetComponent<OnBoardCard>(out OnBoardCard enemyCard)) {
+            targetBoardIndex = player.GetEnemyBoard().GetBoardIndex(enemyCard.GetCardUid());
+        } else {
+            // Caller is of hero type
+            targetBoardIndex = HERO_BOARD_INDEX;
+        }
+        
         player.RequestAttack(attackerBoardIndex, targetBoardIndex);
     }
 }
