@@ -1,10 +1,11 @@
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using static Types;
 
 public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    [SerializeField] private CardVisual cardVisual;
+    [SerializeField] private InHandCardVisual cardVisual;
     private Canvas canvas;
     private Board playerDropZone;
     private Player player;
@@ -12,14 +13,15 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
     private CanvasGroup canvasGroup;
     private Transform prevParentTransform;
     private HandController handController;
-    private Card card;
+    private InHandCard card;
     private int uid;
     private int proposedBoardIndex;
-    private UnityEngine.Vector3 collapsedPos;
+    private Vector3 collapsedPos;
     private float collapsedRotation;
-    private UnityEngine.Vector3 expandedPos;
+    private Vector3 expandedPos;
     private float expandedRotation;
     private bool canBeDragged;
+    private CardType cardType;
 
     public void InitDragCardController(Player player, HandController handController, int uid) {
         canvas = player.GetCanvas();
@@ -28,9 +30,10 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
         canvasGroup = GetComponent<CanvasGroup>();
         prevParentTransform = transform.parent;
         this.handController = handController;
-        card = GetComponent<Card>();
+        card = GetComponent<InHandCard>();
         this.uid = uid;
         canBeDragged = false;
+        cardType = card.GetCardStats().CardType;
     }
 
     public void OnPointerEnter(PointerEventData eventData) {
@@ -60,10 +63,9 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
     {
         if (!canBeDragged) {
             eventData.pointerDrag = null;
-            Debug.Log($"{card.GetCardStats().CardName} canBeDragged set to false");
             return;
         }
-        Debug.Log($"Attempting to drag {card.GetCardStats().CardName}");
+
         if (!player.IsTurn()) {
             Debug.Log("Not your turn");
             eventData.pointerDrag = null;
@@ -71,14 +73,7 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
         }
 
         if (player.GetMana() < card.GetCardStats().CurrentManaCost) {
-            Debug.Log($"player has {player.GetMana()}");
             Debug.Log("Insufficient mana");
-            eventData.pointerDrag = null;
-            return;
-        }
-
-        if (handController.IsHandControllerBusy()) {
-            Debug.Log("Hand Controller busy");
             eventData.pointerDrag = null;
             return;
         }
@@ -101,6 +96,7 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
         RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.transform as RectTransform, eventData.position, canvas.worldCamera, out pos);
         transform.position = canvas.transform.TransformPoint(pos);
 
+        
         proposedBoardIndex = playerDropZone.GetProposedBoardIndex(eventData);
     }
 

@@ -56,17 +56,53 @@ public enum BuffEffect {
 [System.Serializable]
 public class CardEffect
 {
+    // Sent to client
     public EffectTargetType effectTargetType;
     public EffectType effectType;
     public TriggerTime triggerTime;
+    // Sent to client
     public TargetSelection targetSelection;
+    // Sent to client
     public Targetable targetable;
     public int damageVal;
     public int healVal;
     public int attackBuffVal;
     public int hpBuffVal;
     public BuffEffect buffEffect;
+    // Sent to client
     public bool needsTargeting;
+    // Sent to client
     public int numTargets;
     public UnitCardStatsSO spawnUnitCardStatsSO;
+
+    public byte[] Serialize() {
+        List<byte> serializedData = new List<byte>
+        {
+            (byte)effectTargetType,
+            (byte)targetSelection,
+            (byte)targetable,
+            (byte)(needsTargeting ? 1 : 0),
+            (byte)numTargets
+        };
+
+        return serializedData.ToArray();
+    }
+
+    public static CardEffect Deserialize(byte[] serialized) {
+        CardEffect cardEffect = new CardEffect();
+
+            int currentIndex = 0;
+
+            cardEffect.effectTargetType = (EffectTargetType)serialized[currentIndex++];
+            cardEffect.targetSelection = (TargetSelection)serialized[currentIndex++];
+            cardEffect.targetable = (Targetable)serialized[currentIndex++];
+            cardEffect.needsTargeting = serialized[currentIndex++] != 0;
+            cardEffect.numTargets = serialized[currentIndex++];
+            
+            return cardEffect;
+    }
+
+    public static int SerializedNumBytes() {
+        return 5;
+    }
 }

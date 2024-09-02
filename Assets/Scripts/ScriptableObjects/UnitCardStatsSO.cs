@@ -1,12 +1,13 @@
 using UnityEngine;
+using static Types;
 
 [CreateAssetMenu(menuName = "Cards/UnitCard")]
-public class UnitCardStatsSO : ScriptableObject
+public class UnitCardStatsSO : BaseCardSO
 {
-    public string cardName;
-    public string description;
-    public int manaCost;
     public int attack;
     public int hp;
-    public CardEffect[] cardEffects;
+
+    private void OnEnable() {
+        cardType = CardType.Unit;
+    }
 }

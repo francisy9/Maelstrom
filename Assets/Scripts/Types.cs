@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public static class Types
 {
@@ -21,28 +22,28 @@ public static class Types
     public class BaseCard 
     {
         // Shared traits across all cards
-        public CardType CardType { get; private set; }
-        public string CardName { get; private set; }
-        public string Description { get; private set; }
-        public int BaseManaCost { get; private set; }
+        public CardType CardType { get; set; }
+        public string CardName { get; set; }
+        public string Description { get; set; }
+        public int BaseManaCost { get; set; }
         public int CurrentManaCost { get; set; }
 
         public BaseCard() {}
+
+        public CardType GetCardType() {
+            return CardType;
+        }
     }
 
 
     [Serializable]
-    public class UnitCardStats
+    public class UnitCardStats : BaseCard
     {
         // Base stats that do not change
-        public string CardName { get; private set; }
-        public string Description { get; private set; }
-        public int BaseManaCost { get; private set; }
         public int BaseAttack { get; private set; }
         public int BaseHP { get; private set; }
 
         // Mutable stats that can change during the game
-        public int CurrentManaCost { get; set; }
         public int NumAttacks { get; set; }
         public int TotalNumAttacks { get; set; }
         public int CurrentAttack { get; set; }
@@ -51,7 +52,8 @@ public static class Types
         public List<CardVisualEffect> cardVisualEffects { get; set; }
 
 
-        // Only stored on server
+        // Majority of data stored on server
+        // Go to card Effect for more details
         public CardEffect[] cardEffects { get; set; }
 
         public UnitCardStats() {}
@@ -113,6 +115,12 @@ public static class Types
                 serializedData.Add((byte)visualEffect);
             }
 
+            serializedData.Add((byte)cardEffects.Length);
+            foreach (var cardEffect in cardEffects)
+            {
+                serializedData.Concat(cardEffect.Serialize());
+            }
+
             return serializedData.ToArray();
         }
 
@@ -150,7 +158,20 @@ public static class Types
             {
                 cardStats.cardVisualEffects.Add((CardVisualEffect)serialized[currentIndex++]);
             }
-            
+
+            int cardEffectsLength = serialized[currentIndex++];
+            List<CardEffect> cardEffectsList = new List<CardEffect>();
+            for (int i = 0; i < cardEffectsLength; i++)
+            {
+                byte[] effectData = new byte[CardEffect.SerializedNumBytes()];
+                Array.Copy(serialized, currentIndex, effectData, 0, CardEffect.SerializedNumBytes());
+                cardEffectsList.Add(CardEffect.Deserialize(effectData));
+
+                currentIndex += CardEffect.SerializedNumBytes();
+            }
+
+            cardStats.cardEffects = cardEffectsList.ToArray();
+
             return cardStats;
         }
     }

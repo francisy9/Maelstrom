@@ -12,12 +12,12 @@ public class GameManager : NetworkBehaviour
     public static GameManager Instance;
     [SerializeField] private Player playerOne;
     // TODO: @max figure out how to load this in on run time based on user
-    [SerializeField] private List<UnitCardStatsSO> p1Deck;
+    [SerializeField] private List<BaseCardSO> p1Deck;
     [SerializeField] private Sprite p1HeroSprite;
     [SerializeField] private int p1HeroMaxHp;
     private bool p1Assigned = false;
     [SerializeField] private Player playerTwo;
-    [SerializeField] private List<UnitCardStatsSO> p2Deck;
+    [SerializeField] private List<BaseCardSO> p2Deck;
     [SerializeField] private Sprite p2HeroSprite;
     [SerializeField] private int p2HeroMaxHp;
     private bool p2Assigned = false;
@@ -71,16 +71,18 @@ public class GameManager : NetworkBehaviour
         int numCardsToBeDrawnBySecondPlayer = 4;
 
         for (int i = 0; i < numCardsToBeDrawnByFirstPlayer; i++) {
-            UnitCardStatsSO cardDrawn = DrawCardStatSO(starter);
-            ServerUpdate.Instance.AddCardToHand(cardDrawn, starter);
-            starter.AddCardToHand(cardDrawn);
+            BaseCardSO cardDrawn = DrawCardStatSO(starter);
+            BaseCard baseCard = ServerUpdate.Instance.GetBaseCardFromSO(cardDrawn);
+            ServerUpdate.Instance.AddCardToHand(baseCard, starter);
+            starter.AddCardToHand(baseCard);
             nextPlayer.AddCardToOpponentHand();
         }
 
         for (int j = 0; j < numCardsToBeDrawnBySecondPlayer; j++) {
-            UnitCardStatsSO cardDrawn = DrawCardStatSO(nextPlayer);
-            ServerUpdate.Instance.AddCardToHand(cardDrawn, nextPlayer);
-            nextPlayer.AddCardToHand(cardDrawn);
+            BaseCardSO cardDrawn = DrawCardStatSO(nextPlayer);
+            BaseCard baseCard = ServerUpdate.Instance.GetBaseCardFromSO(cardDrawn);
+            ServerUpdate.Instance.AddCardToHand(baseCard, nextPlayer);
+            nextPlayer.AddCardToHand(baseCard);
             starter.AddCardToOpponentHand();
         }
 
@@ -165,7 +167,7 @@ public class GameManager : NetworkBehaviour
     }
 
     [Command(requiresAuthority = false)]
-    public void CmdPlayCard(int handIndex, int boardIndex, NetworkConnectionToClient sender = null) {
+    public void CmdPlayUnitCard(int handIndex, int boardIndex, NetworkConnectionToClient sender = null) {
         Player requestingPlayer = sender.identity.GetComponent<Player>();
         
 
@@ -174,7 +176,13 @@ public class GameManager : NetworkBehaviour
         }
 
         if(IsPlayerInTurn(requestingPlayer)) {
-            UnitCardStats cardToBePlayed = ServerUpdate.Instance.GetCardStatsAtHandIndex(handIndex, requestingPlayer);
+            BaseCard baseCard = ServerUpdate.Instance.GetCardStatsAtHandIndex(handIndex, requestingPlayer);
+
+            if (baseCard.GetCardType() != CardType.Unit) {
+                Debug.LogError($"Card type mismatch: {requestingPlayer.name} is trying to play unit, but card has type: {baseCard.GetCardType()}");
+            }
+
+            UnitCardStats cardToBePlayed = ServerUpdate.Instance.GetCardStatsAtHandIndex(handIndex, requestingPlayer) as UnitCardStats;
 
             if (requestingPlayer.GetMana() < cardToBePlayed.CurrentManaCost) {
                 Debug.LogError("Insufficient mana to play card but still able to make request");
@@ -264,10 +272,10 @@ public class GameManager : NetworkBehaviour
     }
 
     [Server]
-    private UnitCardStatsSO DrawCardStatSO(Player player) {
-        List<UnitCardStatsSO> deckToDrawFrom = player == playerOne ? p1Deck : p2Deck;
+    private BaseCardSO DrawCardStatSO(Player player) {
+        List<BaseCardSO> deckToDrawFrom = player == playerOne ? p1Deck : p2Deck;
         int cardIndex = UnityEngine.Random.Range(0, deckToDrawFrom.Count);
-        UnitCardStatsSO cardDrawn = deckToDrawFrom[cardIndex];
+        BaseCardSO cardDrawn = deckToDrawFrom[cardIndex];
         deckToDrawFrom.RemoveAt(cardIndex);
         return cardDrawn;
     }
@@ -285,7 +293,7 @@ public class GameManager : NetworkBehaviour
         playerOne.IncrementMaxMana();
         playerOne.RefreshMana();
         HandController.Instance.SetPlayer(playerOne);
-        playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
+        // playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
         // playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
         // playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
         // playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));

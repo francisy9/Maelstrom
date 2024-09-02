@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8510968551358940025}
   - component: {fileID: 1752626929663723020}
   m_Layer: 5
-  m_Name: Card
+  m_Name: InHandUnitCard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

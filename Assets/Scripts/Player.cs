@@ -87,9 +87,8 @@ public class Player : NetworkBehaviour
     }
 
     [TargetRpc]
-    public void AddCardToHand(UnitCardStatsSO cardStatsSO) {
-        UnitCardStats cardStats = new UnitCardStats(cardStatsSO);
-        handController.AddCardToHand(cardStats);
+    public void AddCardToHand(BaseCard baseCard) {
+        handController.AddCardToHand(baseCard);
     }
 
     [TargetRpc]
@@ -134,7 +133,7 @@ public class Player : NetworkBehaviour
 
     [TargetRpc]
     public void TargetPlayCard(int boardIndex) {
-        handController.PlayCard(boardIndex);
+        handController.PlayUnitCard(boardIndex);
     }
 
     [TargetRpc]
@@ -193,7 +192,7 @@ public class Player : NetworkBehaviour
 
     internal void RequestPlayCard(int handIndex, int boardIndex)
     {
-        GameManager.Instance.CmdPlayCard(handIndex, boardIndex);
+        GameManager.Instance.CmdPlayUnitCard(handIndex, boardIndex);
         return;
     }
 

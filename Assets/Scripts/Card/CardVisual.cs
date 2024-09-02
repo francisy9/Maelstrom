@@ -2,9 +2,9 @@ using TMPro;
 using UnityEngine;
 using static Types;
 
-public class CardVisual : MonoBehaviour
+public class InHandCardVisual : MonoBehaviour
 {
-    [SerializeField] private Card card;
+    [SerializeField] private InHandCard card;
     [SerializeField] private TextMeshProUGUI cardName;
     [SerializeField] private TextMeshProUGUI description;
     [SerializeField] private TextMeshProUGUI manaText;

@@ -17,15 +17,16 @@ TODO:
 Current:
 
 TODO:
-- Look to store user card decks (slack me when you get a chance, but would look at cardStatsSO, deck field in Player.cs to see how cards are brought in)
-- Deck building/card collection scene (separate scene to make parallel work easier), since syncing would just be how the card are initialized
+- Match making
+- Play with friends
+- Elo/ranked
 
 
 ## Future Goals
+- Look to store user card decks (slack me when you get a chance, but would look at cardStatsSO, deck field in Player.cs to see how cards are brought in)
+- Deck building/card collection scene (separate scene to make parallel work easier), since syncing would just be how the card are initialized
 - Animations (start turn prompt, attack animation)
 - Set limit on mana
 - Draw card per turn
-- Match making
 - Pack openings (start looking at crypto integration)
-- Play with friends
-- Elo/ranked
+

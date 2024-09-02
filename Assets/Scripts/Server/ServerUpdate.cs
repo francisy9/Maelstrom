@@ -3,13 +3,14 @@ using Mirror;
 using UnityEngine;
 using static Types;
 using System.Text;
+using System;
 
 public class ServerUpdate : NetworkBehaviour
 {
     public static ServerUpdate Instance;
-    private List<UnitCardStats> p1Hand;
+    private List<BaseCard> p1Hand;
     private List<UnitCardStats> p1Board;
-    private List<UnitCardStats> p2Hand;
+    private List<BaseCard> p2Hand;
     private List<UnitCardStats> p2Board;
     private GameManager gameManager;
     private Player playerOne;
@@ -19,9 +20,9 @@ public class ServerUpdate : NetworkBehaviour
 
     public override void OnStartServer() {
         Instance = this;
-        p1Hand = new List<UnitCardStats>();
+        p1Hand = new List<BaseCard>();
         p1Board = new List<UnitCardStats>();
-        p2Hand = new List<UnitCardStats>();
+        p2Hand = new List<BaseCard>();
         p2Board = new List<UnitCardStats>();
         gameManager = GameManager.Instance;
         Debug.Log("Server Update Instance created");
@@ -34,13 +35,22 @@ public class ServerUpdate : NetworkBehaviour
     }
 
     [Server]
-    public void AddCardToHand(UnitCardStatsSO cardStatsSO, Player player) {
-        UnitCardStats cardStats = new UnitCardStats(cardStatsSO);
-        if (player == playerOne) {
-            p1Hand.Add(cardStats);
-        } else {
-            p2Hand.Add(cardStats);
+    public BaseCard GetBaseCardFromSO(BaseCardSO baseCardSO) {
+        switch (baseCardSO.cardType)
+        {
+            case CardType.Unit:
+                UnitCardStats cardStats = new UnitCardStats(baseCardSO as UnitCardStatsSO);
+                return cardStats;
+            default:
+                Debug.LogError("unimplemented card type");
+                break;
         }
+        return new BaseCard();
+    }
+
+    [Server]
+    public void AddCardToHand(BaseCard baseCard, Player player) {
+        GetHand(player).Add(baseCard);
     }
 
     [Server]
@@ -102,7 +112,7 @@ public class ServerUpdate : NetworkBehaviour
     }
 
     [Server]
-    public UnitCardStats GetCardStatsAtHandIndex(int i, Player player) {
+    public BaseCard GetCardStatsAtHandIndex(int i, Player player) {
         return player == playerOne ? p1Hand[i] : p2Hand[i];
     }
 
@@ -223,12 +233,20 @@ public class ServerUpdate : NetworkBehaviour
         return player == playerOne ? p2Hero : p1Hero;
     }
 
+    private List<BaseCard> GetHand(Player player) {
+        return player == playerOne ? p1Hand : p2Hand;
+    }
+
     private List<UnitCardStats> GetBoard(Player player) {
         return player == playerOne ? p1Board : p2Board;
     }
 
     private List<UnitCardStats> GetOpponentBoard(Player player) {
         return player == playerOne ? p2Board : p1Board;
+    }
+
+    private List<BaseCard> GetOpponentHand(Player player) {
+        return player == playerOne ? p2Hand : p1Hand;
     }
 
     private Player GetOpponentPlayer(Player player) {
