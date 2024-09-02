@@ -127,8 +127,8 @@ public class Player : NetworkBehaviour
     }
 
     [TargetRpc]
-    public void TargetPlayCard(int boardIndex) {
-        handController.PlayUnitCard(boardIndex);
+    public void TargetPlayCard(int handIndex, int boardIndex) {
+        handController.PlayUnitCard(handIndex, boardIndex);
     }
 
     [TargetRpc]

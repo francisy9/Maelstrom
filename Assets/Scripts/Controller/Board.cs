@@ -70,6 +70,7 @@ public class Board : BoardBase
         return index;
     }
 
+    // Create invisible object to simulate where card would be placed
     private GameObject CreatePlaceHolder(int index) {
         GameObject placeHolder = Instantiate(cardPlaceHolderObject, transform);
         placeHolder.transform.SetSiblingIndex(index);

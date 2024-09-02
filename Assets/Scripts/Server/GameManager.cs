@@ -215,7 +215,7 @@ public class GameManager : NetworkBehaviour
             ServerUpdate.Instance.MoveUnitCardToBoard(requestingPlayer, handIndex, cardToBePlayed, boardIndex);
 
             requestingPlayer.ConsumeMana(cardToBePlayed.CurrentManaCost);
-            requestingPlayer.TargetPlayCard(boardIndex);
+            requestingPlayer.TargetPlayCard(handIndex, boardIndex);
 
             byte[] cardData = cardToBePlayed.Serialize();
             GetNextPlayer().TargetOpponentPlayCard(cardData, handIndex, boardIndex);

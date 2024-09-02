@@ -6,6 +6,7 @@ using static Types;
 public class HandController : MonoBehaviour
 {
     public static HandController Instance;
+    // cuid => InHandCard
     private Dictionary<int, InHandCard> cardHashMap;
     [SerializeField] private GameObject cardObject;
     private Player player;
@@ -14,6 +15,7 @@ public class HandController : MonoBehaviour
     private int currentlyDraggingCardHandIndex;
     private int tryingToPlayCardUID;
     // Used to prevent race condition
+    private bool handlingAction;
     public event EventHandler CardAddedToHand;
     public event EventHandler OnCardPlayed;
     
@@ -21,6 +23,7 @@ public class HandController : MonoBehaviour
     private void Awake() {
         Instance = this;
         cardHashMap = new Dictionary<int, InHandCard>();
+        handlingAction = false;
     }
 
     public void SetPlayer(Player player) {
@@ -39,7 +42,7 @@ public class HandController : MonoBehaviour
         CardAddedToHand.Invoke(this, EventArgs.Empty);
     }
 
-    public void PlayUnitCard(int boardIndex) {
+    public void PlayUnitCard(int handIndex, int boardIndex) {
         InHandCard card = cardHashMap[tryingToPlayCardUID];
         BaseCard cardStats = card.GetCardStats();
         cardHashMap.Remove(tryingToPlayCardUID);
@@ -48,11 +51,13 @@ public class HandController : MonoBehaviour
         board.PlaceCardOnBoard(cardStats as UnitCardStats, boardIndex, player);
         card.DestroySelf();
         OnCardPlayed.Invoke(this, EventArgs.Empty);
+        handlingAction = false;
     }
 
     public void ReturnCardToHand() {
         DragCardController dragCardController = cardHashMap[tryingToPlayCardUID].GetComponent<DragCardController>();
         dragCardController.ReturnCardToHand(currentlyDraggingCardHandIndex);
+        handlingAction = false;
     }
 
     // Called when card begins to be dragged
@@ -60,6 +65,11 @@ public class HandController : MonoBehaviour
         InHandCard card = cardHashMap[cardId];
         currentlyDraggingCardHandIndex = card.transform.GetSiblingIndex();
         tryingToPlayCardUID = cardId;
+        handlingAction = true;
+    }
+
+    public bool IsHandControllerBusy() {
+        return handlingAction;
     }
 
     // Make call to server to play card

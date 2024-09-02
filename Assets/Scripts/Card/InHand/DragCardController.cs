@@ -78,6 +78,12 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
             return;
         }
 
+        if (handController.IsHandControllerBusy()) {
+            Debug.Log("Hand Controller busy");
+            eventData.pointerDrag = null;
+            return;
+        }
+
         cardVisual.BeingDrag();
 
         HandController.Instance.UnblockRayCasts();
