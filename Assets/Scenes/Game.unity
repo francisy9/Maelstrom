@@ -581,7 +581,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   onBoardCards: []
   hashMapVis: []
-  onBoardCardObject: {fileID: 7631930073733532281, guid: 87ab1ee4fa3ff47558707a85efbcf87a, type: 3}
+  onBoardCardObject: {fileID: 7631930073733532281, guid: 28d48e31d19fe4231bea4a3e12901291, type: 3}
   enemyBoard: {fileID: 340104466}
   cardPlaceHolderObject: {fileID: 7631930073733532281, guid: a983c4b4ea945428c8c1437082f2c949, type: 3}
 --- !u!114 &322034016
