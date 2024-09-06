@@ -6,7 +6,7 @@ namespace Mirror.Examples.Basic
     public class PlayerUI : MonoBehaviour
     {
         [Header("Player Components")]
-        public Image image;
+        public Image playerImage;
 
         [Header("Child Text Objects")]
         public Text playerNameText;
@@ -16,7 +16,7 @@ namespace Mirror.Examples.Basic
         public void SetLocalPlayer()
         {
             // add a visual background for the local player in the UI
-            image.color = new Color(1f, 1f, 1f, 0.1f);
+            playerImage.color = new Color(1f, 1f, 1f, 0.1f);
         }
 
         // This value can change as clients leave and join

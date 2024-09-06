@@ -9,8 +9,8 @@ namespace Mirror.Examples.MultipleMatch
         public CellValue cellValue;
 
         [Header("GUI References")]
-        public Image image;
-        public Button button;
+        public Image cellImage;
+        public Button cellButton;
 
         [Header("Diagnostics")]
         [ReadOnly, SerializeField] internal NetworkIdentity playerIdentity;
@@ -33,14 +33,14 @@ namespace Mirror.Examples.MultipleMatch
             if (playerIdentity != null)
             {
                 this.playerIdentity = playerIdentity;
-                image.color = this.playerIdentity.isLocalPlayer ? Color.blue : Color.red;
-                button.interactable = false;
+                cellImage.color = this.playerIdentity.isLocalPlayer ? Color.blue : Color.red;
+                cellButton.interactable = false;
             }
             else
             {
                 this.playerIdentity = null;
-                image.color = Color.white;
-                button.interactable = true;
+                cellImage.color = Color.white;
+                cellButton.interactable = true;
             }
         }
     }

@@ -9,7 +9,8 @@ public abstract class HeroBase : CanAttackBase
     public event EventHandler OnChange;
     [SerializeField] public HeroVisual heroVisual;
 
-    public virtual void InitHero(int hp) {
+    public virtual void InitHero(int hp)
+    {
         heroStats = new HeroStats
         {
             MaxHP = hp,
@@ -17,23 +18,28 @@ public abstract class HeroBase : CanAttackBase
         };
     }
 
-    public int GetTotalHp() {
+    public int GetTotalHp()
+    {
         return heroStats.MaxHP;
     }
 
-    public override int GetRemainingHp() {
+    public override int GetRemainingHp()
+    {
         return heroStats.CurrentHP;
     }
 
-    public override int GetAttackVal() {
+    public override int GetAttackVal()
+    {
         return heroStats.CurrentAttack;
     }
 
-    public override int GetRemainingNumAttacks() {
+    public override int GetRemainingNumAttacks()
+    {
         return heroStats.NumAttacks;
     }
 
-    public override void ResetAttack() {
+    public override void ResetAttack()
+    {
         heroStats.NumAttacks = heroStats.TotalNumAttacks;
     }
 
@@ -41,14 +47,25 @@ public abstract class HeroBase : CanAttackBase
     // Drag features
     public override void OnBeginDrag(PointerEventData eventData)
     {
-        if (!player.IsTurn()) {
+
+        // Some defensive coding to see if player is initialized
+        if (player == null)
+        {
+            Debug.LogError("Player is not initialized on drag");
+            eventData.pointerDrag = null;
+            return;
+        }
+
+        if (!player.IsTurn())
+        {
             Debug.Log("Not your turn");
             eventData.pointerDrag = null;
             return;
         }
 
 
-        if (!CanAttack()) {
+        if (!CanAttack())
+        {
             eventData.pointerDrag = null;
             return;
         }
@@ -66,9 +83,12 @@ public abstract class HeroBase : CanAttackBase
         Vector3 attackFromVec3 = new Vector3(transform.position.x, transform.position.y, -1);
         Vector2 pointerWorldPos = Camera.main.ScreenToWorldPoint(eventData.position);
 
-        if (target != null) {
+        if (target != null)
+        {
             pointerWorldPos = target.transform.position;
-        } else {
+        }
+        else
+        {
             currentlyDetectedTarget = null;
         }
 
@@ -78,13 +98,15 @@ public abstract class HeroBase : CanAttackBase
 
     public override void OnEndDrag(PointerEventData eventData)
     {
-        if (currentlyDetectedTarget) {
+        if (currentlyDetectedTarget)
+        {
             RequestAttack();
         }
         LineController.Instance.Hide();
     }
 
-    public void UpdateSelf(HeroStats stats) {
+    public void UpdateSelf(HeroStats stats)
+    {
         heroStats = stats;
         OnChange?.Invoke(this, EventArgs.Empty);
     }

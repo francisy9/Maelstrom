@@ -9,7 +9,7 @@ namespace Mirror.Examples.MultipleMatch
         Guid matchId;
 
         [Header("GUI Elements")]
-        public Image image;
+        public Image guiImage;
         public Toggle toggleButton;
         public Text matchName;
         public Text playerCount;
@@ -31,7 +31,7 @@ namespace Mirror.Examples.MultipleMatch
         public void OnToggleClicked(bool isOn)
         {
             canvasController.SelectMatch(isOn ? matchId : Guid.Empty);
-            image.color = isOn ? new Color(0f, 1f, 0f, 0.5f) : new Color(1f, 1f, 1f, 0.2f);
+            guiImage.color = isOn ? new Color(0f, 1f, 0f, 0.5f) : new Color(1f, 1f, 1f, 0.2f);
         }
 
         [ClientCallback]
