@@ -1,9 +1,9 @@
 using UnityEngine;
 using static Types;
 
-public class InHandCard : MonoBehaviour
+public class BaseInHandCard : MonoBehaviour
 {
-    [SerializeField] private InHandCardVisual cardVisual;
+    [SerializeField] private BaseInHandCardVisual cardVisual;
     private BaseCard cardStats;
 
     public void InitCard(BaseCard cardStats) {

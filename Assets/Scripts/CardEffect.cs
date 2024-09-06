@@ -73,7 +73,7 @@ public class CardEffect
     public bool needsTargeting;
     // Sent to client
     public int numTargets;
-    public UnitCardStatsSO spawnUnitCardStatsSO;
+    public UnitCardSO spawnUnitCardStatsSO;
 
     public byte[] Serialize() {
         List<byte> serializedData = new List<byte>

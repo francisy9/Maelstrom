@@ -36,10 +36,10 @@ public class ServerUpdate : NetworkBehaviour
 
     [Server]
     public BaseCard GetBaseCardFromSO(BaseCardSO baseCardSO) {
-        switch (baseCardSO.cardType)
+        switch (baseCardSO.CardType)
         {
             case CardType.Unit:
-                UnitCardStats cardStats = new UnitCardStats(baseCardSO as UnitCardStatsSO);
+                UnitCardStats cardStats = new UnitCardStats(baseCardSO as UnitCardSO);
                 return cardStats;
             default:
                 Debug.LogError("unimplemented card type");

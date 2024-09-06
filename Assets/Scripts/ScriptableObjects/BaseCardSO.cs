@@ -5,13 +5,13 @@ using static Types;
 
 public class BaseCardSO : ScriptableObject
 {
-    public string cardName;
-    public CardType cardType;
-    public string description;
-    public int manaCost;
-    public CardEffect[] cardEffects;
+    public string CardName;
+    public CardType CardType;
+    public string Description;
+    public int ManaCost;
+    public CardEffect[] CardEffects;
 
     public CardType GetCardType() {
-        return cardType;
+        return CardType;
     }
 }

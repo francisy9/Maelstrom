@@ -5,7 +5,7 @@ using static Types;
 
 public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    [SerializeField] private InHandCardVisual cardVisual;
+    [SerializeField] private BaseInHandCardVisual cardVisual;
     private Canvas canvas;
     private Board playerDropZone;
     private Player player;
@@ -13,7 +13,7 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
     private CanvasGroup canvasGroup;
     private Transform prevParentTransform;
     private HandController handController;
-    private InHandCard card;
+    private BaseInHandCard card;
     private int uid;
     private int proposedBoardIndex;
     private Vector3 collapsedPos;
@@ -30,7 +30,7 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
         canvasGroup = GetComponent<CanvasGroup>();
         prevParentTransform = transform.parent;
         this.handController = handController;
-        card = GetComponent<InHandCard>();
+        card = GetComponent<BaseInHandCard>();
         this.uid = uid;
         canBeDragged = false;
         cardType = card.GetCardStats().CardType;

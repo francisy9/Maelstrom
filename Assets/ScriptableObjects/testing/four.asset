@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e20e89b241c34eeab83a0e08d6c8d8c, type: 3}
   m_Name: four
   m_EditorClassIdentifier: 
-  cardName: four
-  cardType: 0
-  description: testing
-  manaCost: 0
-  cardEffects: []
-  attack: 4
-  hp: 4
+  CardName: four
+  CardType: 0
+  Description: testing
+  ManaCost: 4
+  CardEffects: []
+  Attack: 4
+  HP: 4

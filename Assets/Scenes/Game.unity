@@ -1191,7 +1191,7 @@ PrefabInstance:
     - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: cardObject
       value: 
-      objectReference: {fileID: 7631930073733532281, guid: a9efe0960a41e42a5987cd71e2cad70e, type: 3}
+      objectReference: {fileID: 7631930073733532281, guid: 442d28bbfd01343d68127cde213d6fce, type: 3}
     - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: enemyBoard
       value: 
@@ -1675,7 +1675,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8090bc50f2824ac3b7b4374a18d451e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardObject: {fileID: 7631930073733532281, guid: a9efe0960a41e42a5987cd71e2cad70e, type: 3}
+  cardObject: {fileID: 7631930073733532281, guid: 442d28bbfd01343d68127cde213d6fce, type: 3}
   board: {fileID: 322034015}
 --- !u!114 &1230017966
 MonoBehaviour:
@@ -2818,7 +2818,7 @@ PrefabInstance:
     - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: cardObject
       value: 
-      objectReference: {fileID: 7631930073733532281, guid: a9efe0960a41e42a5987cd71e2cad70e, type: 3}
+      objectReference: {fileID: 7631930073733532281, guid: 442d28bbfd01343d68127cde213d6fce, type: 3}
     - target: {fileID: 4079980953400386558, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: enemyBoard
       value: 

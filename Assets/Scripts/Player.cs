@@ -16,7 +16,7 @@ public class Player : NetworkBehaviour
     [SerializeField] private EnemyHand enemyHand;
     [SerializeField] private PlayerManaDisplay manaDisplay;
     [SerializeField] private PlayerManaDisplay enemyManaDisplay;
-    [SerializeField] private List<UnitCardStatsSO> deck;
+    [SerializeField] private List<UnitCardSO> deck;
     [SerializeField] private GameObject cardObject;
     [SerializeField] private HandController handController;
     [SerializeField] private GameObject cardBackObject;
@@ -209,7 +209,7 @@ public class Player : NetworkBehaviour
 
     // Functions for running functions on server
     [Server]
-    public void ServerAddCardToHand(UnitCardStatsSO cardStatsSO) {
+    public void ServerAddCardToHand(UnitCardSO cardStatsSO) {
         UnitCardStats cardStats = new UnitCardStats(cardStatsSO);
         handController.AddCardToHand(cardStats);
     }

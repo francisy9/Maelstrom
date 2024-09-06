@@ -1,11 +1,12 @@
 using UnityEngine;
+using static Types;
 
-[CreateAssetMenu()]
-public class WeaponStatsSO : ScriptableObject
+[CreateAssetMenu(menuName = "Cards/WeaponCard")]
+public class WeaponSO : BaseCardSO
 {
-    public string CardName;
-    public string Description;
     public int Attack;
     public int Durability;
-
+    private void OnEnable() {
+        CardType = CardType.Weapon;
+    }
 }

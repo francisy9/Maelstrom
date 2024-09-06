@@ -2,12 +2,12 @@ using UnityEngine;
 using static Types;
 
 [CreateAssetMenu(menuName = "Cards/UnitCard")]
-public class UnitCardStatsSO : BaseCardSO
+public class UnitCardSO : BaseCardSO
 {
-    public int attack;
-    public int hp;
+    public int Attack;
+    public int HP;
 
     private void OnEnable() {
-        cardType = CardType.Unit;
+        CardType = CardType.Unit;
     }
 }

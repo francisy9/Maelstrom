@@ -75,13 +75,13 @@ public static class Types
         public UnitCardStats() {}
 
         // Constructor to initialize the base stats
-        public UnitCardStats(UnitCardStatsSO cardStatsSO)
+        public UnitCardStats(UnitCardSO cardStatsSO)
         {
-            CardName = cardStatsSO.cardName;
-            Description = cardStatsSO.description;
-            BaseManaCost = cardStatsSO.manaCost;
-            BaseAttack = cardStatsSO.attack;
-            BaseHP = cardStatsSO.hp;
+            CardName = cardStatsSO.CardName;
+            Description = cardStatsSO.Description;
+            BaseManaCost = cardStatsSO.ManaCost;
+            BaseAttack = cardStatsSO.Attack;
+            BaseHP = cardStatsSO.HP;
 
             // Initialize mutable stats with base stats
             CurrentManaCost = BaseManaCost;
@@ -95,7 +95,7 @@ public static class Types
                 CardVisualEffect.None
             };
 
-            cardEffects = cardStatsSO.cardEffects;
+            cardEffects = cardStatsSO.CardEffects;
         }
         
         // Note Serializing and deserializing only used to send number and text related stuff to client
@@ -141,6 +141,93 @@ public static class Types
             }
 
             return serializedData.ToArray();
+        }
+    }
+
+    [Serializable]
+    public class WeaponCardStats : BaseCard
+    {
+        // Base stats that do not change
+        public int BaseAttack { get; set; }
+        public int BaseDurability { get; set; }
+
+        // Mutable stats that can change during the game
+        public int CurrentDurability { get; set; }
+        public int CurrentAttack { get; set; }
+        public List<CardVisualEffect> cardVisualEffects { get; set; }
+
+
+        // Majority of data stored on server
+        // Go to card Effect for more details
+        public CardEffect[] cardEffects { get; set; }
+
+        public WeaponCardStats() {}
+
+        // Constructor to initialize the base stats
+        public WeaponCardStats(WeaponSO cardStatsSO)
+        {
+            CardName = cardStatsSO.CardName;
+            Description = cardStatsSO.Description;
+            BaseManaCost = cardStatsSO.ManaCost;
+            BaseAttack = cardStatsSO.Attack;
+            BaseDurability = cardStatsSO.Durability;
+
+            // Initialize mutable stats with base stats
+            CurrentManaCost = BaseManaCost;
+            CurrentAttack = BaseAttack;
+            CurrentDurability = BaseDurability;
+            cardVisualEffects = new List<CardVisualEffect>
+            {
+                CardVisualEffect.None
+            };
+
+            cardEffects = cardStatsSO.CardEffects;
+        }
+        
+        // Note Serializing and deserializing only used to send number and text related stuff to client
+        // So card specific logic is only stored on server
+        public byte[] Serialize()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    [Serializable]
+    public class SpellCardStats : BaseCard
+    {
+        // Base stats that do not change
+        public int BaseSpellDamage { get; set; }
+
+        // Mutable stats that can change during the game
+        public int CurrentSpellDamage { get; set; }
+
+
+        // Majority of data stored on server
+        // Go to card Effect for more details
+        public CardEffect[] cardEffects { get; set; }
+
+        public SpellCardStats() {}
+
+        // Constructor to initialize the base stats
+        public SpellCardStats(SpellCardSO spellCardSO)
+        {
+            CardName = spellCardSO.CardName;
+            Description = spellCardSO.Description;
+            BaseManaCost = spellCardSO.ManaCost;
+            BaseSpellDamage = spellCardSO.SpellDamage;
+
+            // Initialize mutable stats with base stats
+            CurrentManaCost = BaseManaCost;
+            CurrentSpellDamage = BaseSpellDamage;
+
+            cardEffects = spellCardSO.CardEffects;
+        }
+        
+        // Note Serializing and deserializing only used to send number and text related stuff to client
+        // So card specific logic is only stored on server
+        public byte[] Serialize()
+        {
+            throw new NotImplementedException();
         }
     }
 
@@ -209,7 +296,7 @@ public static class Types
         public int Attack { get; set; }
         public int Durability { get; set; }
 
-        public WeaponStats(WeaponStatsSO weaponStatsSO) {
+        public WeaponStats(WeaponSO weaponStatsSO) {
             CardName = weaponStatsSO.CardName;
             Description = weaponStatsSO.Description;
             Attack = weaponStatsSO.Attack;

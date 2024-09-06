@@ -160,14 +160,14 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5714286, y: 0.5714286, z: 0.5714286}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4514428793167927385}
   - {fileID: 2271492406231857012}
   - {fileID: 2593730102330606433}
   - {fileID: 6497055512377963054}
-  m_Father: {fileID: 592725213729882651}
+  m_Father: {fileID: 5932569113010333940}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &618102629560340845
 GameObject:
@@ -196,15 +196,15 @@ RectTransform:
   m_GameObject: {fileID: 618102629560340845}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.75, y: 1.75, z: 1.75}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4595536944131736844}
-  m_Father: {fileID: 592725213729882651}
+  m_Father: {fileID: 5932569113010333940}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -66.5, y: 82.25}
+  m_AnchoredPosition: {x: 12, y: -3}
   m_SizeDelta: {x: 25, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5915766918971656632
@@ -391,7 +391,7 @@ GameObject:
   - component: {fileID: 2469617473424201767}
   - component: {fileID: 464110994739296885}
   m_Layer: 5
-  m_Name: UnitDescriptionText
+  m_Name: WeaponDescriptionText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -614,14 +614,14 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5714286, y: 0.5714286, z: 0.5714286}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1406279547346655076}
   - {fileID: 7424901938186524947}
   - {fileID: 6062203931593986127}
   - {fileID: 4512998960062698080}
-  m_Father: {fileID: 592725213729882651}
+  m_Father: {fileID: 5932569113010333940}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1651916461624151696
 GameObject:
@@ -725,12 +725,12 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5714286, y: 0.5714286, z: 0.5714286}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2933419633010881784}
   - {fileID: 6954472857732130718}
-  m_Father: {fileID: 592725213729882651}
+  m_Father: {fileID: 5932569113010333940}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2012124601586199803
 GameObject:
@@ -1368,15 +1368,15 @@ RectTransform:
   m_GameObject: {fileID: 4355870368282859522}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.75, y: 1.75, z: 1.75}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2596402799775451182}
-  m_Father: {fileID: 592725213729882651}
+  m_Father: {fileID: 5932569113010333940}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -17.2}
+  m_AnchoredPosition: {x: 0, y: -9.828575}
   m_SizeDelta: {x: 68, y: 15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4681944906698895559
@@ -1981,7 +1981,8 @@ GameObject:
   - component: {fileID: 4352061508784993493}
   - component: {fileID: 5843665970187184343}
   - component: {fileID: 1752626929663723020}
-  - component: {fileID: 8720160639267396986}
+  - component: {fileID: 9219350017208126347}
+  - component: {fileID: 4277965905689724702}
   m_Layer: 5
   m_Name: BaseInHandCard
   m_TagString: Untagged
@@ -2002,16 +2003,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5932569113010333940}
-  - {fileID: 5797914751579710114}
-  - {fileID: 3979358732939598972}
-  - {fileID: 1574620017482238375}
-  - {fileID: 3721060664988355881}
-  - {fileID: 1886966278090759142}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -682, y: -384}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4352061508784993493
@@ -2051,7 +2047,7 @@ MonoBehaviour:
   serverOnly: 0
   visibility: 0
   hasSpawned: 0
---- !u!114 &8720160639267396986
+--- !u!114 &9219350017208126347
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2063,6 +2059,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b84cc17a69e644493b01fcf8255aed85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cardVisual: {fileID: 6038667867662301364}
+--- !u!114 &4277965905689724702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7631930073733532281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1810ad94bb7a44de8976295923e4d130, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cardVisual: {fileID: 6038667867662301364}
 --- !u!1 &7809387414533638858
 GameObject:
   m_ObjectHideFlags: 0
@@ -2239,6 +2249,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5932569113010333940}
+  - component: {fileID: 6038667867662301364}
   m_Layer: 5
   m_Name: BaseInHandCardVisual
   m_TagString: Untagged
@@ -2259,6 +2270,11 @@ RectTransform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6863951502736414422}
+  - {fileID: 5797914751579710114}
+  - {fileID: 3979358732939598972}
+  - {fileID: 1574620017482238375}
+  - {fileID: 3721060664988355881}
+  - {fileID: 1886966278090759142}
   m_Father: {fileID: 592725213729882651}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -2266,6 +2282,32 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &6038667867662301364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8432316903866842381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bc36875133d4458ab3efba0be5154c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  card: {fileID: 9219350017208126347}
+  cardName: {fileID: 1286019024964098196}
+  manaText: {fileID: 599741767245712146}
+  unitDescription: {fileID: 2800941239686316021}
+  spellDescription: {fileID: 7275001414665025983}
+  weaponDescription: {fileID: 464110994739296885}
+  unitComponents: {fileID: 1650662650284683948}
+  spellComponents: {fileID: 1764944548296349881}
+  weaponComponents: {fileID: 273083691139100089}
+  unitAttackText: {fileID: 6161646318456988993}
+  unitHpText: {fileID: 19868834591382592}
+  weaponAttackText: {fileID: 1399573813631984010}
+  weaponDurabilityText: {fileID: 472200677839109353}
+  hoverCardVisualObject: {fileID: 1677879453821657450, guid: f12a6c65a536f4e95832133b8fdb7f4d, type: 3}
 --- !u!1 &8436059374567404809
 GameObject:
   m_ObjectHideFlags: 0
