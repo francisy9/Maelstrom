@@ -72,7 +72,6 @@
     <Compile Include="Assets/Scripts/Controller/HandVisual.cs" />
     <Compile Include="Assets/Scripts/Card/CanAttackBase.cs" />
     <Compile Include="Assets/Scripts/Controller/EnemyHandVisual.cs" />
-    <Compile Include="Assets/Scripts/Card/InHand/BaseInHandCardVisual.cs" />
     <Compile Include="Assets/Scripts/Mask.cs" />
     <Compile Include="Assets/Scripts/Card/InHand/DragCardController.cs" />
     <Compile Include="Assets/Scripts/Server/ServerUpdate.cs" />
@@ -82,8 +81,8 @@
     <Compile Include="Assets/Scripts/Server/PlayerManager.cs" />
     <Compile Include="Assets/Scripts/Card/OnBoard/OnBoardCardVisual.cs" />
     <Compile Include="Assets/Scripts/Controller/Board.cs" />
-    <Compile Include="Assets/Scripts/Card/InHand/BaseInHandCard.cs" />
     <Compile Include="Assets/Scripts/HeroVisual.cs" />
+    <Compile Include="Assets/Scripts/Card/InHand/InHandCardVisual.cs" />
     <Compile Include="Assets/Scripts/Controller/EnemyBoard.cs" />
     <Compile Include="Assets/Scripts/Player.cs" />
     <Compile Include="Assets/Scripts/ScriptableObjects/SpellCardSO.cs" />
@@ -94,6 +93,7 @@
     <Compile Include="Assets/Scripts/Controller/HandController.cs" />
     <Compile Include="Assets/Scripts/DeserializeFunctions.cs" />
     <Compile Include="Assets/Scripts/PlayerManaDisplay.cs" />
+    <Compile Include="Assets/Scripts/Card/InHand/InHandCard.cs" />
     <Compile Include="Assets/Scripts/ScriptableObjects/BaseCardSO.cs" />
     <Compile Include="Assets/Scripts/ScriptableObjects/WeaponStatsSO.cs" />
     <Compile Include="Assets/Scripts/Server/GameManager.cs" />

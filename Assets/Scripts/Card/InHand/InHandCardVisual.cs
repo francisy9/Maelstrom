@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BaseInHandCardVisual : InHandCardVisualBase
+public class InHandCardVisual : InHandCardVisualBase
 {
     [SerializeField] private GameObject hoverCardVisualObject;
     private GameObject hoverCardObject;
@@ -14,7 +14,6 @@ public class BaseInHandCardVisual : InHandCardVisualBase
         enlarged = false;
         beingDragged = false;
         canvasGroup = GetComponentInParent<CanvasGroup>();
-        Debug.Log($"InitVisual is canvas group null? {canvasGroup == null}");
     }
 
     public void ProjectCardOnHover() {

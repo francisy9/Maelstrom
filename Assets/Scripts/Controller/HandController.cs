@@ -7,7 +7,7 @@ public class HandController : MonoBehaviour
 {
     public static HandController Instance;
     // cuid => BaseInHandCard
-    private Dictionary<int, BaseInHandCard> cardHashMap;
+    private Dictionary<int, InHandCard> cardHashMap;
     [SerializeField] private GameObject cardObject;
     private Player player;
     [SerializeField] private Board board;
@@ -22,7 +22,7 @@ public class HandController : MonoBehaviour
 
     private void Awake() {
         Instance = this;
-        cardHashMap = new Dictionary<int, BaseInHandCard>();
+        cardHashMap = new Dictionary<int, InHandCard>();
         handlingAction = false;
     }
 
@@ -33,7 +33,7 @@ public class HandController : MonoBehaviour
     public void AddCardToHand(BaseCard cardStats) {
         Debug.Log($"Adding card to hand");
         GameObject currentCardObject = Instantiate(cardObject, transform);
-        BaseInHandCard cardComponent = currentCardObject.GetComponent<BaseInHandCard>();
+        InHandCard cardComponent = currentCardObject.GetComponent<InHandCard>();
         DragCardController dragCardControllerComponent = currentCardObject.GetComponent<DragCardController>();
         cardComponent.InitCard(cardStats);
         dragCardControllerComponent.InitDragCardController(player, this, cardUid);
@@ -44,7 +44,7 @@ public class HandController : MonoBehaviour
     }
 
     public void PlayUnitCard(int handIndex, int boardIndex) {
-        BaseInHandCard card = cardHashMap[tryingToPlayCardUID];
+        InHandCard card = cardHashMap[tryingToPlayCardUID];
         BaseCard cardStats = card.GetCardStats();
         cardHashMap.Remove(tryingToPlayCardUID);
         tryingToPlayCardUID = -1;
@@ -63,7 +63,7 @@ public class HandController : MonoBehaviour
 
     // Called when card begins to be dragged
     public void LocalTryingToPlayCard(int cardId) {
-        BaseInHandCard card = cardHashMap[cardId];
+        InHandCard card = cardHashMap[cardId];
         currentlyDraggingCardHandIndex = card.transform.GetSiblingIndex();
         tryingToPlayCardUID = cardId;
         handlingAction = true;

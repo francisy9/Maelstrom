@@ -9,7 +9,7 @@ public class InHandCardVisualBase : MonoBehaviour
     protected CardType cardType;
     protected CanvasGroup canvasGroup;
 
-    [SerializeField] protected BaseInHandCard card;
+    [SerializeField] protected InHandCard card;
     [SerializeField] protected TextMeshProUGUI cardName;
     [SerializeField] protected TextMeshProUGUI manaText;
     [SerializeField] protected TextMeshProUGUI unitDescription;
