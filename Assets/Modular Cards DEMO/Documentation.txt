@@ -9,10 +9,10 @@
 
 	Feel free to contact us if you need any assistance with this asset, or to report a bug.
 
-	All files are ready to go and saved in their respective folders for you'r convinicence.
+	All files are ready to go and saved in their respective folders for you'r convenience.
 	All Textures and Sprites saved in "Sprites Texture Folder".
 
-	If you dont want to have multiple objects/sprite renderers to a single card you can export the files to
+	If you don't want to have multiple objects/sprite renderers to a single card you can export the files to
 	a image editor of your choice all files are in .png transparency format.
 		
 	Files format .PNG transparency
@@ -28,12 +28,12 @@
 		6 Variations of the front panel.
 		6 Variations of decorative frames.
 		6 Variations of decorative Shadow.
-		4 Variations of text ribons.
-		10 Variatons of 16x16 Icons.
-		10 Variations of Text frames crystals.
+		4 Variations of text ribbons.
+		10 Variations of 16x16 icons.
+		10 Variations of text frames crystals.
 		15 Variations of flags.
 		2 Variations of text box.
 		6 Variations of picture frames.
 		12 Variations of decorative crystals.
-		25 Unique items for helping to create your firts cards.
+		25 Unique items for helping to create your first cards.
 
