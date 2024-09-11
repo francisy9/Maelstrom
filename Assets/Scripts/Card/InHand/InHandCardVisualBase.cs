@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 using System;
-using static Types;
+using CardTypes;
 
 public class InHandCardVisualBase : MonoBehaviour
 {
@@ -31,7 +31,6 @@ public class InHandCardVisualBase : MonoBehaviour
             baseCard = card.GetCardStats();
         }
         cardStats = baseCard;
-
         switch (baseCard.CardType)
         {
             case CardType.Unit:

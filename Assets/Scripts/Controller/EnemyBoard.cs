@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
-using static Types;
+using CardTypes;
+using static Layers.Layers;
 
 public class EnemyBoard : BoardBase
 {

@@ -1,7 +1,7 @@
 using UnityEngine;
-using static Types;
 using System.Collections.Generic;
 using System;
+using CardTypes;
 
 public abstract class BoardBase : MonoBehaviour
 {

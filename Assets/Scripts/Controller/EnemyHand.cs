@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-using static Types;
+using CardTypes;
 
 public class EnemyHand : MonoBehaviour
 {

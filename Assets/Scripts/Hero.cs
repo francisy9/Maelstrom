@@ -1,5 +1,5 @@
 using UnityEngine;
-using static Types;
+using static Layers.Layers;
 
 public class Hero : HeroBase {
     public static Hero Instance;

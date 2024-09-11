@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using Mirror;
 using UnityEngine;
-using static Types;
 using System.Text;
+using CardTypes;
 using System;
 
 public class ServerUpdate : NetworkBehaviour
@@ -41,6 +41,8 @@ public class ServerUpdate : NetworkBehaviour
             case CardType.Unit:
                 UnitCardStats cardStats = new UnitCardStats(baseCardSO as UnitCardSO);
                 return cardStats;
+            case CardType.Spell:
+                return new SpellCardStats(baseCardSO as SpellCardSO);
             default:
                 Debug.LogError("unimplemented card type");
                 break;
@@ -76,32 +78,21 @@ public class ServerUpdate : NetworkBehaviour
         $"p1: {p1Hero.CurrentHP}hp {gameManager.GetP1Mana()}/{gameManager.GetP1MaxMana()} mana" +
         $" p2: {p2Hero.CurrentHP}hp {gameManager.GetP2Mana()}/{gameManager.GetP2MaxMana()} mana");
 
-        StringBuilder p1HandText = new StringBuilder();
-        p1HandText.Append("p1 hand: ");
-        foreach (UnitCardStats cardStats in p1Hand) {
-            p1HandText.Append(GetCardInfoString(cardStats) + " ");
-        }
-        Debug.Log(p1HandText);
+        PrintHand(playerOne);
 
         StringBuilder p1BoardText = new StringBuilder();
         p1BoardText.Append("p1 board: ");
         foreach (UnitCardStats cardStats in p1Board) {
-            p1BoardText.Append(GetCardInfoString(cardStats) + " ");
+            p1BoardText.Append(GetUnitCardInfoString(cardStats) + " ");
         }
         Debug.Log(p1BoardText);
 
-
-        StringBuilder p2HandText = new StringBuilder();
-        p2HandText.Append("p2 hand: ");
-        foreach (UnitCardStats cardStats in p2Hand) {
-            p2HandText.Append(GetCardInfoString(cardStats) + " ");
-        }
-        Debug.Log(p2HandText);
+        PrintHand(playerTwo);
 
         StringBuilder p2BoardText = new StringBuilder();
         p2BoardText.Append("p2 board: ");
         foreach (UnitCardStats cardStats in p2Board) {
-            p2BoardText.Append(GetCardInfoString(cardStats) + " ");
+            p2BoardText.Append(GetUnitCardInfoString(cardStats) + " ");
         }
         Debug.Log(p2BoardText);
 
@@ -122,8 +113,38 @@ public class ServerUpdate : NetworkBehaviour
         return player == playerOne ? p1Hero : p2Hero;
     }
 
-    private string GetCardInfoString(UnitCardStats cardStats) {
-        return $"{cardStats.CardName} mana: {cardStats.CurrentManaCost} hp: {cardStats.CurrentHP}/{cardStats.MaxHP}";
+    private void PrintHand(Player player) {
+        StringBuilder handText = new StringBuilder();
+        handText.Append($"{player.name} hand: ");
+        foreach (BaseCard card in GetHand(player)) {
+            switch (card.CardType) {
+                case CardType.Unit:
+                    handText.Append(GetUnitCardInfoString(card as UnitCardStats) + " ");
+                    break;
+                case CardType.Spell:
+                    handText.Append(GetSpellCardInfoString(card as SpellCardStats) + " ");
+                    break;
+                case CardType.Weapon:
+                    handText.Append(GetWeaponCardInfoString(card as WeaponCardStats) + " ");
+                    break;
+                default:
+                    Debug.LogError($"unimplemented card type {card.CardType} {card.CardName}");
+                    break;
+            }
+        }
+        Debug.Log(handText);
+    }
+
+    private string GetUnitCardInfoString(UnitCardStats cardStats) {
+        return $"{cardStats.CardName} {cardStats.CurrentManaCost} cost, {cardStats.CurrentAttack} attack, {cardStats.CurrentHP} health";
+    }
+
+    private string GetSpellCardInfoString(SpellCardStats cardStats) {
+        return $"{cardStats.CardName} {cardStats.CurrentManaCost} cost, {cardStats.CurrentSpellDamage} damage";
+    }
+
+    private string GetWeaponCardInfoString(WeaponCardStats cardStats) {
+        return $"{cardStats.CardName} {cardStats.CurrentManaCost} cost, {cardStats.CurrentAttack} attack, {cardStats.CurrentDurability} durability";
     }
 
     [Server]
@@ -223,6 +244,66 @@ public class ServerUpdate : NetworkBehaviour
             cardStats.NumAttacks = cardStats.TotalNumAttacks;
         }
         heroStats.NumAttacks = heroStats.TotalNumAttacks;
+    }
+
+
+    [Server]
+    public void CastSpell(int handIndex, Targeting targeting, Player player) {
+        SpellCardStats cardToBeCast = GetCardStatsAtHandIndex(handIndex, player) as SpellCardStats;
+        foreach (var effect in cardToBeCast.cardEffects) {
+            ExecuteCardEffect(effect, targeting, player);
+        }
+    }
+
+    [Server]
+    private void ExecuteCardEffect(CardEffect effect, Targeting targeting, Player player) {
+        switch (effect.effectType) {
+            case EffectType.Buff:
+                ApplyBuffEffect(effect, targeting, player);
+                break;
+            case EffectType.Damage:
+                ApplyDamageEffect(effect, targeting, player);
+                break;
+            case EffectType.Change:
+                ApplyChangeEffect(effect, targeting, player);
+                break;
+            case EffectType.Convert:
+                ApplyConvertEffect(effect, targeting, player);
+                break;
+            case EffectType.Heal:
+                ApplyHealEffect(effect, targeting, player);
+                break;
+            case EffectType.Spawn:
+                ApplySpawnEffect(effect, targeting, player);
+                break;
+            default:
+                Debug.LogError($"Unimplemented effect type {effect.effectType}");
+                break;
+        }
+    }
+
+    private void ApplyBuffEffect(CardEffect effect, Targeting targeting, Player player) {
+        throw new NotImplementedException();
+    }
+
+    private void ApplyDamageEffect(CardEffect effect, Targeting targeting, Player player) {
+        throw new NotImplementedException();
+    }
+
+    private void ApplyChangeEffect(CardEffect effect, Targeting targeting, Player player) {
+        throw new NotImplementedException();
+    }
+
+    private void ApplyConvertEffect(CardEffect effect, Targeting targeting, Player player) {
+        throw new NotImplementedException();
+    }
+
+    private void ApplyHealEffect(CardEffect effect, Targeting targeting, Player player) {
+        throw new NotImplementedException();
+    }
+
+    private void ApplySpawnEffect(CardEffect effect, Targeting targeting, Player player) {
+        throw new NotImplementedException();
     }
 
     private HeroStats GetOpponentHeroStats(Player player) {

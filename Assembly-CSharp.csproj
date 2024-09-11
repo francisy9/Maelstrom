@@ -66,36 +66,40 @@
   <ItemGroup>
     <Compile Include="Assets/Scripts/Controller/BoardBase.cs" />
     <Compile Include="Assets/Scripts/ScriptableObjects/UnitCardStatsSO.cs" />
+    <Compile Include="Assets/Scripts/Types/BaseCard.cs" />
     <Compile Include="Assets/Scripts/CardEffect.cs" />
     <Compile Include="Assets/Scripts/EnemyHero.cs" />
-    <Compile Include="Assets/Scripts/Server/OnPlay.cs" />
     <Compile Include="Assets/Scripts/Controller/HandVisual.cs" />
     <Compile Include="Assets/Scripts/Card/CanAttackBase.cs" />
     <Compile Include="Assets/Scripts/Controller/EnemyHandVisual.cs" />
     <Compile Include="Assets/Scripts/Mask.cs" />
     <Compile Include="Assets/Scripts/Card/InHand/DragCardController.cs" />
+    <Compile Include="Assets/Scripts/Types/WeaponCardStats.cs" />
     <Compile Include="Assets/Scripts/Server/ServerUpdate.cs" />
     <Compile Include="Assets/Scripts/Hero.cs" />
     <Compile Include="Assets/Scripts/Card/OnBoard/OnBoardCard.cs" />
+    <Compile Include="Assets/Scripts/Types/HeroStats.cs" />
     <Compile Include="Assets/Scripts/HeroBase.cs" />
     <Compile Include="Assets/Scripts/Server/PlayerManager.cs" />
     <Compile Include="Assets/Scripts/Card/OnBoard/OnBoardCardVisual.cs" />
     <Compile Include="Assets/Scripts/Controller/Board.cs" />
+    <Compile Include="Assets/Scripts/Types/Types.cs" />
     <Compile Include="Assets/Scripts/HeroVisual.cs" />
     <Compile Include="Assets/Scripts/Card/InHand/InHandCardVisual.cs" />
     <Compile Include="Assets/Scripts/Controller/EnemyBoard.cs" />
     <Compile Include="Assets/Scripts/Player.cs" />
     <Compile Include="Assets/Scripts/ScriptableObjects/SpellCardSO.cs" />
     <Compile Include="Assets/Scripts/Card/InHand/InHandCardVisualBase.cs" />
-    <Compile Include="Assets/Scripts/Types.cs" />
+    <Compile Include="Assets/Scripts/Types/UnitCardStats.cs" />
     <Compile Include="Assets/Scripts/Controller/EnemyHand.cs" />
     <Compile Include="Assets/Scripts/Server/LineController.cs" />
+    <Compile Include="Assets/Scripts/Types/SpellCardStats.cs" />
     <Compile Include="Assets/Scripts/Controller/HandController.cs" />
-    <Compile Include="Assets/Scripts/DeserializeFunctions.cs" />
     <Compile Include="Assets/Scripts/PlayerManaDisplay.cs" />
     <Compile Include="Assets/Scripts/Card/InHand/InHandCard.cs" />
     <Compile Include="Assets/Scripts/ScriptableObjects/BaseCardSO.cs" />
     <Compile Include="Assets/Scripts/ScriptableObjects/WeaponStatsSO.cs" />
+    <Compile Include="Assets/Scripts/Types/LayerNames.cs" />
     <Compile Include="Assets/Scripts/Server/GameManager.cs" />
   </ItemGroup>
   <ItemGroup>

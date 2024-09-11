@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5091b91955aaf4bc4bbd9b76d0bc4a16, type: 3}
+  m_Name: uno
+  m_EditorClassIdentifier: 
+  CardName: uno
+  CardType: 2
+  Description: Deal 2 damage to all enemies
+  ManaCost: 2
+  CardEffects:
+  - effectTargetType: 4
+    effectType: 1
+    triggerTime: 1
+    targetSelection: 0
+    targetable: 0
+    damageVal: 2
+    healVal: 0
+    attackBuffVal: 0
+    hpBuffVal: 0
+    buffEffect: 0
+    needsTargeting: 0
+    numTargets: 0
+    spawnUnitCardStatsSO: {fileID: 0}
+  SpellDamage: 0

@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static Types;
+using CardTypes;
+using static Layers.Layers;
 
 public class HandController : MonoBehaviour
 {
@@ -31,7 +32,6 @@ public class HandController : MonoBehaviour
     }
 
     public void AddCardToHand(BaseCard cardStats) {
-        Debug.Log($"Adding card to hand");
         GameObject currentCardObject = Instantiate(cardObject, transform);
         InHandCard cardComponent = currentCardObject.GetComponent<InHandCard>();
         DragCardController dragCardControllerComponent = currentCardObject.GetComponent<DragCardController>();
@@ -80,6 +80,14 @@ public class HandController : MonoBehaviour
         }
 
         player.RequestPlayCard(currentlyDraggingCardHandIndex, boardIndex);
+    }
+
+    public void RequestCastSpell(int cardUid, Targeting targeting) {
+        if (cardUid != tryingToPlayCardUID) {
+            Debug.LogError("Previously dragging card and currently attempting to cast spell seem to be different");
+        }
+
+        player.RequestCastSpell(currentlyDraggingCardHandIndex, targeting);
     }
 
     public int GetNumCards() {

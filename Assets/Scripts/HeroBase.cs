@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using static Types;
+using CardTypes;
 
 public abstract class HeroBase : CanAttackBase
 {

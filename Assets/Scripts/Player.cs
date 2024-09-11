@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Mirror;
 using UnityEngine;
 using UnityEngine.UI;
-using static Types;
+using CardTypes;
 
 public class Player : NetworkBehaviour
 {
@@ -205,7 +205,10 @@ public class Player : NetworkBehaviour
         return;
     }
 
-
+    internal void RequestCastSpell(int handIndex, Targeting targeting) {
+        GameManager.Instance.CmdCastSpell(handIndex, targeting);
+        return;
+    }
 
     // Functions for running functions on server
     [Server]

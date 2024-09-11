@@ -2561,9 +2561,9 @@ MonoBehaviour:
   syncInterval: 0
   playerOne: {fileID: 4637422271275783584}
   p1Deck:
+  - {fileID: 11400000, guid: 3116278cce44c433fb1fa03693ad6bce, type: 2}
   - {fileID: 11400000, guid: 1eeb45098ffb6450a9efae1d03e4bb59, type: 2}
   - {fileID: 11400000, guid: c57e259b633194b3a9c098fe89d8c963, type: 2}
-  - {fileID: 11400000, guid: 520eafb5d1fdc4706856ade4185c2e76, type: 2}
   p1HeroSprite: {fileID: 21300000, guid: 2e11b460161b04b978d5134d0d344d89, type: 3}
   p1HeroMaxHp: 30
   playerTwo: {fileID: 583992372}

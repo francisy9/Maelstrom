@@ -5,7 +5,7 @@ using System.Reflection;
 using Mirror;
 using UnityEngine;
 using UnityEngine.UI;
-using static Types;
+using CardTypes;
 
 public class GameManager : NetworkBehaviour
 {
@@ -70,6 +70,9 @@ public class GameManager : NetworkBehaviour
         int numCardsToBeDrawnByFirstPlayer = 3;
         int numCardsToBeDrawnBySecondPlayer = 4;
 
+        // int numCardsToBeDrawnByFirstPlayer = 1;
+        // int numCardsToBeDrawnBySecondPlayer = 0;
+
         for (int i = 0; i < numCardsToBeDrawnByFirstPlayer; i++) {
             BaseCardSO cardDrawn = DrawBaseCardSO(starter);
             CardType cardType = cardDrawn.GetCardType();
@@ -82,6 +85,10 @@ public class GameManager : NetworkBehaviour
                 case CardType.Unit:
                     byte[] serializedUnitCardData = (baseCard as UnitCardStats).Serialize();
                     starter.AddCardToHand(serializedUnitCardData);
+                    break;
+                case CardType.Spell:
+                    byte[] serializedSpellCardData = (baseCard as SpellCardStats).Serialize();
+                    starter.AddCardToHand(serializedSpellCardData);
                     break;
                 default:
                     Debug.LogError("Card type not implemented");
@@ -286,6 +293,23 @@ public class GameManager : NetworkBehaviour
             Debug.LogError("Player isn't in turn");
         }
     }
+
+    [Command(requiresAuthority = false)]
+    public void CmdCastSpell(int handIndex, Targeting targeting, NetworkConnectionToClient sender = null) {
+        Player requestingPlayer = sender.identity.GetComponent<Player>();
+        if (targeting == null) {
+            Debug.Log($"{requestingPlayer.name} is requesting to cast spell at hand index: {handIndex} targeting null");
+        } else {
+            Debug.Log($"{requestingPlayer.name} is requesting to cast spell at hand index: {handIndex} targeting {targeting.targetType} index: {targeting.targetBoardIndex}");
+        }
+
+        if (IsPlayerInTurn(requestingPlayer)) {
+            SpellCardStats cardToBeCast = ServerUpdate.Instance.GetCardStatsAtHandIndex(handIndex, requestingPlayer) as SpellCardStats;
+            ServerUpdate.Instance.CastSpell(handIndex, targeting, requestingPlayer);
+        } else {
+            Debug.LogError("Player isn't in turn");
+        }
+    }   
 
     public bool IsCardAtBoardIndex(int boardIndex) {
         if (boardIndex >= 0 & boardIndex <= 6) {

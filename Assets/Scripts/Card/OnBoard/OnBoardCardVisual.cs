@@ -1,7 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
-using static Types;
+using CardTypes;
 
 public class OnBoardCardVisual : MonoBehaviour
 {

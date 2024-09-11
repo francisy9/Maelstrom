@@ -1,5 +1,6 @@
 using UnityEngine;
-using static Types;
+using CardTypes;
+
 [CreateAssetMenu(menuName = "Cards/SpellCard")]
 public class SpellCardSO : BaseCardSO
 {

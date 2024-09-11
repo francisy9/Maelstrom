@@ -1,5 +1,5 @@
 using UnityEngine;
-using static Types;
+using CardTypes;
 
 [CreateAssetMenu(menuName = "Cards/UnitCard")]
 public class UnitCardSO : BaseCardSO

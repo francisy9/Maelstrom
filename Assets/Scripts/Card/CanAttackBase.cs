@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using static Types;
+using static Layers.Layers;
 
 public abstract class CanAttackBase : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
@@ -80,7 +80,7 @@ public abstract class CanAttackBase : MonoBehaviour, IBeginDragHandler, IDragHan
         if (currentlyDetectedTarget.TryGetComponent<OnBoardCard>(out OnBoardCard enemyCard)) {
             targetBoardIndex = player.GetEnemyBoard().GetBoardIndex(enemyCard.GetCardUid());
         } else {
-            // Caller is of hero type
+            // Target is of hero type
             targetBoardIndex = HERO_BOARD_INDEX;
         }
         

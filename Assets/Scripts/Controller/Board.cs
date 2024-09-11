@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using static Types;
+using CardTypes;
+using static Layers.Layers;
 
 public class Board : BoardBase
 {
@@ -31,7 +32,7 @@ public class Board : BoardBase
         base.PlaceCardOnBoard(cardStats, boardIndex, player);
         cardPlaceHolder.transform.SetParent(null); // Need this since Destroy isn't immediate
         DestroyPlaceHolder();
-        onBoardCards[boardIndex].gameObject.layer = LayerMask.NameToLayer(PLAYER_CARD_LAYER);
+        onBoardCards[boardIndex].gameObject.layer = LayerMask.NameToLayer(PLAYER_PLAYED_CARD_LAYER);
         UpdateBoardIndexHashMap();
     }
 
