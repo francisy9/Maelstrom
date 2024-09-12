@@ -84,17 +84,17 @@ public class GameManager : NetworkBehaviour
             {
                 case CardType.Unit:
                     byte[] serializedUnitCardData = (baseCard as UnitCardStats).Serialize();
-                    starter.AddCardToHand(serializedUnitCardData);
+                    starter.TargetAddCardToHand(serializedUnitCardData);
                     break;
                 case CardType.Spell:
                     byte[] serializedSpellCardData = (baseCard as SpellCardStats).Serialize();
-                    starter.AddCardToHand(serializedSpellCardData);
+                    starter.TargetAddCardToHand(serializedSpellCardData);
                     break;
                 default:
                     Debug.LogError("Card type not implemented");
                     break;
             }
-            nextPlayer.AddCardToOpponentHand();
+            nextPlayer.TargetAddCardToOpponentHand();
         }
 
         for (int j = 0; j < numCardsToBeDrawnBySecondPlayer; j++) {
@@ -107,14 +107,14 @@ public class GameManager : NetworkBehaviour
             {
                 case CardType.Unit:
                     byte[] serializedUnitCardData = (baseCard as UnitCardStats).Serialize();
-                    nextPlayer.AddCardToHand(serializedUnitCardData);
+                    nextPlayer.TargetAddCardToHand(serializedUnitCardData);
                     break;
                 default:
                     Debug.LogError("Card type not implemented");
                     break;
             }
 
-            starter.AddCardToOpponentHand();
+            starter.TargetAddCardToOpponentHand();
         }
         InitializeManaDisplays();
         starter.IncrementMaxMana();
@@ -338,27 +338,6 @@ public class GameManager : NetworkBehaviour
         playerOne.IncrementMaxMana();
         playerOne.RefreshMana();
         HandController.Instance.SetPlayer(playerOne);
-        // playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
-        // playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
-        // playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
-        // playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
-        // playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
-        // playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
-        // playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
-        // playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
-        // playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
-        // playerOne.ServerAddCardToHand(DrawCardStatSO(playerOne));
-
-        playerTwo.ServerAddCardToOpponentHand();
-        playerTwo.ServerAddCardToOpponentHand();
-        playerTwo.ServerAddCardToOpponentHand();
-        playerTwo.ServerAddCardToOpponentHand();
-        playerTwo.ServerAddCardToOpponentHand();
-        // playerTwo.ServerAddCardToOpponentHand();
-        // playerTwo.ServerAddCardToOpponentHand();
-        // playerTwo.ServerAddCardToOpponentHand();
-        // playerTwo.ServerAddCardToOpponentHand();
-        // playerTwo.ServerAddCardToOpponentHand();
     }
 
     // Server functions for debugging purposes

@@ -30,7 +30,7 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
 
     public void InitDragCardController(Player player, HandController handController, int uid) {
         canvas = player.GetCanvas();
-        playerDropZone = player.GetDropZone();
+        playerDropZone = player.GetBoard();
         this.player = player;
         canvasGroup = GetComponent<CanvasGroup>();
         prevParentTransform = transform.parent;

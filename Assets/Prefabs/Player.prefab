@@ -14,6 +14,10 @@ GameObject:
   - component: {fileID: 4486590880246358184}
   - component: {fileID: 6962434659416617978}
   - component: {fileID: 3981489359350371392}
+  - component: {fileID: 2643247869435804099}
+  - component: {fileID: 1109392479186795185}
+  - component: {fileID: 4269803818102693910}
+  - component: {fileID: 6366181512221410078}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -53,17 +57,13 @@ MonoBehaviour:
   syncInterval: 0
   canvas: {fileID: 0}
   opponent: {fileID: 0}
-  hero: {fileID: 0}
-  enemyHero: {fileID: 0}
-  board: {fileID: 0}
-  enemyBoard: {fileID: 0}
-  enemyHand: {fileID: 0}
   deck: []
-  cardObject: {fileID: 0}
-  handController: {fileID: 0}
-  cardBackObject: {fileID: 0}
   manaManager: {fileID: 6962434659416617978}
   turnManager: {fileID: 3981489359350371392}
+  handManager: {fileID: 4269803818102693910}
+  boardManager: {fileID: 2643247869435804099}
+  communicationManager: {fileID: 1109392479186795185}
+  heroManager: {fileID: 6366181512221410078}
 --- !u!114 &8541721803694683318
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -148,3 +148,72 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   endTurnButton: {fileID: 0}
+--- !u!114 &2643247869435804099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2402681596375902675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cad5c8766c1ac4c4aa2144200066f9db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  board: {fileID: 0}
+  enemyBoard: {fileID: 0}
+--- !u!114 &1109392479186795185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2402681596375902675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6154655c4db0240f2978b8428935ccbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+--- !u!114 &4269803818102693910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2402681596375902675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de159c09e61344d31b1b68b7750a17b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  handController: {fileID: 0}
+  cardObject: {fileID: 7631930073733532281, guid: 442d28bbfd01343d68127cde213d6fce, type: 3}
+  cardBackObject: {fileID: 7631930073733532281, guid: 4e8fba49d5963453e99bc6efedc075b6, type: 3}
+  enemy: {fileID: 0}
+  enemyHand: {fileID: 0}
+--- !u!114 &6366181512221410078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2402681596375902675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80d2f423e18804ba0b3d0d5405455093, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  hero: {fileID: 0}
+  enemyHero: {fileID: 0}

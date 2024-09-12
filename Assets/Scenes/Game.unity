@@ -1200,6 +1200,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2643247869435804099, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
+      propertyPath: board
+      value: 
+      objectReference: {fileID: 322034015}
+    - target: {fileID: 2643247869435804099, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
+      propertyPath: enemyBoard
+      value: 
+      objectReference: {fileID: 340104466}
     - target: {fileID: 3981489359350371392, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: endTurnButton
       value: 
@@ -1288,10 +1296,30 @@ PrefabInstance:
       propertyPath: deck.Array.data[3]
       value: 
       objectReference: {fileID: 11400000, guid: ef74403afe02f4e30b69c94a4a9941a0, type: 2}
+    - target: {fileID: 4269803818102693910, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
+      propertyPath: enemy
+      value: 
+      objectReference: {fileID: 4637422271275783584}
+    - target: {fileID: 4269803818102693910, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
+      propertyPath: enemyHand
+      value: 
+      objectReference: {fileID: 723819826}
+    - target: {fileID: 4269803818102693910, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
+      propertyPath: handController
+      value: 
+      objectReference: {fileID: 1230017963}
     - target: {fileID: 4486590880246358184, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: sceneId
       value: 178158125
       objectReference: {fileID: 0}
+    - target: {fileID: 6366181512221410078, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
+      propertyPath: hero
+      value: 
+      objectReference: {fileID: 1126251585}
+    - target: {fileID: 6366181512221410078, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
+      propertyPath: enemyHero
+      value: 
+      objectReference: {fileID: 1921626989}
     - target: {fileID: 6962434659416617978, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: manaDisplay
       value: 
@@ -2835,6 +2863,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2643247869435804099, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
+      propertyPath: board
+      value: 
+      objectReference: {fileID: 322034015}
+    - target: {fileID: 2643247869435804099, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
+      propertyPath: enemyBoard
+      value: 
+      objectReference: {fileID: 340104466}
     - target: {fileID: 3981489359350371392, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: endTurnButton
       value: 
@@ -2927,10 +2963,30 @@ PrefabInstance:
       propertyPath: deck.Array.data[3]
       value: 
       objectReference: {fileID: 11400000, guid: 1dc969e45e9d14c9193ee8ea18d1b0b6, type: 2}
+    - target: {fileID: 4269803818102693910, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
+      propertyPath: enemy
+      value: 
+      objectReference: {fileID: 583992372}
+    - target: {fileID: 4269803818102693910, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
+      propertyPath: enemyHand
+      value: 
+      objectReference: {fileID: 723819826}
+    - target: {fileID: 4269803818102693910, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
+      propertyPath: handController
+      value: 
+      objectReference: {fileID: 1230017963}
     - target: {fileID: 4486590880246358184, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: sceneId
       value: 2188700769
       objectReference: {fileID: 0}
+    - target: {fileID: 6366181512221410078, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
+      propertyPath: hero
+      value: 
+      objectReference: {fileID: 1126251585}
+    - target: {fileID: 6366181512221410078, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
+      propertyPath: enemyHero
+      value: 
+      objectReference: {fileID: 1921626989}
     - target: {fileID: 6962434659416617978, guid: 24310a3116d644bf19b439def1ba6794, type: 3}
       propertyPath: manaDisplay
       value: 

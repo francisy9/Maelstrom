@@ -68,7 +68,9 @@
     <Compile Include="Assets/Scripts/Types/BaseCard.cs" />
     <Compile Include="Assets/Scripts/ScriptableObjects/UnitCardStatsSO.cs" />
     <Compile Include="Assets/Scripts/CardEffect.cs" />
+    <Compile Include="Assets/Scripts/Player/PlayerHeroManager.cs" />
     <Compile Include="Assets/Scripts/EnemyHero.cs" />
+    <Compile Include="Assets/Scripts/Player/PlayerCommunicationManager.cs" />
     <Compile Include="Assets/Scripts/Controller/HandVisual.cs" />
     <Compile Include="Assets/Scripts/Card/CanAttackBase.cs" />
     <Compile Include="Assets/Scripts/Controller/EnemyHandVisual.cs" />
@@ -79,6 +81,7 @@
     <Compile Include="Assets/Scripts/Hero.cs" />
     <Compile Include="Assets/Scripts/Card/OnBoard/OnBoardCard.cs" />
     <Compile Include="Assets/Scripts/Types/HeroStats.cs" />
+    <Compile Include="Assets/Scripts/Player/PlayerBoardManager.cs" />
     <Compile Include="Assets/Scripts/HeroBase.cs" />
     <Compile Include="Assets/Scripts/Server/PlayerManager.cs" />
     <Compile Include="Assets/Scripts/Player/PlayerTurnManager.cs" />
@@ -96,6 +99,7 @@
     <Compile Include="Assets/Scripts/Types/SpellCardStats.cs" />
     <Compile Include="Assets/Scripts/Types/AnimationId.cs" />
     <Compile Include="Assets/Scripts/Controller/HandController.cs" />
+    <Compile Include="Assets/Scripts/Player/PlayerHandManager.cs" />
     <Compile Include="Assets/Scripts/Player/PlayerManaSystem.cs" />
     <Compile Include="Assets/Scripts/Server/ServerState.cs" />
     <Compile Include="Assets/Scripts/PlayerManaDisplay.cs" />
