@@ -2610,6 +2610,8 @@ GameObject:
   - component: {fileID: 2104311103}
   - component: {fileID: 2104311102}
   - component: {fileID: 2104311101}
+  - component: {fileID: 2104311106}
+  - component: {fileID: 2104311107}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2647,13 +2649,13 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  p1HeroMaxHp: 30
-  p2HeroMaxHp: 30
   playerManager: {fileID: 2104311102}
   handManager: {fileID: 2104311105}
   turnManager: {fileID: 2104311101}
   manaManager: {fileID: 2104311104}
   networkingManager: {fileID: 2104311103}
+  heroManager: {fileID: 2104311106}
+  boardManager: {fileID: 2104311107}
 --- !u!114 &2104311098
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2802,6 +2804,38 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6821320dd4a304f588c88afd381da798, type: 2}
   - {fileID: 11400000, guid: a90d570e7d33640e192851f77fa82085, type: 2}
   - {fileID: 11400000, guid: b0b2f7c4a59254632ab73a44e725b7c6, type: 2}
+--- !u!114 &2104311106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2104311095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d05ab75f13d8486a835fdf4fa49564d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  p1HeroMaxHp: 30
+  p2HeroMaxHp: 25
+--- !u!114 &2104311107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2104311095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5daf5efc240448a7b52c1a2a876529d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
 --- !u!1 &2147104435
 GameObject:
   m_ObjectHideFlags: 0

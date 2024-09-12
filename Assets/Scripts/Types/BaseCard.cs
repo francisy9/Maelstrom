@@ -16,9 +16,11 @@ namespace CardTypes
 
         public BaseCard() {}
 
-        public CardType GetCardType() {
-            return CardType;
-        }
+        public CardType GetCardType() =>CardType;
+
+        public int GetCurrentManaCost() => CurrentManaCost;
+
+        public string GetCardName() => CardName;
 
         public static BaseCard Deserialize(byte[] serialized)
         {

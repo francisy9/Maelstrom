@@ -98,6 +98,7 @@
     <Compile Include="Assets/Scripts/Server/ServerComponents/ServerHandManager.cs" />
     <Compile Include="Assets/Scripts/Card/InHand/InHandCardVisualBase.cs" />
     <Compile Include="Assets/Scripts/Types/UnitCardStats.cs" />
+    <Compile Include="Assets/Scripts/Server/ServerComponents/ServerBoardManager.cs" />
     <Compile Include="Assets/Scripts/Controller/EnemyHand.cs" />
     <Compile Include="Assets/Scripts/Server/LineController.cs" />
     <Compile Include="Assets/Scripts/Types/SpellCardStats.cs" />
@@ -108,12 +109,14 @@
     <Compile Include="Assets/Scripts/Player/PlayerManaSystem.cs" />
     <Compile Include="Assets/Scripts/Server/ServerComponents/ServerState.cs" />
     <Compile Include="Assets/Scripts/Server/ServerComponents/ServerTurnManager.cs" />
+    <Compile Include="Assets/Scripts/Server/ServerComponents/ServerHeroManager.cs" />
     <Compile Include="Assets/Scripts/PlayerManaDisplay.cs" />
     <Compile Include="Assets/Scripts/Card/InHand/InHandCard.cs" />
     <Compile Include="Assets/Scripts/ScriptableObjects/BaseCardSO.cs" />
     <Compile Include="Assets/Scripts/ScriptableObjects/WeaponStatsSO.cs" />
     <Compile Include="Assets/Scripts/Types/LayerNames.cs" />
     <Compile Include="Assets/Scripts/Controller/AnimationManager.cs" />
+    <Compile Include="Assets/Scripts/Types/Const.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets/Mirror/Plugins/Mono.Cecil/Mono.CecilX.dll" />

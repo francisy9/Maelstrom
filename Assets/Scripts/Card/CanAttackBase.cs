@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using static Layers.Layers;
+using static Const.Const;
 
 public abstract class CanAttackBase : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {

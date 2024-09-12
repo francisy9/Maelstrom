@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Mirror;
@@ -7,6 +8,7 @@ public class ServerTurnManager : NetworkBehaviour
 {
     [SyncVar] private int turn;
     [SyncVar] private bool isP1Turn;
+    public event EventHandler OnGameStart;
 
     [Server]
     public void EndTurn(Player requestingPlayer) {
@@ -22,6 +24,27 @@ public class ServerTurnManager : NetworkBehaviour
     public void Initialize() {
         isP1Turn = UnityEngine.Random.Range(0, 2) == 0;
         turn = 0;
+    }
+
+    [Server]
+    public void StartGame() {
+        Debug.Log("start game");
+        ServerState.Instance.SetPlayerRefs(GameManager.Instance.GetPlayerOne(), GameManager.Instance.GetPlayerTwo());
+
+        Player starter = GameManager.Instance.GetInTurnPlayer();
+        Player nextPlayer = GameManager.Instance.GetPlayerManager().GetNextPlayer();
+        GameManager.Instance.GetHandManager().StartGameDrawCards();
+
+        GameManager.Instance.GetManaManager().InitializeManaDisplays();
+        GameManager.Instance.GetManaManager().IncrementAndRefreshPlayerMaxMana(starter);
+
+        GameManager.Instance.GetHeroManager().InitializeHeroes();
+        starter.TargetBeginGame(true);
+        nextPlayer.TargetBeginGame(false);
+
+        OnGameStart?.Invoke(this, EventArgs.Empty);
+        StartTurn();
+        ServerState.Instance.PrintServerGameState();
     }
 
 

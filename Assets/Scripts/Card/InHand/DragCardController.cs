@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using CardTypes;
 using static Layers.Layers;
+using static Const.Const;
 
 public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {

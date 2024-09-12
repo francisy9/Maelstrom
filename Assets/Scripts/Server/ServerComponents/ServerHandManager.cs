@@ -10,6 +10,30 @@ public class ServerHandManager : NetworkBehaviour
     [SerializeField] private List<BaseCardSO> p2Deck;
 
     [Server]
+    public void PlayUnitCard(Player requestingPlayer, int handIndex, int boardIndex) {
+        if (!IsValidBoardIndex(boardIndex)) {
+            Debug.LogError($"{requestingPlayer.name} supplied argument handIndex: {handIndex} boardIndex: {boardIndex}");
+        }
+
+        BaseCard baseCard = ServerState.Instance.GetCardStatsAtHandIndex(handIndex, requestingPlayer);
+        if (baseCard.GetCardType() != CardType.Unit) {
+            Debug.LogError($"Card type mismatch: {requestingPlayer.name} is trying to play unit, but card has type: {baseCard.GetCardType()}");
+        }
+
+        UnitCardStats cardToBePlayed = baseCard as UnitCardStats;
+        GameManager.Instance.GetManaManager().ValidateSufficientManaToPlayCard(requestingPlayer, cardToBePlayed);
+
+        ServerState.Instance.MoveUnitCardToBoard(requestingPlayer, handIndex, cardToBePlayed, boardIndex);
+        
+        GameManager.Instance.GetManaManager().ConsumeManaForCardPlay(requestingPlayer, cardToBePlayed.GetCurrentManaCost());
+        GameManager.Instance.GetNetworkingManager().ServerPlayUnitCard(requestingPlayer, handIndex, boardIndex);
+
+        byte[] cardData = cardToBePlayed.Serialize();
+        GameManager.Instance.GetNetworkingManager().ServerOpponentPlayUnitCard(requestingPlayer, cardData, handIndex, boardIndex);
+        ServerState.Instance.PrintServerGameState();
+    }
+
+    [Server]
     // Note: player turns needs to be set beforehand
     public void StartGameDrawCards()
     {
@@ -79,5 +103,9 @@ public class ServerHandManager : NetworkBehaviour
                 break;
         }
         return new byte[0];
+    }
+
+    private bool IsValidBoardIndex(int boardIndex) {
+        return boardIndex >= 0 && boardIndex <= 6;
     }
 }

@@ -13,7 +13,10 @@ public class PlayerCommunicationManager : NetworkBehaviour
     }
 
     [TargetRpc]
-    public void TargetBeginGame(bool first, int heroStartHp, int enemyHeroStartHp) {
+    public void TargetBeginGame(bool first) {}
+    
+    [TargetRpc]
+    public void TargetInitializeHeroes(int heroStartHp, int enemyHeroStartHp) {
         player.GetHeroManager().InitHeroes(heroStartHp, enemyHeroStartHp);
     }
 

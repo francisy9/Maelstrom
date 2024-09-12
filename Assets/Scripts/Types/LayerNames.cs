@@ -9,7 +9,6 @@ namespace Layers
         public const string IN_HAND_CARD_LAYER = "InHandCard";
         public const string HERO_LAYER = "Hero";
         public const string OPPONENT_HERO_LAYER = "OpponentHero";
-        public const int HERO_BOARD_INDEX = 7;
 
         public static LayerMask GetLayerMaskByTargetable(Targetable targetable) {
             LayerMask opponentCardLayerMask = LayerMask.GetMask(OPPONENT_PLAYED_CARD_LAYER);

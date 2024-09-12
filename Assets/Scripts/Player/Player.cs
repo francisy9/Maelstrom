@@ -48,7 +48,8 @@ public class Player : NetworkBehaviour
 
 
     // Request and Responses
-    public void TargetBeginGame(bool first, int heroStartHp, int enemyHeroStartHp) => communicationManager.TargetBeginGame(first, heroStartHp, enemyHeroStartHp);
+    public void TargetBeginGame(bool first) => communicationManager.TargetBeginGame(first);
+    public void TargetInitializeHeroes(int heroStartHp, int enemyHeroStartHp) => communicationManager.TargetInitializeHeroes(heroStartHp, enemyHeroStartHp);
     public void TargetAddCardToHand(byte[] serializedCardArray) => communicationManager.TargetAddCardToHand(serializedCardArray);
     public void TargetAddCardToOpponentHand() => communicationManager.TargetAddCardToOpponentHand();
     public void TargetPlayCard(int handIndex, int boardIndex) => communicationManager.TargetPlayCard(handIndex, boardIndex);
