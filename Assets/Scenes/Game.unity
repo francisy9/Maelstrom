@@ -2605,6 +2605,10 @@ GameObject:
   - component: {fileID: 2104311098}
   - component: {fileID: 2104311099}
   - component: {fileID: 2104311100}
+  - component: {fileID: 2104311105}
+  - component: {fileID: 2104311104}
+  - component: {fileID: 2104311103}
+  - component: {fileID: 2104311102}
   - component: {fileID: 2104311101}
   m_Layer: 0
   m_Name: GameManager
@@ -2643,22 +2647,13 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  playerOne: {fileID: 4637422271275783584}
-  p1Deck:
-  - {fileID: 11400000, guid: 3116278cce44c433fb1fa03693ad6bce, type: 2}
-  - {fileID: 11400000, guid: 1eeb45098ffb6450a9efae1d03e4bb59, type: 2}
-  - {fileID: 11400000, guid: c57e259b633194b3a9c098fe89d8c963, type: 2}
-  p1HeroSprite: {fileID: 21300000, guid: 2e11b460161b04b978d5134d0d344d89, type: 3}
   p1HeroMaxHp: 30
-  playerTwo: {fileID: 583992372}
-  p2Deck:
-  - {fileID: 11400000, guid: f14da11481de24819bb94ddc76cf2364, type: 2}
-  - {fileID: 11400000, guid: 6821320dd4a304f588c88afd381da798, type: 2}
-  - {fileID: 11400000, guid: a90d570e7d33640e192851f77fa82085, type: 2}
-  - {fileID: 11400000, guid: b0b2f7c4a59254632ab73a44e725b7c6, type: 2}
-  p2HeroSprite: {fileID: 21300000, guid: 298ea2e01cef24b51916a9818dd603e3, type: 3}
   p2HeroMaxHp: 30
-  endTurnButton: {fileID: 165044326}
+  playerManager: {fileID: 2104311102}
+  handManager: {fileID: 2104311105}
+  turnManager: {fileID: 2104311101}
+  manaManager: {fileID: 2104311104}
+  networkingManager: {fileID: 2104311103}
 --- !u!114 &2104311098
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2729,9 +2724,84 @@ MonoBehaviour:
   m_GameObject: {fileID: 2104311095}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b21702b601884900a7609583ff4bb18, type: 3}
+  m_Script: {fileID: 11500000, guid: 5c844d92fa563476fb5ae0ab3e00bc49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+--- !u!114 &2104311102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2104311095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8450b3920cb23420d8e70b37482a87b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  playerOne: {fileID: 4637422271275783584}
+  playerTwo: {fileID: 583992372}
+--- !u!114 &2104311103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2104311095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f437ca0c547644ddba6d7186860b4c09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+--- !u!114 &2104311104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2104311095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0464f4f7b2650413ba8a4e0e942cfffe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+--- !u!114 &2104311105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2104311095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6e744e6f7d9a4bc48184c26d93446be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  p1Deck:
+  - {fileID: 11400000, guid: 1eeb45098ffb6450a9efae1d03e4bb59, type: 2}
+  - {fileID: 11400000, guid: c57e259b633194b3a9c098fe89d8c963, type: 2}
+  - {fileID: 11400000, guid: 3116278cce44c433fb1fa03693ad6bce, type: 2}
+  - {fileID: 11400000, guid: 3116278cce44c433fb1fa03693ad6bce, type: 2}
+  p2Deck:
+  - {fileID: 11400000, guid: f14da11481de24819bb94ddc76cf2364, type: 2}
+  - {fileID: 11400000, guid: 6821320dd4a304f588c88afd381da798, type: 2}
+  - {fileID: 11400000, guid: a90d570e7d33640e192851f77fa82085, type: 2}
+  - {fileID: 11400000, guid: b0b2f7c4a59254632ab73a44e725b7c6, type: 2}
 --- !u!1 &2147104435
 GameObject:
   m_ObjectHideFlags: 0

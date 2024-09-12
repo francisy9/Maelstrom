@@ -1,7 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 using Mirror;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,137 +8,49 @@ using CardTypes;
 public class GameManager : NetworkBehaviour
 {
     public static GameManager Instance;
-    [SerializeField] private Player playerOne;
-    // TODO: @max figure out how to load this in on run time based on user
-    [SerializeField] private List<BaseCardSO> p1Deck;
-    [SerializeField] private Sprite p1HeroSprite;
     [SerializeField] private int p1HeroMaxHp;
-    private bool p1Assigned = false;
-    [SerializeField] private Player playerTwo;
-    [SerializeField] private List<BaseCardSO> p2Deck;
-    [SerializeField] private Sprite p2HeroSprite;
     [SerializeField] private int p2HeroMaxHp;
-    private bool p2Assigned = false;
-    [SerializeField] private Button endTurnButton;
     public event EventHandler OnGameStart;
-
-    [SyncVar] private int turn;
-    [SyncVar] private bool isP1Turn;
-
+    [SerializeField] private ServerPlayerManager playerManager;
+    [SerializeField] private ServerHandManager handManager;
+    [SerializeField] private ServerTurnManager turnManager;
+    [SerializeField] private ServerManaManager manaManager;
+    [SerializeField] private ServerNetworkingManager networkingManager;
     public override void OnStartServer() {
         Instance = this;
-        isP1Turn = UnityEngine.Random.Range(0, 2) == 0;
-
-        // TODO: Testing logic, remove when done
-        isP1Turn = true;
-
-
-        turn = 0;
         base.OnStartServer();
+        InitializeComponents();
     }
 
     public override void OnStartClient()
     {
         base.OnStartClient();
         if (isServer) return;
-
         Instance = this;
     }
 
-    // Used for initialization of game by player manager
-    public Player GetPlayer() {
-        if (!p1Assigned) {
-            p1Assigned = true;
-            return playerOne;
-        } else if (!p2Assigned) {
-            p2Assigned = true;
-            return playerTwo;
-        } else {
-            Debug.LogError("Too many attempted connections");
-            return null;
-        }
+    private void InitializeComponents() {
+        turnManager.Initialize();
     }
+
+    // Used for initialization of game by player manager
+    public Player GetPlayerRefBeforeStart() => playerManager.GetPlayerRefBeforeStart();
 
     public void StartGame() {
         Debug.Log("start game");
-        ServerState.Instance.SetPlayerRefs(playerOne, playerTwo);
+        ServerState.Instance.SetPlayerRefs(playerManager.GetPlayerOne(), playerManager.GetPlayerTwo());
 
         Player starter = GetInTurnPlayer();
         Player nextPlayer = GetNextPlayer();
-        int numCardsToBeDrawnByFirstPlayer = 3;
-        int numCardsToBeDrawnBySecondPlayer = 4;
+        handManager.StartGameDrawCards();
 
-        // int numCardsToBeDrawnByFirstPlayer = 1;
-        // int numCardsToBeDrawnBySecondPlayer = 0;
-
-        for (int i = 0; i < numCardsToBeDrawnByFirstPlayer; i++) {
-            BaseCardSO cardDrawn = DrawBaseCardSO(starter);
-            CardType cardType = cardDrawn.GetCardType();
-            BaseCard baseCard = ServerState.Instance.GetBaseCardFromSO(cardDrawn);
-            ServerState.Instance.AddCardToHand(baseCard, starter);
-
-
-            switch (cardType)
-            {
-                case CardType.Unit:
-                    byte[] serializedUnitCardData = (baseCard as UnitCardStats).Serialize();
-                    starter.TargetAddCardToHand(serializedUnitCardData);
-                    break;
-                case CardType.Spell:
-                    byte[] serializedSpellCardData = (baseCard as SpellCardStats).Serialize();
-                    starter.TargetAddCardToHand(serializedSpellCardData);
-                    break;
-                default:
-                    Debug.LogError("Card type not implemented");
-                    break;
-            }
-            nextPlayer.TargetAddCardToOpponentHand();
-        }
-
-        for (int j = 0; j < numCardsToBeDrawnBySecondPlayer; j++) {
-            BaseCardSO cardDrawn = DrawBaseCardSO(nextPlayer);
-            CardType cardType = cardDrawn.GetCardType();
-            BaseCard baseCard = ServerState.Instance.GetBaseCardFromSO(cardDrawn);
-            ServerState.Instance.AddCardToHand(baseCard, nextPlayer);
-
-            switch (cardType)
-            {
-                case CardType.Unit:
-                    byte[] serializedUnitCardData = (baseCard as UnitCardStats).Serialize();
-                    nextPlayer.TargetAddCardToHand(serializedUnitCardData);
-                    break;
-                default:
-                    Debug.LogError("Card type not implemented");
-                    break;
-            }
-
-            starter.TargetAddCardToOpponentHand();
-        }
-        InitializeManaDisplays();
-        starter.IncrementMaxMana();
-
-
-        // TODO: testing, remove when done
-        starter.IncrementMaxMana();
-        starter.IncrementMaxMana();
-        starter.IncrementMaxMana();
-        starter.IncrementMaxMana();
-        starter.IncrementMaxMana();
-        starter.IncrementMaxMana();
+        GetManaManager().InitializeManaDisplays();
         starter.IncrementMaxMana();
         nextPlayer.IncrementMaxMana();
-        nextPlayer.IncrementMaxMana();
-        nextPlayer.IncrementMaxMana();
-        nextPlayer.IncrementMaxMana();
-        nextPlayer.IncrementMaxMana();
-        nextPlayer.IncrementMaxMana();
-
-
-
         starter.RefreshMana();
 
-        int starterHeroHp = isP1Turn ? p1HeroMaxHp : p2HeroMaxHp;
-        int nextPlayerHeroHp = isP1Turn ? p2HeroMaxHp : p1HeroMaxHp;
+        int starterHeroHp = turnManager.IsP1Turn() ? p1HeroMaxHp : p2HeroMaxHp;
+        int nextPlayerHeroHp = turnManager.IsP1Turn() ? p2HeroMaxHp : p1HeroMaxHp;
         
         ServerState.Instance.InitHeroes(p1HeroMaxHp, p2HeroMaxHp);
         starter.TargetBeginGame(true, starterHeroHp, nextPlayerHeroHp);
@@ -151,49 +61,12 @@ public class GameManager : NetworkBehaviour
         ServerState.Instance.PrintServerGameState();
     }
 
-    private void InitializeManaDisplays() {
-        playerOne.TargetInitializeManaDisplay();
-        playerTwo.TargetInitializeManaDisplay();
-    }
+    private void StartTurn() => turnManager.StartTurn();
+    public bool IsP1Turn() => turnManager.IsP1Turn();
 
-    private void StartTurn() {
-        GetInTurnPlayer().TargetStartTurn();
-        GetNextPlayer().TargetStartOpponentTurn();
-    }
+    private bool IsPlayerInTurn(Player requestingPlayer) => turnManager.IsPlayerInTurn(requestingPlayer);
 
-    public bool IsP1Turn() {
-        return isP1Turn;
-    }
-
-    public Player GetInTurnPlayer() {
-        return isP1Turn ? playerOne : playerTwo;
-    }
-
-    public Player GetNextPlayer() {
-        return isP1Turn ? playerTwo : playerOne;
-    }
-
-    private bool IsPlayerInTurn(Player requestingPlayer) {
-        return GetInTurnPlayer() == requestingPlayer;
-    }
-
-    [Command(requiresAuthority = false)]
-    public void CmdEndTurn(NetworkConnectionToClient sender = null) {
-        Player requestingPlayer = sender.identity.GetComponent<Player>();
-        
-        if (IsPlayerInTurn(requestingPlayer)) {
-            ServerState.Instance.EndTurn(requestingPlayer);
-            requestingPlayer.TargetEndTurn();
-            isP1Turn = !isP1Turn;
-            Player playerNextInTurn = GetInTurnPlayer();
-            playerNextInTurn.IncrementMaxMana();
-            playerNextInTurn.RefreshMana();
-            playerNextInTurn.TargetStartTurn();
-            turn += 1;
-        } else {
-            Debug.LogError("Wrong player was able to request end turn");
-        }
-    }
+    public void CmdEndTurn(NetworkConnectionToClient sender = null) => networkingManager.CmdEndTurn(sender);
 
     [Command(requiresAuthority = false)]
     public void CmdPlayUnitCard(int handIndex, int boardIndex, NetworkConnectionToClient sender = null) {
@@ -317,52 +190,20 @@ public class GameManager : NetworkBehaviour
         return false;
     }
 
-    [Server]
-    private BaseCardSO DrawBaseCardSO(Player player) {
-        List<BaseCardSO> deckToDrawFrom = player == playerOne ? p1Deck : p2Deck;
-        int cardIndex = UnityEngine.Random.Range(0, deckToDrawFrom.Count);
-        BaseCardSO cardDrawn = deckToDrawFrom[cardIndex];
-        deckToDrawFrom.RemoveAt(cardIndex);
-        return cardDrawn;
-    }
-
     // Functions to test on server client
     public void TestingCards() {
-        isP1Turn = true;
-        playerOne.IncrementMaxMana();
-        playerOne.IncrementMaxMana();
-        playerOne.IncrementMaxMana();
-        playerOne.IncrementMaxMana();
-        playerOne.IncrementMaxMana();
-        playerOne.IncrementMaxMana();
-        playerOne.IncrementMaxMana();
-        playerOne.RefreshMana();
-        HandController.Instance.SetPlayer(playerOne);
+    //     isP1Turn = true;
+    //     GetInTurnPlayer().IncrementMaxMana();
+    //     GetInTurnPlayer().RefreshMana();
+    //     HandController.Instance.SetPlayer(GetInTurnPlayer());
     }
 
-    // Server functions for debugging purposes
-    public int GetP1Mana() {
-        return playerOne.GetMana();
-    }
-
-    public int GetP2Mana() {
-        return playerTwo.GetMana();
-    }
-
-    public int GetP1MaxMana() {
-        return playerOne.GetMaxMana();
-    }
-
-    public int GetP2MaxMana() {
-        return playerTwo.GetMaxMana();
-    }
-
-    public Player GetPlayerOne() {
-        return playerOne;
-    }
-
-    public Player GetPlayerTwo() {
-        return playerTwo;
-    }
-    // End of server debug functions
+    public Player GetPlayerOne() => playerManager.GetPlayerOne();
+    public Player GetPlayerTwo() => playerManager.GetPlayerTwo();
+    public Player GetInTurnPlayer() => playerManager.GetInTurnPlayer();
+    public Player GetNextPlayer() => playerManager.GetNextPlayer();
+    public Player GetOpposingPlayer(Player player) => playerManager.GetOpposingPlayer(player);
+    public ServerTurnManager GetTurnManager() => turnManager;
+    public ServerPlayerManager GetPlayerManager() => playerManager;
+    public ServerManaManager GetManaManager() => manaManager;
 }

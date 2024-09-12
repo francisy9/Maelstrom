@@ -18,7 +18,7 @@ public class PlayerManager : NetworkManager
 
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
     {
-        GameObject playerObject = gameManager.GetPlayer().gameObject;
+        GameObject playerObject = gameManager.GetPlayerRefBeforeStart().gameObject;
         NetworkServer.AddPlayerForConnection(conn, playerObject);
         Debug.Log("PlayerManager: connection added as player");
         numPlayersConnected += 1;

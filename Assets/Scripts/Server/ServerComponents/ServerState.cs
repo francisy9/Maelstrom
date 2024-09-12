@@ -35,22 +35,6 @@ public class ServerState : NetworkBehaviour
     }
 
     [Server]
-    public BaseCard GetBaseCardFromSO(BaseCardSO baseCardSO) {
-        switch (baseCardSO.CardType)
-        {
-            case CardType.Unit:
-                UnitCardStats cardStats = new UnitCardStats(baseCardSO as UnitCardSO);
-                return cardStats;
-            case CardType.Spell:
-                return new SpellCardStats(baseCardSO as SpellCardSO);
-            default:
-                Debug.LogError("unimplemented card type");
-                break;
-        }
-        return new BaseCard();
-    }
-
-    [Server]
     public void AddCardToHand(BaseCard baseCard, Player player) {
         GetHand(player).Add(baseCard);
     }
@@ -75,8 +59,8 @@ public class ServerState : NetworkBehaviour
     [Server]
     public void PrintServerGameState() {
         Debug.Log($"{GameManager.Instance.GetInTurnPlayer().name}'s turn " +
-        $"p1: {p1Hero.CurrentHP}hp {gameManager.GetP1Mana()}/{gameManager.GetP1MaxMana()} mana" +
-        $" p2: {p2Hero.CurrentHP}hp {gameManager.GetP2Mana()}/{gameManager.GetP2MaxMana()} mana");
+        $"p1: {p1Hero.CurrentHP}hp {GameManager.Instance.GetManaManager().GetP1Mana()}/{GameManager.Instance.GetManaManager().GetP1MaxMana()} mana" +
+        $" p2: {p2Hero.CurrentHP}hp {GameManager.Instance.GetManaManager().GetP2Mana()}/{GameManager.Instance.GetManaManager().GetP2MaxMana()} mana");
 
         PrintHand(playerOne);
 
