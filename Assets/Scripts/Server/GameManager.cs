@@ -63,7 +63,7 @@ public class GameManager : NetworkBehaviour
 
     public void StartGame() {
         Debug.Log("start game");
-        ServerUpdate.Instance.SetPlayerRefs(playerOne, playerTwo);
+        ServerState.Instance.SetPlayerRefs(playerOne, playerTwo);
 
         Player starter = GetInTurnPlayer();
         Player nextPlayer = GetNextPlayer();
@@ -76,8 +76,8 @@ public class GameManager : NetworkBehaviour
         for (int i = 0; i < numCardsToBeDrawnByFirstPlayer; i++) {
             BaseCardSO cardDrawn = DrawBaseCardSO(starter);
             CardType cardType = cardDrawn.GetCardType();
-            BaseCard baseCard = ServerUpdate.Instance.GetBaseCardFromSO(cardDrawn);
-            ServerUpdate.Instance.AddCardToHand(baseCard, starter);
+            BaseCard baseCard = ServerState.Instance.GetBaseCardFromSO(cardDrawn);
+            ServerState.Instance.AddCardToHand(baseCard, starter);
 
 
             switch (cardType)
@@ -100,8 +100,8 @@ public class GameManager : NetworkBehaviour
         for (int j = 0; j < numCardsToBeDrawnBySecondPlayer; j++) {
             BaseCardSO cardDrawn = DrawBaseCardSO(nextPlayer);
             CardType cardType = cardDrawn.GetCardType();
-            BaseCard baseCard = ServerUpdate.Instance.GetBaseCardFromSO(cardDrawn);
-            ServerUpdate.Instance.AddCardToHand(baseCard, nextPlayer);
+            BaseCard baseCard = ServerState.Instance.GetBaseCardFromSO(cardDrawn);
+            ServerState.Instance.AddCardToHand(baseCard, nextPlayer);
 
             switch (cardType)
             {
@@ -116,7 +116,6 @@ public class GameManager : NetworkBehaviour
 
             starter.AddCardToOpponentHand();
         }
-
         InitializeManaDisplays();
         starter.IncrementMaxMana();
 
@@ -143,13 +142,13 @@ public class GameManager : NetworkBehaviour
         int starterHeroHp = isP1Turn ? p1HeroMaxHp : p2HeroMaxHp;
         int nextPlayerHeroHp = isP1Turn ? p2HeroMaxHp : p1HeroMaxHp;
         
-        ServerUpdate.Instance.InitHeroes(p1HeroMaxHp, p2HeroMaxHp);
+        ServerState.Instance.InitHeroes(p1HeroMaxHp, p2HeroMaxHp);
         starter.TargetBeginGame(true, starterHeroHp, nextPlayerHeroHp);
         nextPlayer.TargetBeginGame(false, nextPlayerHeroHp, starterHeroHp);
 
         OnGameStart?.Invoke(this, EventArgs.Empty);
         StartTurn();
-        ServerUpdate.Instance.PrintServerGameState();
+        ServerState.Instance.PrintServerGameState();
     }
 
     private void InitializeManaDisplays() {
@@ -183,7 +182,7 @@ public class GameManager : NetworkBehaviour
         Player requestingPlayer = sender.identity.GetComponent<Player>();
         
         if (IsPlayerInTurn(requestingPlayer)) {
-            ServerUpdate.Instance.EndTurn(requestingPlayer);
+            ServerState.Instance.EndTurn(requestingPlayer);
             requestingPlayer.TargetEndTurn();
             isP1Turn = !isP1Turn;
             Player playerNextInTurn = GetInTurnPlayer();
@@ -206,20 +205,20 @@ public class GameManager : NetworkBehaviour
         }
 
         if(IsPlayerInTurn(requestingPlayer)) {
-            BaseCard baseCard = ServerUpdate.Instance.GetCardStatsAtHandIndex(handIndex, requestingPlayer);
+            BaseCard baseCard = ServerState.Instance.GetCardStatsAtHandIndex(handIndex, requestingPlayer);
 
             if (baseCard.GetCardType() != CardType.Unit) {
                 Debug.LogError($"Card type mismatch: {requestingPlayer.name} is trying to play unit, but card has type: {baseCard.GetCardType()}");
             }
 
-            UnitCardStats cardToBePlayed = ServerUpdate.Instance.GetCardStatsAtHandIndex(handIndex, requestingPlayer) as UnitCardStats;
+            UnitCardStats cardToBePlayed = ServerState.Instance.GetCardStatsAtHandIndex(handIndex, requestingPlayer) as UnitCardStats;
 
             if (requestingPlayer.GetMana() < cardToBePlayed.CurrentManaCost) {
                 Debug.LogError("Insufficient mana to play card but still able to make request");
                 return;
             }
 
-            ServerUpdate.Instance.MoveUnitCardToBoard(requestingPlayer, handIndex, cardToBePlayed, boardIndex);
+            ServerState.Instance.MoveUnitCardToBoard(requestingPlayer, handIndex, cardToBePlayed, boardIndex);
 
             requestingPlayer.ConsumeMana(cardToBePlayed.CurrentManaCost);
             requestingPlayer.TargetPlayCard(handIndex, boardIndex);
@@ -228,7 +227,7 @@ public class GameManager : NetworkBehaviour
             GetNextPlayer().TargetOpponentPlayCard(cardData, handIndex, boardIndex);
 
 
-            ServerUpdate.Instance.PrintServerGameState();
+            ServerState.Instance.PrintServerGameState();
         } else {
             Debug.LogError("Player isn't in turn");
         }
@@ -244,7 +243,7 @@ public class GameManager : NetworkBehaviour
             if (IsCardAtBoardIndex(boardIndex)) {
                 // Attacker is card type
                 attackerIsCard = true;
-                UnitCardStats card = ServerUpdate.Instance.GetCardStatsAtBoardIndex(boardIndex, requestingPlayer);
+                UnitCardStats card = ServerState.Instance.GetCardStatsAtBoardIndex(boardIndex, requestingPlayer);
 
                 if (card.CurrentAttack <= 0) {
                     Debug.LogError("Unit's attack value is 0!");
@@ -257,7 +256,7 @@ public class GameManager : NetworkBehaviour
             } else {
                 // Attacker is hero
                 attackerIsCard = false;
-                HeroStats hero = ServerUpdate.Instance.GetHeroStats(requestingPlayer);
+                HeroStats hero = ServerState.Instance.GetHeroStats(requestingPlayer);
 
                 if (hero.CurrentAttack <= 0) {
                     Debug.LogError("Hero's attack value is 0!");
@@ -271,7 +270,7 @@ public class GameManager : NetworkBehaviour
 
             byte[] attackerData;
             byte[] targetData;
-            object[] serverUpdateResponses = ServerUpdate.Instance.Attack(boardIndex, opponentBoardIndex, requestingPlayer);
+            object[] serverUpdateResponses = ServerState.Instance.Attack(boardIndex, opponentBoardIndex, requestingPlayer);
 
             if (attackerIsCard) {
                 attackerData = (serverUpdateResponses[0] as UnitCardStats).Serialize();
@@ -304,8 +303,8 @@ public class GameManager : NetworkBehaviour
         }
 
         if (IsPlayerInTurn(requestingPlayer)) {
-            SpellCardStats cardToBeCast = ServerUpdate.Instance.GetCardStatsAtHandIndex(handIndex, requestingPlayer) as SpellCardStats;
-            ServerUpdate.Instance.CastSpell(handIndex, targeting, requestingPlayer);
+            SpellCardStats cardToBeCast = ServerState.Instance.GetCardStatsAtHandIndex(handIndex, requestingPlayer) as SpellCardStats;
+            ServerState.Instance.CastSpell(handIndex, targeting, requestingPlayer);
         } else {
             Debug.LogError("Player isn't in turn");
         }
@@ -330,7 +329,6 @@ public class GameManager : NetworkBehaviour
     // Functions to test on server client
     public void TestingCards() {
         isP1Turn = true;
-        playerOne.SetPlayerInTurn();
         playerOne.IncrementMaxMana();
         playerOne.IncrementMaxMana();
         playerOne.IncrementMaxMana();
@@ -373,11 +371,11 @@ public class GameManager : NetworkBehaviour
     }
 
     public int GetP1MaxMana() {
-        return playerOne.GetTotalMana();
+        return playerOne.GetMaxMana();
     }
 
     public int GetP2MaxMana() {
-        return playerTwo.GetTotalMana();
+        return playerTwo.GetMaxMana();
     }
 
     public Player GetPlayerOne() {

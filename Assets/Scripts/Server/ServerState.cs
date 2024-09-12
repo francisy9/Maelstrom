@@ -5,9 +5,9 @@ using System.Text;
 using CardTypes;
 using System;
 
-public class ServerUpdate : NetworkBehaviour
+public class ServerState : NetworkBehaviour
 {
-    public static ServerUpdate Instance;
+    public static ServerState Instance;
     private List<BaseCard> p1Hand;
     private List<UnitCardStats> p1Board;
     private List<BaseCard> p2Hand;

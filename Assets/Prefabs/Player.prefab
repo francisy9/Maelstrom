@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 4079980953400386558}
   - component: {fileID: 8541721803694683318}
   - component: {fileID: 4486590880246358184}
+  - component: {fileID: 6962434659416617978}
+  - component: {fileID: 3981489359350371392}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -46,14 +48,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a214f8cdd06b435099c74ada71f89ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   canvas: {fileID: 0}
-  hp: 30
-  remainingMana: 0
+  opponent: {fileID: 0}
+  hero: {fileID: 0}
+  enemyHero: {fileID: 0}
   board: {fileID: 0}
-  isServer: 0
-  hand: {fileID: 0}
+  enemyBoard: {fileID: 0}
+  enemyHand: {fileID: 0}
   deck: []
   cardObject: {fileID: 0}
+  handController: {fileID: 0}
+  cardBackObject: {fileID: 0}
+  manaManager: {fileID: 6962434659416617978}
+  turnManager: {fileID: 3981489359350371392}
 --- !u!114 &8541721803694683318
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105,3 +115,36 @@ MonoBehaviour:
   serverOnly: 0
   visibility: 0
   hasSpawned: 0
+--- !u!114 &6962434659416617978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2402681596375902675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b29834d6af69b4aa2842158199cf60ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  manaDisplay: {fileID: 0}
+  enemyManaDisplay: {fileID: 0}
+--- !u!114 &3981489359350371392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2402681596375902675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb40a64bf9d44132acfe50e3573f56f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  endTurnButton: {fileID: 0}

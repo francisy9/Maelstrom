@@ -14,35 +14,27 @@ public class Player : NetworkBehaviour
     [SerializeField] private Board board;
     [SerializeField] private EnemyBoard enemyBoard;
     [SerializeField] private EnemyHand enemyHand;
-    [SerializeField] private PlayerManaDisplay manaDisplay;
-    [SerializeField] private PlayerManaDisplay enemyManaDisplay;
     [SerializeField] private List<UnitCardSO> deck;
     [SerializeField] private GameObject cardObject;
     [SerializeField] private HandController handController;
     [SerializeField] private GameObject cardBackObject;
-    [SerializeField] private Button endTurnButton;
-    [SyncVar (hook = nameof(OnManaChange))]
-    private int mana = 0;
-    [SyncVar (hook = nameof(OnManaChange))]
-    private int maxMana = 0;
-    public event EventHandler OnStartTurn;
-    [SyncVar] private bool inTurn;
+    [SerializeField] private PlayerManaSystem manaManager;
+    [SerializeField] private PlayerTurnManager turnManager;
 
     public override void OnStartLocalPlayer() {
         base.OnStartLocalPlayer();
-        endTurnButton.onClick.AddListener(() => {
-            RequestEndTurn();
-        });
         handController.SetPlayer(this);
         enemyHand.SetPlayer(opponent);
         board.SetPlayer(this);
+        InitializeComponents();
     }
 
-    [TargetRpc]
-    public void TargetInitializeManaDisplay() {
-        manaDisplay.InitializeManaDisplay(this);
-        enemyManaDisplay.InitializeManaDisplay(opponent);
+    private void InitializeComponents() {
+        manaManager.Initialize(this);
+        turnManager.Initialize(this);
     }
+
+
 
     [TargetRpc]
     public void TargetBeginGame(bool first, int heroStartHp, int enemyHeroStartHp) {
@@ -54,35 +46,24 @@ public class Player : NetworkBehaviour
         return board;
     }
 
-    [TargetRpc]
-    public void TargetStartTurn() {
-        inTurn = true;
-        OnStartTurn?.Invoke(this, EventArgs.Empty);
+    public Player GetOpponent() {
+        return opponent;
     }
 
-    private void OnManaChange(int _, int _a) {
-        manaDisplay.UpdateManaVisual();
-        enemyManaDisplay.UpdateManaVisual();
-    }
+    // Turn logic
+    public bool IsTurn() => turnManager.IsInTurn();
+    public void TargetStartTurn() => turnManager.TargetStartTurn();
+    public void TargetEndTurn() => turnManager.TargetEndTurn();
+    public void TargetStartOpponentTurn() => turnManager.TargetStartOpponentTurn();
 
-    [TargetRpc]
-    public void TargetStartOpponentTurn() {
-    }
 
-    [Server]
-    public void IncrementMaxMana() {
-        maxMana += 1;
-    }
-
-    [Server]
-    public void ConsumeMana(int mana) {
-        this.mana -= mana;
-    }
-
-    [Server]
-    public void RefreshMana() {
-        mana = maxMana;
-    }
+    // Mana logic
+    public void TargetInitializeManaDisplay() => manaManager.TargetInitializeManaDisplay();
+    public void IncrementMaxMana() => manaManager.IncrementMaxMana();
+    public void ConsumeMana(int mana) => manaManager.ConsumeMana(mana);
+    public void RefreshMana() => manaManager.RefreshMana();
+    public int GetMana() => manaManager.GetMana();
+    public int GetMaxMana() => manaManager.GetMaxMana();
 
     [TargetRpc]
     public void AddCardToHand(byte[] serializedCardArray) {
@@ -99,32 +80,6 @@ public class Player : NetworkBehaviour
         return canvas;
     }
 
-    public int GetMana() {
-        return mana;
-    }
-
-    public int GetTotalMana() {
-        return maxMana;
-    }
-
-    public bool IsTurn() {
-        return inTurn;
-    }
-
-    private void ResetCardAttacks() {
-        board.ResetCardAttacks();
-    }
-
-    private void RequestEndTurn()
-    {
-        GameManager.Instance.CmdEndTurn();
-    }
-
-    [TargetRpc]
-    public void TargetEndTurn() {
-        ResetCardAttacks();
-        inTurn = false;
-    }
 
     [TargetRpc]
     public void TargetPlayCard(int handIndex, int boardIndex) {
@@ -220,10 +175,5 @@ public class Player : NetworkBehaviour
     [Server]
     public void ServerAddCardToOpponentHand() {
         enemyHand.AddCardToHand();
-    }
-
-    [Server]
-    public void SetPlayerInTurn() {
-        inTurn = true;
     }
 }

@@ -14,7 +14,7 @@ public class PlayerManaDisplay : MonoBehaviour
 
     public void UpdateManaVisual()
     {
-        manaText.text = $"{player.GetMana()}/{player.GetTotalMana()}";
+        manaText.text = $"{player.GetMana()}/{player.GetMaxMana()}";
     }
 
 }
