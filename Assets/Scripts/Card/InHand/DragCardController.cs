@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using CardTypes;
 using static Layers.Layers;
-using static Const.Const;
+using static Constants.Constants;
 
 public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
@@ -256,7 +256,7 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
         {
             return new Targeting
             {
-                targetBoardIndex = player.GetEnemyBoard().GetBoardIndex(enemyCard.GetCardUid()),
+                targetBoardIndices = new int[] { player.GetEnemyBoard().GetBoardIndex(enemyCard.GetCardUid()) },
                 targetType = TargetType.Enemy,
             };
         }
@@ -264,7 +264,7 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
         {
             return new Targeting
             {
-                targetBoardIndex = HERO_BOARD_INDEX,
+                targetBoardIndices = new int[] { HERO_BOARD_INDEX },
                 targetType = TargetType.Enemy,
             };
         }
@@ -277,7 +277,7 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
         {
             return new Targeting
             {
-                targetBoardIndex = player.GetBoard().GetBoardIndex(allyCard.GetCardUid()),
+                targetBoardIndices = new int[] { player.GetBoard().GetBoardIndex(allyCard.GetCardUid()) },
                 targetType = TargetType.Ally,
             };
         }
@@ -285,7 +285,7 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
         {
             return new Targeting
             {
-                targetBoardIndex = HERO_BOARD_INDEX,
+                targetBoardIndices = new int[] { HERO_BOARD_INDEX },
                 targetType = TargetType.Ally,
             };
         }

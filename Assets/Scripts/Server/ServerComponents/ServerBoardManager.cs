@@ -1,7 +1,7 @@
 using Mirror;
 using UnityEngine;
 using CardTypes;
-using static Const.Const;
+using static Constants.Constants;
 
 public class ServerBoardManager : NetworkBehaviour
 {
@@ -60,12 +60,12 @@ public class ServerBoardManager : NetworkBehaviour
     }
 
     private void ValidateBoardIndex(int boardIndex) {
-        if (!IsCardAtBoardIndex(boardIndex) && !IsHeroAtBoardIndex(boardIndex)) {
+        if (!IsValidBoardIndexForCard(boardIndex) && !IsHeroAtBoardIndex(boardIndex)) {
             Debug.LogError($"Invalid board index: {boardIndex}");
         }
     }
 
-    public bool IsCardAtBoardIndex(int boardIndex) {
+    public bool IsValidBoardIndexForCard(int boardIndex) {
         return boardIndex <= MAX_BOARD_INDEX && boardIndex >= 0;
     }
 

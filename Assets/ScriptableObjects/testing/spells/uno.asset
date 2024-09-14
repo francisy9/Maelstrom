@@ -17,7 +17,7 @@ MonoBehaviour:
   Description: Deal 2 damage to all enemies
   ManaCost: 2
   CardEffects:
-  - effectTargetType: 4
+  - effectTargetType: 6
     effectType: 1
     triggerTime: 1
     targetSelection: 0
@@ -30,4 +30,5 @@ MonoBehaviour:
     needsTargeting: 0
     numTargets: 0
     spawnUnitCardStatsSO: {fileID: 0}
+    animationId: 0
   SpellDamage: 0

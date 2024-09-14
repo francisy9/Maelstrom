@@ -80,8 +80,8 @@ public abstract class BoardBase : MonoBehaviour
 
     // Distinction between the two for animation purposes
     public void CardAttack(int boardIndex, int opponentBoardIndex, object attackerStats, object targetStats) {
-        bool attackerIsCard = GameManager.Instance.IsCardAtBoardIndex(boardIndex);
-        bool targetIsCard = GameManager.Instance.IsCardAtBoardIndex(opponentBoardIndex);
+        bool attackerIsCard = GameManager.Instance.IsValidBoardIndexForCard(boardIndex);
+        bool targetIsCard = GameManager.Instance.IsValidBoardIndexForCard(opponentBoardIndex);
 
         if (attackerIsCard) {
            UpdateCardAfterAttack(boardIndex, attackerStats as UnitCardStats);
@@ -97,8 +97,8 @@ public abstract class BoardBase : MonoBehaviour
     }
 
     public void CardAttackedBy(int boardIndex, int opponentBoardIndex, object targetStats, object attackerStats) {
-        bool targetIsCard = GameManager.Instance.IsCardAtBoardIndex(boardIndex);
-        bool attackerIsCard = GameManager.Instance.IsCardAtBoardIndex(opponentBoardIndex);
+        bool targetIsCard = GameManager.Instance.IsValidBoardIndexForCard(boardIndex);
+        bool attackerIsCard = GameManager.Instance.IsValidBoardIndexForCard(opponentBoardIndex);
 
         if (targetIsCard) {
             UpdateCardAfterAttack(boardIndex, targetStats as UnitCardStats);

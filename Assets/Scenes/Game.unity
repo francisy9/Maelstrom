@@ -2612,6 +2612,9 @@ GameObject:
   - component: {fileID: 2104311101}
   - component: {fileID: 2104311106}
   - component: {fileID: 2104311107}
+  - component: {fileID: 2104311108}
+  - component: {fileID: 2104311110}
+  - component: {fileID: 2104311109}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2717,6 +2720,9 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
+  serverExecuteCardEffects: {fileID: 2104311108}
+  handStateManager: {fileID: 2104311110}
+  boardStateManager: {fileID: 2104311109}
 --- !u!114 &2104311101
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2831,6 +2837,51 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e5daf5efc240448a7b52c1a2a876529d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+--- !u!114 &2104311108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2104311095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 915075f2684064fad894054bb494ad25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+--- !u!114 &2104311109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2104311095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37b8656befe274e48ba4f6d128aa2733, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+--- !u!114 &2104311110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2104311095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37cce91f670df42bd9802b6b0b2a6bd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncDirection: 0

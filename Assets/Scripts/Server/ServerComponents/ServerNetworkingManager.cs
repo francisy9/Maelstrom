@@ -1,9 +1,14 @@
 using Mirror;
 using UnityEngine;
 using CardTypes;
+using ResponseTypes;
+using Animation;
+using System.Collections.Generic;
+using System;
 
 public class ServerNetworkingManager : NetworkBehaviour
 {
+    // Commands to be called by client
     [Command(requiresAuthority = false)]
     public void CmdEndTurn(NetworkConnectionToClient sender = null) {
         Player requestingPlayer = sender.identity.GetComponent<Player>();
@@ -34,7 +39,7 @@ public class ServerNetworkingManager : NetworkBehaviour
         if (targeting == null) {
             Debug.Log($"{requestingPlayer.name} is requesting to cast spell at hand index: {handIndex} targeting null");
         } else {
-            Debug.Log($"{requestingPlayer.name} is requesting to cast spell at hand index: {handIndex} targeting {targeting.targetType} index: {targeting.targetBoardIndex}");
+            Debug.Log($"{requestingPlayer.name} is requesting to cast spell at hand index: {handIndex} targeting {targeting.targetType} index: {targeting.targetBoardIndices}");
         }
 
         ValidateRequest(requestingPlayer);
@@ -42,12 +47,7 @@ public class ServerNetworkingManager : NetworkBehaviour
         ServerState.Instance.CastSpell(handIndex, targeting, requestingPlayer);
     }
 
-    private void ValidateRequest(Player requestingPlayer) {
-        if (!GameManager.Instance.GetTurnManager().IsPlayerInTurn(requestingPlayer)) {
-            Debug.LogError("Player isn't in turn");
-        }
-    }
-
+    // Server methods
     [Server]
     public void ServerPlayUnitCard(Player requestingPlayer, int handIndex, int boardIndex) {
         requestingPlayer.TargetPlayCard(handIndex, boardIndex);
@@ -62,5 +62,18 @@ public class ServerNetworkingManager : NetworkBehaviour
     public void ServerAttack(Player requestingPlayer, int boardIndex, int opponentBoardIndex, byte[] attackerData, byte[] targetData) {
         requestingPlayer.TargetAttackResponse(boardIndex, opponentBoardIndex, attackerData, targetData);
         GameManager.Instance.GetOpposingPlayer(requestingPlayer).TargetOpponentAttackResponse(opponentBoardIndex, boardIndex, targetData, attackerData);
+    }
+
+    [Server]
+    public void ServerSendCardEffectResponse(Player player, CardEffectResponse response) {
+        player.TargetExecuteCardEffect(response.Serialize());
+        GameManager.Instance.GetOpposingPlayer(player).TargetExecuteOpponentCardEffect(response.Serialize());
+    }
+
+    // Helper methods
+    private void ValidateRequest(Player requestingPlayer) {
+        if (!GameManager.Instance.GetTurnManager().IsPlayerInTurn(requestingPlayer)) {
+            Debug.LogError("Player isn't in turn");
+        }
     }
 }

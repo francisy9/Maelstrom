@@ -1,9 +1,8 @@
-using System;
 using System.Collections.Generic;
 using Mirror;
 using UnityEngine;
-using UnityEngine.UI;
 using CardTypes;
+using ResponseTypes;
 
 public class Player : NetworkBehaviour
 {
@@ -16,6 +15,7 @@ public class Player : NetworkBehaviour
     [SerializeField] private PlayerBoardManager boardManager;
     [SerializeField] private PlayerCommunicationManager communicationManager;
     [SerializeField] private PlayerHeroManager heroManager;
+    [SerializeField] private PlayerAnimationManager animationManager;
 
     public override void OnStartLocalPlayer() {
         base.OnStartLocalPlayer();
@@ -54,9 +54,11 @@ public class Player : NetworkBehaviour
     public void TargetAddCardToOpponentHand() => communicationManager.TargetAddCardToOpponentHand();
     public void TargetPlayCard(int handIndex, int boardIndex) => communicationManager.TargetPlayCard(handIndex, boardIndex);
     public void TargetOpponentPlayCard(byte[] cardData, int handIndex, int boardIndex) => communicationManager.TargetOpponentPlayCard(cardData, handIndex, boardIndex);
-    internal void RequestPlayCard(int handIndex, int boardIndex) => communicationManager.RequestPlayCard(handIndex, boardIndex);
     public void TargetAttackResponse(int boardIndex, int opponentBoardIndex, byte[] cardData, byte[] opponentCardData) => communicationManager.TargetAttackResponse(boardIndex, opponentBoardIndex, cardData, opponentCardData);
     public void TargetOpponentAttackResponse(int boardIndex, int opponentBoardIndex, byte[] cardData, byte[] opponentCardData) => communicationManager.TargetOpponentAttackResponse(boardIndex, opponentBoardIndex, cardData, opponentCardData);
+    public void TargetExecuteCardEffect(byte[] responseData) => communicationManager.TargetExecuteCardEffect(responseData);
+    public void TargetExecuteOpponentCardEffect(byte[] responseData) => communicationManager.TargetExecuteOpponentCardEffect(responseData);
+    internal void RequestPlayCard(int handIndex, int boardIndex) => communicationManager.RequestPlayCard(handIndex, boardIndex);
     internal void RequestAttack(int boardIndex, int opponentBoardIndex) => communicationManager.RequestAttack(boardIndex, opponentBoardIndex);
     internal void RequestCastSpell(int handIndex, Targeting targeting) => communicationManager.RequestCastSpell(handIndex, targeting);
 
@@ -69,4 +71,5 @@ public class Player : NetworkBehaviour
     public PlayerHeroManager GetHeroManager() => heroManager;
     public Board GetBoard() => boardManager.GetBoard();
     public EnemyBoard GetEnemyBoard() => boardManager.GetEnemyBoard();
+    public PlayerAnimationManager GetAnimationManager() => animationManager;
 }

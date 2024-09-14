@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using CardTypes;
+using ResponseTypes;
+using System;
+using static Constants.Constants;
 
 public class PlayerCommunicationManager : NetworkBehaviour
 {
@@ -49,8 +52,8 @@ public class PlayerCommunicationManager : NetworkBehaviour
 
     [TargetRpc]
     public void TargetAttackResponse(int boardIndex, int opponentBoardIndex, byte[] cardData, byte[] opponentCardData) {
-        bool attackerIsCard = GameManager.Instance.IsCardAtBoardIndex(boardIndex);
-        bool targetIsCard = GameManager.Instance.IsCardAtBoardIndex(opponentBoardIndex);
+        bool attackerIsCard = GameManager.Instance.IsValidBoardIndexForCard(boardIndex);
+        bool targetIsCard = GameManager.Instance.IsValidBoardIndexForCard(opponentBoardIndex);
 
         object attackerStats;
         object targetStats;
@@ -75,8 +78,8 @@ public class PlayerCommunicationManager : NetworkBehaviour
         // Note the flip in boardIndex and opponentBoardIndex
         // attacker is the opponent
         // self unit is target
-        bool targetIsCard = GameManager.Instance.IsCardAtBoardIndex(boardIndex);
-        bool attackerIsCard = GameManager.Instance.IsCardAtBoardIndex(opponentBoardIndex);
+        bool targetIsCard = GameManager.Instance.IsValidBoardIndexForCard(boardIndex);
+        bool attackerIsCard = GameManager.Instance.IsValidBoardIndexForCard(opponentBoardIndex);
 
         object targetStats;
         object attackerStats;
@@ -94,6 +97,68 @@ public class PlayerCommunicationManager : NetworkBehaviour
         }
 
         player.GetBoardManager().CardAttackedBy(boardIndex, opponentBoardIndex, targetStats, attackerStats);
+    }
+
+    [TargetRpc]
+    public void TargetExecuteCardEffect(byte[] responseData)
+    {
+        CardEffectResponse response = CardEffectResponse.Deserialize(responseData);
+        Debug.Log(response);
+        Debug.Log($"Executing card effect for {response.AnimationStructure.AnimationId}");
+        if (response.AlliedUnits != null) {
+            foreach (KeyValuePair<int, byte[]> kvp in response.AlliedUnits)
+            {
+                if (kvp.Key == HERO_BOARD_INDEX) {
+                    Debug.Log($"{HeroStats.Deserialize(kvp.Value)}");
+                } else {
+                    UnitCardStats unitCardStats = UnitCardStats.Deserialize(kvp.Value) as UnitCardStats;
+                    Debug.Log($"{unitCardStats.GetCardName()} has {unitCardStats.CurrentHP} hp");
+                }
+            }
+        }
+        if (response.EnemyUnits != null) {
+            foreach (KeyValuePair<int, byte[]> kvp in response.EnemyUnits)
+            {
+                if (kvp.Key == HERO_BOARD_INDEX) {
+                    Debug.Log($"{HeroStats.Deserialize(kvp.Value)}");
+                } else {
+                    UnitCardStats unitCardStats = UnitCardStats.Deserialize(kvp.Value) as UnitCardStats;
+                    Debug.Log($"{unitCardStats.GetCardName()} has {unitCardStats.CurrentHP} hp");
+                }
+            }
+        }
+        throw new NotImplementedException();
+    }
+
+    [TargetRpc]
+    public void TargetExecuteOpponentCardEffect(byte[] responseData)
+    {
+        CardEffectResponse response = CardEffectResponse.Deserialize(responseData);
+        Debug.Log(response);
+        Debug.Log($"Executing card effect for {response.AnimationStructure.AnimationId}");
+        if (response.AlliedUnits != null) {
+            foreach (KeyValuePair<int, byte[]> kvp in response.AlliedUnits)
+            {
+                if (kvp.Key == HERO_BOARD_INDEX) {
+                    Debug.Log($"{HeroStats.Deserialize(kvp.Value)}");
+                } else {
+                    UnitCardStats unitCardStats = UnitCardStats.Deserialize(kvp.Value) as UnitCardStats;
+                    Debug.Log($"{unitCardStats.GetCardName()} has {unitCardStats.CurrentHP} hp");
+                }
+            }
+        }
+        if (response.EnemyUnits != null) {
+            foreach (KeyValuePair<int, byte[]> kvp in response.EnemyUnits)
+            {
+                if (kvp.Key == HERO_BOARD_INDEX) {
+                    Debug.Log($"{HeroStats.Deserialize(kvp.Value)}");
+                } else {
+                    UnitCardStats unitCardStats = UnitCardStats.Deserialize(kvp.Value) as UnitCardStats;
+                    Debug.Log($"{unitCardStats.GetCardName()} has {unitCardStats.CurrentHP} hp");
+                }
+            }
+        }
+        throw new NotImplementedException();
     }
 
     internal void RequestAttack(int boardIndex, int opponentBoardIndex)

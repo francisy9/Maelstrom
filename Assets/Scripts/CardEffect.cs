@@ -1,14 +1,5 @@
 using System.Collections.Generic;
-
-public enum EffectTargetType {
-    Self,
-    Single,
-    Multiple,
-    Board,
-    EnemyBoard,
-    WholeBoard,
-}
-
+using Animation;
 public enum TriggerTime {
     None,
     OnPlay,
@@ -26,12 +17,25 @@ public enum EffectType {
     Spawn, // e.g. spawn an ogre on board
     Taunt,
     MultiStrike,
+    SpellDamage,
+}
+
+public enum EffectTargetType {
+    Self,
+    Single,
+    PlayerHero,
+    OpponentHero,
+    Multiple,
+    OwnBoard,
+    EnemyBoard,
+    WholeBoard,
 }
 
 public enum TargetSelection {
     None,
-    Random,
-    Adjacent,
+    RandomWithDuplicates,
+    RandomWithoutDuplicates,
+    Adjacent, // From caster's position
     UserSelect,
 }
 
@@ -69,6 +73,7 @@ public class CardEffect
     // Sent to client
     public int numTargets;
     public UnitCardSO spawnUnitCardStatsSO;
+    public AnimationId animationId;
 
     // If changing this, also change Deserialize and SerializedNumBytes
     public byte[] Serialize() {

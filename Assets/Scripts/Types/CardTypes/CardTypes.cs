@@ -25,7 +25,7 @@ namespace CardTypes
     }
 
     public class Targeting {
-        public int targetBoardIndex;
+        public int[] targetBoardIndices;
         public TargetType targetType;
     }
 }
