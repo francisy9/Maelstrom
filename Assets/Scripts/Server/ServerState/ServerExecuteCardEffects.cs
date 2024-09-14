@@ -47,6 +47,8 @@ public class ServerExecuteCardEffects : NetworkBehaviour
         Debug.Log($"Requesting player units {string.Join(", ", requestingPlayerUnits.Keys)}");
         Debug.Log($"Opposing player units {string.Join(", ", opposingPlayerUnits.Keys)}");
 
+        ServerState.Instance.RemoveDeadUnitsFromBoard(); // Update after response generated since clients need to see which units die
+
         return new CardEffectResponse {
             AnimationStructure = new AnimationStructure {
                 AnimationId = effect.animationId,
@@ -131,6 +133,7 @@ public class ServerExecuteCardEffects : NetworkBehaviour
                 }
             }
         }
+
     }
 
     private void ValidateTargeting(CardEffect effect, Targeting targeting) {

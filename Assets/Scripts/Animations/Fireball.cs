@@ -1,10 +1,18 @@
 using UnityEngine;
 
-public class Fireball : AnimationBase
+public class Fireball : ProjectileAnimationBase
 {
-    protected override void SetupAnimation()
+    private void Awake()
     {
-        currentAnimationObject = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        if (projectilePrefab == null)
+        {
+            projectilePrefab = CreateProjectilePrefab();
+        }
+        projectilePrefab.SetActive(false);
+    }
+
+    protected override GameObject CreateProjectilePrefab() {
+        GameObject currentAnimationObject = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         currentAnimationObject.transform.localScale = new Vector3(20f, 20f, 2f);
 
         Renderer renderer = currentAnimationObject.GetComponent<Renderer>();
@@ -71,6 +79,12 @@ public class Fireball : AnimationBase
         var particleRenderer = particles.GetComponent<ParticleSystemRenderer>();
         particleRenderer.material = new Material(Shader.Find("Particles/Standard Unlit"));
         particleRenderer.material.color = Color.grey;
+
+        return currentAnimationObject;
+    }
+    protected override GameObject GetProjectilePrefab()
+    {
+        return projectilePrefab;
     }
     public class TrailRendererModifier : MonoBehaviour
     {

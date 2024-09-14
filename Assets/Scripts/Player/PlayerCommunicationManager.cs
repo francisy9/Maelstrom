@@ -109,20 +109,27 @@ public class PlayerCommunicationManager : NetworkBehaviour
         if (response.AlliedUnits != null) {
             foreach (KeyValuePair<int, byte[]> kvp in response.AlliedUnits)
             {
-                Debug.Log($"Affected allied unit at {kvp.Key}");
+                if (kvp.Key == HERO_BOARD_INDEX) continue;
+                Debug.Log($"Affected allied unit at {kvp.Key} with {(UnitCardStats.Deserialize(kvp.Value) as UnitCardStats).CurrentHP} hp left");
             }
         }
         if (response.EnemyUnits != null) {
             foreach (KeyValuePair<int, byte[]> kvp in response.EnemyUnits)
             {
-                Debug.Log($"Affected enemy unit at {kvp.Key}");
+                if (kvp.Key == HERO_BOARD_INDEX) continue;
+                Debug.Log($"Affected enemy unit at {kvp.Key} with {(UnitCardStats.Deserialize(kvp.Value) as UnitCardStats).CurrentHP} hp left");
             }
         }
-        // Send to animation manager to execute animation
+
+        Debug.Log("Playing animation");
         player.GetAnimationManager().PlayAnimation(
             response.AnimationStructure.AnimationId, 
             player.GetBoardManager().GetUnitPosition(TargetType.Ally, response.AnimationStructure.OriginBoardIndex), 
-            player.GetBoardManager().GetAffectedUnitPositions(response)
+            player.GetBoardManager().GetAffectedUnitPositions(response),
+            () => {
+                player.GetBoardManager().UpdateCardsAfterEffect(response);
+                Debug.Log("Updated cards");
+            }
         );
     }
 
@@ -135,19 +142,27 @@ public class PlayerCommunicationManager : NetworkBehaviour
         if (response.AlliedUnits != null) {
             foreach (KeyValuePair<int, byte[]> kvp in response.AlliedUnits)
             {
-                Debug.Log($"Affected allied unit at {kvp.Key}");
+                if (kvp.Key == HERO_BOARD_INDEX) continue;
+                Debug.Log($"Affected allied unit at {kvp.Key} with {(UnitCardStats.Deserialize(kvp.Value) as UnitCardStats).CurrentHP} hp left");
             }
         }
         if (response.EnemyUnits != null) {
             foreach (KeyValuePair<int, byte[]> kvp in response.EnemyUnits)
             {
-                Debug.Log($"Affected enemy unit at {kvp.Key}");
+                if (kvp.Key == HERO_BOARD_INDEX) continue;
+                Debug.Log($"Affected enemy unit at {kvp.Key} with {(UnitCardStats.Deserialize(kvp.Value) as UnitCardStats).CurrentHP} hp left");
             }
         }
+
+        Debug.Log("Playing animation");
         player.GetAnimationManager().PlayAnimation(
             response.AnimationStructure.AnimationId, 
             player.GetBoardManager().GetUnitPosition(TargetType.Enemy, response.AnimationStructure.OriginBoardIndex), 
-            player.GetBoardManager().GetAffectedUnitPositions(response)
+            player.GetBoardManager().GetAffectedUnitPositions(response),
+            () => {
+                player.GetBoardManager().UpdateCardsAfterEffect(response);
+                Debug.Log("Updated cards");
+            }
         );
     }
 

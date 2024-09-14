@@ -61,21 +61,35 @@ public abstract class BoardBase : MonoBehaviour
         hashMapVis = hashMapVisItems.ToArray();
     }
 
-    public void UpdateCardAfterAttack(int boardIndex, UnitCardStats cardStats) {
+    public void UpdateCardAfterAttack(int boardIndex, UnitCardStats cardStats, bool removeDeadUnits = true) {
         OnBoardCard card = onBoardCards[boardIndex];
+
+        Debug.Log($"Updating card at {cardStats.CardName} with {cardStats.CurrentHP} hp left");
         card.UpdateSelf(cardStats);
+        Debug.Log($"Card now has {cardStats.CurrentHP} hp");
 
-        if (cardStats.CurrentHP <= 0) {
-            // Unit needs to be removed from board
-            int cardUid = card.GetCardUid();
-            RemoveFromHashMap(cardUid);
-            onBoardCards[boardIndex].transform.SetParent(null);
-            onBoardCards.RemoveAt(boardIndex);
-            card.DestroySelf();
-            UpdateBoardIndexHashMap();
+        if (cardStats.CurrentHP <= 0 && removeDeadUnits) {
+            RemoveDeadUnit(card);
         }
+    }
 
+    public void RemoveDeadUnits() {
+        for (int i = onBoardCards.Count - 1; i >= 0; i--) {
+            OnBoardCard card = onBoardCards[i];
+            if (card.GetRemainingHp() <= 0) {
+                RemoveDeadUnit(card);
+            }
+        }
+    }
 
+    private void RemoveDeadUnit(OnBoardCard card) {
+        int cardUid = card.GetCardUid();
+        int boardIndex = GetBoardIndex(cardUid);
+        RemoveFromHashMap(cardUid);
+        onBoardCards[boardIndex].transform.SetParent(null);
+        onBoardCards.RemoveAt(boardIndex);
+        card.DestroySelf();
+        UpdateBoardIndexHashMap();
     }
 
     // Distinction between the two for animation purposes

@@ -2417,7 +2417,7 @@ MonoBehaviour:
   evaluationInterval: 3
   timeInterpolationGui: 0
   gameManager: {fileID: 2104311097}
-  isTesting: 1
+  isTesting: 0
 --- !u!4 &1865784521
 Transform:
   m_ObjectHideFlags: 0

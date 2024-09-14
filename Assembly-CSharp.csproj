@@ -71,10 +71,10 @@
     <Compile Include="Assets/Scripts/Player/PlayerAnimationManager.cs" />
     <Compile Include="Assets/Scripts/Player/PlayerHeroManager.cs" />
     <Compile Include="Assets/Scripts/Player/PlayerCommunicationManager.cs" />
-    <Compile Include="Assets/Scripts/Animations/AnimationBase.cs" />
     <Compile Include="Assets/Scripts/Controller/HandVisual.cs" />
     <Compile Include="Assets/Scripts/Card/CanAttackBase.cs" />
     <Compile Include="Assets/Scripts/Controller/Mask.cs" />
+    <Compile Include="Assets/Scripts/Animations/ProjectileAnimationBase.cs" />
     <Compile Include="Assets/Scripts/Controller/EnemyHandVisual.cs" />
     <Compile Include="Assets/Scripts/Types/CardTypes/UnitCardStats.cs" />
     <Compile Include="Assets/Scripts/Server/ServerState/ServerBoardStateManager.cs" />

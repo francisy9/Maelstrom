@@ -204,6 +204,17 @@ public class ServerState : NetworkBehaviour
             Debug.LogError($"Unimplemented target type {target.GetType()}");
         }
     }
+    
+    [Server]
+    public void RemoveDeadUnitsFromBoard() {
+        RemoveDeadUnitsFromPlayerBoard(playerOne);
+        RemoveDeadUnitsFromPlayerBoard(playerTwo);
+    }
+
+    private void RemoveDeadUnitsFromPlayerBoard(Player player) {
+        List<UnitCardStats> board = GetBoard(player);
+        board.RemoveAll(cardStats => cardStats.CurrentHP <= 0);
+    }
 
     [Server]
     private void ConsumeAttack<T>(T target) where T : class {

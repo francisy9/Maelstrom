@@ -48,9 +48,9 @@ public class GameManager : NetworkBehaviour
 
     // Functions to test on server client
     public void TestingCards() {
-        Vector3 originPosition = new Vector3(364, 38, 0);
-        Vector3[] affectedUnitPositions = { new Vector3(364, 364, 0) };
-        AnimationManager.Instance.PlayAnimation(AnimationId.Fireball, originPosition, affectedUnitPositions);
+        // Vector3 originPosition = new Vector3(364, 38, 0);
+        // Vector3[] affectedUnitPositions = { new Vector3(364, 364, 0) };
+        // AnimationManager.Instance.PlayAnimation(AnimationId.Fireball, originPosition, affectedUnitPositions);
     }
 
     public bool IsP1Turn() => turnManager.IsP1Turn();

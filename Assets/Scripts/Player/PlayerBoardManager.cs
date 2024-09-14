@@ -58,4 +58,32 @@ public class PlayerBoardManager : NetworkBehaviour
         }
         return affectedUnitPositions.ToArray();
     }
+
+    internal void UpdateCardsAfterEffect(CardEffectResponse response)
+    {
+        if (response.AlliedUnits != null) {
+            foreach (KeyValuePair<int, byte[]> kvp in response.AlliedUnits) 
+            {
+                int boardIndex = kvp.Key;
+                if (boardIndex == HERO_BOARD_INDEX) {
+                    player.GetHeroManager().GetHero().UpdateSelf(HeroStats.Deserialize(kvp.Value) as HeroStats);
+                } else {
+                    board.UpdateCardAfterAttack(boardIndex, UnitCardStats.Deserialize(kvp.Value) as UnitCardStats, removeDeadUnits: false);
+                }
+            }
+        }
+        if (response.EnemyUnits != null) {
+            foreach (KeyValuePair<int, byte[]> kvp in response.EnemyUnits) {
+                int boardIndex = kvp.Key;
+                if (boardIndex == HERO_BOARD_INDEX) {
+                    player.GetHeroManager().GetEnemyHero().UpdateSelf(HeroStats.Deserialize(kvp.Value) as HeroStats);
+                } else {
+                    enemyBoard.UpdateCardAfterAttack(boardIndex, UnitCardStats.Deserialize(kvp.Value) as UnitCardStats, removeDeadUnits: false);
+                }
+            }
+        }
+
+        board.RemoveDeadUnits();
+        enemyBoard.RemoveDeadUnits();
+    }
 }
