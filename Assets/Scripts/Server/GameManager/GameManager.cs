@@ -1,10 +1,8 @@
-using System;
-using System.Collections.Generic;
 using Mirror;
 using UnityEngine;
-using UnityEngine.UI;
 using CardTypes;
 using ResponseTypes;
+using Animation;
 
 public class GameManager : NetworkBehaviour
 {
@@ -49,7 +47,11 @@ public class GameManager : NetworkBehaviour
 
 
     // Functions to test on server client
-    public void TestingCards() {}
+    public void TestingCards() {
+        Vector3 originPosition = new Vector3(364, 38, 0);
+        Vector3[] affectedUnitPositions = { new Vector3(364, 364, 0) };
+        AnimationManager.Instance.PlayAnimation(AnimationId.Fireball, originPosition, affectedUnitPositions);
+    }
 
     public bool IsP1Turn() => turnManager.IsP1Turn();
     public bool IsValidBoardIndexForCard(int boardIndex) => boardManager.IsValidBoardIndexForCard(boardIndex);

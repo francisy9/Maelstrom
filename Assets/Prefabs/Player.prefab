@@ -65,7 +65,7 @@ MonoBehaviour:
   boardManager: {fileID: 2643247869435804099}
   communicationManager: {fileID: 1109392479186795185}
   heroManager: {fileID: 6366181512221410078}
-  animationManager: {fileID: 0}
+  animationManager: {fileID: 2750521914189901701}
 --- !u!114 &8541721803694683318
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -231,3 +231,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47dcc3eaa365b4ffe9d6873801bd2456, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  animationManager: {fileID: 0}

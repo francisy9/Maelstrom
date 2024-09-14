@@ -116,4 +116,8 @@ public abstract class BoardBase : MonoBehaviour
     public void RemoveFromHashMap(int cardUid) {
         boardIndexHashMap.Remove(cardUid);
     }
+
+    public Vector3 GetBoardPositionByCardIndex(int boardIndex) {
+        return onBoardCards[boardIndex].transform.position;
+    }
 }

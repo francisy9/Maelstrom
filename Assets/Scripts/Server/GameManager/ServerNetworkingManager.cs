@@ -66,8 +66,8 @@ public class ServerNetworkingManager : NetworkBehaviour
 
     [Server]
     public void ServerSendCardEffectResponse(Player player, CardEffectResponse response) {
-        player.TargetExecuteCardEffect(response.Serialize());
-        GameManager.Instance.GetOpposingPlayer(player).TargetExecuteOpponentCardEffect(response.Serialize());
+        player.TargetExecuteCardEffect(response.Serialize(true));
+        GameManager.Instance.GetOpposingPlayer(player).TargetExecuteOpponentCardEffect(response.Serialize(false));
     }
 
     // Helper methods

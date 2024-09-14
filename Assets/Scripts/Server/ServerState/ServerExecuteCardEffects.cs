@@ -44,6 +44,9 @@ public class ServerExecuteCardEffects : NetworkBehaviour
         Dictionary<int, byte[]> requestingPlayerUnits = ServerState.Instance.GetBoardStateManager().GetCardEffectResponseUnits(targetIndices, player, true);
         Dictionary<int, byte[]> opposingPlayerUnits = ServerState.Instance.GetBoardStateManager().GetCardEffectResponseUnits(targetIndices, ServerState.Instance.GetOpponentPlayer(player), false);
 
+        Debug.Log($"Requesting player units {string.Join(", ", requestingPlayerUnits.Keys)}");
+        Debug.Log($"Opposing player units {string.Join(", ", opposingPlayerUnits.Keys)}");
+
         return new CardEffectResponse {
             AnimationStructure = new AnimationStructure {
                 AnimationId = effect.animationId,

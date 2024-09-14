@@ -25,4 +25,12 @@ public class PlayerHeroManager : NetworkBehaviour
         hero.InitHero(heroStartHp);
         enemyHero.InitHero(enemyHeroStartHp);
     }
+
+    public Vector3 GetHeroPosition() {
+        return hero.transform.position;
+    }
+
+    public Vector3 GetEnemyHeroPosition() {
+        return enemyHero.transform.position;
+    }
 }

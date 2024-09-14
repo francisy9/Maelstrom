@@ -6,6 +6,7 @@ using CardTypes;
 using ResponseTypes;
 using System;
 using static Constants.Constants;
+using System.Linq;
 
 public class PlayerCommunicationManager : NetworkBehaviour
 {
@@ -108,26 +109,21 @@ public class PlayerCommunicationManager : NetworkBehaviour
         if (response.AlliedUnits != null) {
             foreach (KeyValuePair<int, byte[]> kvp in response.AlliedUnits)
             {
-                if (kvp.Key == HERO_BOARD_INDEX) {
-                    Debug.Log($"{HeroStats.Deserialize(kvp.Value)}");
-                } else {
-                    UnitCardStats unitCardStats = UnitCardStats.Deserialize(kvp.Value) as UnitCardStats;
-                    Debug.Log($"{unitCardStats.GetCardName()} has {unitCardStats.CurrentHP} hp");
-                }
+                Debug.Log($"Affected allied unit at {kvp.Key}");
             }
         }
         if (response.EnemyUnits != null) {
             foreach (KeyValuePair<int, byte[]> kvp in response.EnemyUnits)
             {
-                if (kvp.Key == HERO_BOARD_INDEX) {
-                    Debug.Log($"{HeroStats.Deserialize(kvp.Value)}");
-                } else {
-                    UnitCardStats unitCardStats = UnitCardStats.Deserialize(kvp.Value) as UnitCardStats;
-                    Debug.Log($"{unitCardStats.GetCardName()} has {unitCardStats.CurrentHP} hp");
-                }
+                Debug.Log($"Affected enemy unit at {kvp.Key}");
             }
         }
-        throw new NotImplementedException();
+        // Send to animation manager to execute animation
+        player.GetAnimationManager().PlayAnimation(
+            response.AnimationStructure.AnimationId, 
+            player.GetBoardManager().GetUnitPosition(TargetType.Ally, response.AnimationStructure.OriginBoardIndex), 
+            player.GetBoardManager().GetAffectedUnitPositions(response)
+        );
     }
 
     [TargetRpc]
@@ -139,26 +135,20 @@ public class PlayerCommunicationManager : NetworkBehaviour
         if (response.AlliedUnits != null) {
             foreach (KeyValuePair<int, byte[]> kvp in response.AlliedUnits)
             {
-                if (kvp.Key == HERO_BOARD_INDEX) {
-                    Debug.Log($"{HeroStats.Deserialize(kvp.Value)}");
-                } else {
-                    UnitCardStats unitCardStats = UnitCardStats.Deserialize(kvp.Value) as UnitCardStats;
-                    Debug.Log($"{unitCardStats.GetCardName()} has {unitCardStats.CurrentHP} hp");
-                }
+                Debug.Log($"Affected allied unit at {kvp.Key}");
             }
         }
         if (response.EnemyUnits != null) {
             foreach (KeyValuePair<int, byte[]> kvp in response.EnemyUnits)
             {
-                if (kvp.Key == HERO_BOARD_INDEX) {
-                    Debug.Log($"{HeroStats.Deserialize(kvp.Value)}");
-                } else {
-                    UnitCardStats unitCardStats = UnitCardStats.Deserialize(kvp.Value) as UnitCardStats;
-                    Debug.Log($"{unitCardStats.GetCardName()} has {unitCardStats.CurrentHP} hp");
-                }
+                Debug.Log($"Affected enemy unit at {kvp.Key}");
             }
         }
-        throw new NotImplementedException();
+        player.GetAnimationManager().PlayAnimation(
+            response.AnimationStructure.AnimationId, 
+            player.GetBoardManager().GetUnitPosition(TargetType.Enemy, response.AnimationStructure.OriginBoardIndex), 
+            player.GetBoardManager().GetAffectedUnitPositions(response)
+        );
     }
 
     internal void RequestAttack(int boardIndex, int opponentBoardIndex)

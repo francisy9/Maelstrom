@@ -15,7 +15,7 @@ MonoBehaviour:
   CardName: uno
   CardType: 2
   Description: Deal 2 damage to all enemies
-  ManaCost: 2
+  ManaCost: 0
   CardEffects:
   - effectTargetType: 6
     effectType: 1
