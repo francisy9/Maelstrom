@@ -180,7 +180,8 @@ public class ServerState : NetworkBehaviour
             if (effect.effectType == EffectType.Damage && spellDamageAdditive == -1) {
             spellDamageAdditive = CheckForSpellAdditiveSpellDamageEffects(player);
             }
-            CardEffectResponse response = serverExecuteCardEffects.ExecuteCardEffect(effect, targeting, player, CardType.Spell, handIndex, additionalDamage: spellDamageAdditive);
+            CardEffectResponse response = serverExecuteCardEffects.ExecuteCardEffectAndGetResponse(effect, targeting, player, CardType.Spell, handIndex, additionalDamage: spellDamageAdditive);
+            GameManager.Instance.GetHandManager().PlaySpellCard(player, handIndex);
             GameManager.Instance.SendCardEffectResponse(player, response);
         }
     }
@@ -204,7 +205,7 @@ public class ServerState : NetworkBehaviour
             Debug.LogError($"Unimplemented target type {target.GetType()}");
         }
     }
-    
+
     [Server]
     public void RemoveDeadUnitsFromBoard() {
         RemoveDeadUnitsFromPlayerBoard(playerOne);

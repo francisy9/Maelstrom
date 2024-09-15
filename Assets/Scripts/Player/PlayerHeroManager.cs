@@ -22,8 +22,8 @@ public class PlayerHeroManager : NetworkBehaviour
     }
 
     public void InitHeroes(int heroStartHp, int enemyHeroStartHp) {
-        hero.InitHero(heroStartHp);
-        enemyHero.InitHero(enemyHeroStartHp);
+        hero.InitHero(heroStartHp, player);
+        enemyHero.InitHero(enemyHeroStartHp, player.GetOpponent());
     }
 
     public Vector3 GetHeroPosition() {

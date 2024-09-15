@@ -20,7 +20,7 @@ public class EnemyHand : MonoBehaviour
         OnCardDrawn.Invoke(this, EventArgs.Empty);
     }
 
-    public void PlayCard(byte[] cardData, int handIndex, int boardIndex) {
+    public void PlayUnitCard(byte[] cardData, int handIndex, int boardIndex) {
         BaseCard baseCard = BaseCard.Deserialize(cardData);
         switch (baseCard.GetCardType())
         {
@@ -31,6 +31,12 @@ public class EnemyHand : MonoBehaviour
                 Debug.LogError("Card type not implemented");
                 break;
         }
+        DestroyCardAtIndex(handIndex);
+        OnCardPlayed.Invoke(this, EventArgs.Empty);
+        return;
+    }
+
+    public void PlaySpellCard(int handIndex) {
         DestroyCardAtIndex(handIndex);
         OnCardPlayed.Invoke(this, EventArgs.Empty);
         return;

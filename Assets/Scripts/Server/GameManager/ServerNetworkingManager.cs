@@ -2,9 +2,6 @@ using Mirror;
 using UnityEngine;
 using CardTypes;
 using ResponseTypes;
-using Animation;
-using System.Collections.Generic;
-using System;
 
 public class ServerNetworkingManager : NetworkBehaviour
 {
@@ -43,19 +40,25 @@ public class ServerNetworkingManager : NetworkBehaviour
         }
 
         ValidateRequest(requestingPlayer);
-        SpellCardStats cardToBeCast = ServerState.Instance.GetCardStatsAtHandIndex(handIndex, requestingPlayer) as SpellCardStats;
+
         ServerState.Instance.CastSpell(handIndex, targeting, requestingPlayer);
     }
 
     // Server methods
     [Server]
     public void ServerPlayUnitCard(Player requestingPlayer, int handIndex, int boardIndex) {
-        requestingPlayer.TargetPlayCard(handIndex, boardIndex);
+        requestingPlayer.TargetPlayUnitCard(handIndex, boardIndex);
     }
 
     [Server]
     public void ServerOpponentPlayUnitCard(Player requestingPlayer, byte[] cardData, int handIndex, int boardIndex) {
-        GameManager.Instance.GetOpposingPlayer(requestingPlayer).TargetOpponentPlayCard(cardData, handIndex, boardIndex);
+        GameManager.Instance.GetOpposingPlayer(requestingPlayer).TargetOpponentUnitPlayCard(cardData, handIndex, boardIndex);
+    }
+
+    [Server]
+    public void ServerPlaySpellCard(Player requestingPlayer, int handIndex) {
+        requestingPlayer.TargetPlaySpellCard(handIndex);
+        GameManager.Instance.GetOpposingPlayer(requestingPlayer).TargetOpponentPlaySpellCard(handIndex);
     }
 
     [Server]

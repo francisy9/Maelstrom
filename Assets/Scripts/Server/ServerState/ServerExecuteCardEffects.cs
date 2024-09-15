@@ -5,11 +5,12 @@ using System;
 using static Constants.Constants;
 using ResponseTypes;
 using System.Collections.Generic;
+using System.Linq;
 
 public class ServerExecuteCardEffects : NetworkBehaviour
 {
     [Server]
-    public CardEffectResponse ExecuteCardEffect(CardEffect effect, Targeting targeting, Player player, CardType cardType, int? handIndex = null, int? boardIndex = null, int additionalDamage = 0) {
+    public CardEffectResponse ExecuteCardEffectAndGetResponse(CardEffect effect, Targeting targeting, Player player, CardType cardType, int? handIndex = null, int? boardIndex = null, int additionalDamage = 0) {
         if (cardType != CardType.Spell && additionalDamage != 0) {
             Debug.LogError("Spell damage should be handled separately");
         }
@@ -43,9 +44,6 @@ public class ServerExecuteCardEffects : NetworkBehaviour
 
         Dictionary<int, byte[]> requestingPlayerUnits = ServerState.Instance.GetBoardStateManager().GetCardEffectResponseUnits(targetIndices, player, true);
         Dictionary<int, byte[]> opposingPlayerUnits = ServerState.Instance.GetBoardStateManager().GetCardEffectResponseUnits(targetIndices, ServerState.Instance.GetOpponentPlayer(player), false);
-
-        Debug.Log($"Requesting player units {string.Join(", ", requestingPlayerUnits.Keys)}");
-        Debug.Log($"Opposing player units {string.Join(", ", opposingPlayerUnits.Keys)}");
 
         ServerState.Instance.RemoveDeadUnitsFromBoard(); // Update after response generated since clients need to see which units die
 
@@ -126,10 +124,16 @@ public class ServerExecuteCardEffects : NetworkBehaviour
                 foreach (UnitCardStats target in targets) {
                     ServerState.Instance.ReduceHp(target, effect.damageVal + additionalDamage);
                 }
+                if (kvp.Value.Contains(HERO_BOARD_INDEX)) {
+                    ServerState.Instance.ReduceHp(ServerState.Instance.GetHeroStats(player), effect.damageVal + additionalDamage);
+                }
             } else {
                 UnitCardStats[] targets = ServerState.Instance.GetBoardStateManager().GetMultipleUnitCardStatsFromTargeting(kvp.Value, ServerState.Instance.GetOpponentPlayer(player));
                 foreach (UnitCardStats target in targets) {
                     ServerState.Instance.ReduceHp(target, effect.damageVal + additionalDamage);
+                }
+                if (kvp.Value.Contains(HERO_BOARD_INDEX)) {
+                    ServerState.Instance.ReduceHp(ServerState.Instance.GetOpponentHeroStats(player), effect.damageVal + additionalDamage);
                 }
             }
         }

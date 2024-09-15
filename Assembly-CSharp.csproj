@@ -83,8 +83,8 @@
     <Compile Include="Assets/Scripts/Card/OnBoard/OnBoardCard.cs" />
     <Compile Include="Assets/Scripts/Player/PlayerBoardManager.cs" />
     <Compile Include="Assets/Scripts/Server/PlayerManager.cs" />
-    <Compile Include="Assets/Scripts/Player/PlayerTurnManager.cs" />
     <Compile Include="Assets/Scripts/Hero/HeroVisual.cs" />
+    <Compile Include="Assets/Scripts/Player/PlayerTurnManager.cs" />
     <Compile Include="Assets/Scripts/Card/OnBoard/OnBoardCardVisual.cs" />
     <Compile Include="Assets/Scripts/Controller/Board.cs" />
     <Compile Include="Assets/Scripts/Server/GameManager/ServerBoardManager.cs" />

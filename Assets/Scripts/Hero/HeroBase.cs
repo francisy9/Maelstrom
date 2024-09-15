@@ -9,7 +9,8 @@ public abstract class HeroBase : CanAttackBase
     public event EventHandler OnChange;
     [SerializeField] public HeroVisual heroVisual;
 
-    public virtual void InitHero(int hp) {
+    public virtual void InitHero(int hp, Player player) {
+        this.player = player;
         heroStats = new HeroStats
         {
             MaxHP = hp,

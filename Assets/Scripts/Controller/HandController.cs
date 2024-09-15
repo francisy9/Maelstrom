@@ -7,24 +7,17 @@ using static Layers.Layers;
 public class HandController : MonoBehaviour
 {
     public static HandController Instance;
-    // cuid => BaseInHandCard
-    private Dictionary<int, InHandCard> cardHashMap;
+    private List<DragCardController> cardControllerList;
     [SerializeField] private GameObject cardObject;
     private Player player;
     [SerializeField] private Board board;
-    private int cardUid = 0;
-    private int currentlyDraggingCardHandIndex;
-    private int tryingToPlayCardUID;
-    // Used to prevent race condition
-    private bool handlingAction;
     public event EventHandler CardAddedToHand;
     public event EventHandler OnCardPlayed;
-    
+    private bool isHandlingCard = false;
 
     private void Awake() {
         Instance = this;
-        cardHashMap = new Dictionary<int, InHandCard>();
-        handlingAction = false;
+        cardControllerList = new List<DragCardController>();
     }
 
     public void SetPlayer(Player player) {
@@ -36,62 +29,64 @@ public class HandController : MonoBehaviour
         InHandCard cardComponent = currentCardObject.GetComponent<InHandCard>();
         DragCardController dragCardControllerComponent = currentCardObject.GetComponent<DragCardController>();
         cardComponent.InitCard(cardStats);
-        dragCardControllerComponent.InitDragCardController(player, this, cardUid);
-        cardHashMap.Add(cardUid, cardComponent);
+        dragCardControllerComponent.InitDragCardController(player, this);
+        cardControllerList.Add(dragCardControllerComponent);
         currentCardObject.layer = LayerMask.NameToLayer(IN_HAND_CARD_LAYER);
-        cardUid += 1;
         CardAddedToHand.Invoke(this, EventArgs.Empty);
     }
 
     public void PlayUnitCard(int handIndex, int boardIndex) {
-        InHandCard card = cardHashMap[tryingToPlayCardUID];
-        BaseCard cardStats = card.GetCardStats();
-        cardHashMap.Remove(tryingToPlayCardUID);
-        tryingToPlayCardUID = -1;
-        currentlyDraggingCardHandIndex = -1;
-        board.PlaceCardOnBoard(cardStats as UnitCardStats, boardIndex, player);
+        DragCardController dragCardController = cardControllerList[handIndex];
+        InHandCard card = dragCardController.GetCard();
+        cardControllerList.RemoveAt(handIndex);
+        board.PlaceCardOnBoard(card.GetCardStats() as UnitCardStats, boardIndex, player);
         card.DestroySelf();
-        OnCardPlayed.Invoke(this, EventArgs.Empty);
-        handlingAction = false;
+        OnCardPlayed?.Invoke(this, EventArgs.Empty);
+        isHandlingCard = false;
     }
 
-    public void ReturnCardToHand() {
-        DragCardController dragCardController = cardHashMap[tryingToPlayCardUID].GetComponent<DragCardController>();
-        dragCardController.ReturnCardToHand(currentlyDraggingCardHandIndex);
-        handlingAction = false;
+    public void PlaySpellCard(int handIndex) {
+        DragCardController dragCardController = cardControllerList[handIndex];
+        InHandCard card = dragCardController.GetCard();
+        cardControllerList.RemoveAt(handIndex);
+        card.DestroySelf();
+        OnCardPlayed?.Invoke(this, EventArgs.Empty);
+        isHandlingCard = false;
     }
 
-    // Called when card begins to be dragged
-    public void LocalTryingToPlayCard(int cardId) {
-        InHandCard card = cardHashMap[cardId];
-        currentlyDraggingCardHandIndex = card.transform.GetSiblingIndex();
-        tryingToPlayCardUID = cardId;
-        handlingAction = true;
-    }
-
-    public bool IsHandControllerBusy() {
-        return handlingAction;
+    public int FindCardIndex(DragCardController dragCardController) {
+        for (int i = 0; i < cardControllerList.Count; i++) {
+            if (cardControllerList[i] == dragCardController) {
+                return i;
+            }
+        }
+        Debug.LogError("Card not found");
+        return -1;
     }
 
     // Make call to server to play card
-    public void RequestPlayCard(int cardUid, int boardIndex) {
-        if (cardUid != tryingToPlayCardUID) {
-            Debug.LogError("Previously dragging card and currently attempting to play card seem to be different");
+    public void RequestPlayUnitCard(DragCardController dragCardController, int boardIndex) {
+        if (isHandlingCard) {
+            dragCardController.ReturnCardToHand();
+            return;
         }
-
-        player.RequestPlayCard(currentlyDraggingCardHandIndex, boardIndex);
+        int handIndex = FindCardIndex(dragCardController);
+        player.RequestPlayUnitCard(handIndex, boardIndex);
+        isHandlingCard = true;
     }
 
-    public void RequestCastSpell(int cardUid, Targeting targeting) {
-        if (cardUid != tryingToPlayCardUID) {
-            Debug.LogError("Previously dragging card and currently attempting to cast spell seem to be different");
+    public void RequestCastSpell(DragCardController dragCardController, Targeting targeting) {
+        if (isHandlingCard) {
+            dragCardController.ReturnCardToHand();
+            return;
         }
-
-        player.RequestCastSpell(currentlyDraggingCardHandIndex, targeting);
+        int handIndex = FindCardIndex(dragCardController);
+        player.RequestCastSpell(handIndex, targeting);
+        isHandlingCard = true;
     }
 
     public int GetNumCards() {
-        return cardHashMap.Count;
+        return cardControllerList.Count;
     }
 
     public void BlockRayCasts() {
@@ -102,5 +97,9 @@ public class HandController : MonoBehaviour
     public void UnblockRayCasts() {
         CanvasGroup canvasGroup = GetComponent<CanvasGroup>();
         canvasGroup.blocksRaycasts = false;
+    }
+
+    public bool IsHandlingCard() {
+        return isHandlingCard;
     }
 }

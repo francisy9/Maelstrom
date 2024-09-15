@@ -35,7 +35,6 @@ public class PlayerBoardManager : NetworkBehaviour
     }
 
     public Vector3 GetUnitPosition(TargetType targetType, int boardIndex) {
-        Debug.Log($"Getting unit position from board {targetType} for {boardIndex}");
         if (boardIndex == HERO_BOARD_INDEX) {
             return targetType == TargetType.Ally ? player.GetHeroManager().GetHeroPosition() : player.GetHeroManager().GetEnemyHeroPosition();
         }

@@ -16,7 +16,6 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
     private Transform prevParentTransform;
     private HandController handController;
     private InHandCard card;
-    private int uid;
     private int proposedBoardIndex;
     private Vector3 collapsedPos;
     private float collapsedRotation;
@@ -29,7 +28,7 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
     private Targetable targetable;
     private LayerMask targetLayerMask;
 
-    public void InitDragCardController(Player player, HandController handController, int uid) {
+    public void InitDragCardController(Player player, HandController handController) {
         canvas = player.GetCanvas();
         playerDropZone = player.GetBoard();
         this.player = player;
@@ -38,7 +37,6 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
         this.handController = handController;
         card = GetComponent<InHandCard>();
         cardType = card.GetCardType();
-        this.uid = uid;
         canBeDragged = false;
         needsTargeting = NeedsTargeting(card.GetCardStats());
         if (needsTargeting) {
@@ -89,19 +87,12 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
             return;
         }
 
-        if (handController.IsHandControllerBusy()) {
-            Debug.Log("Hand Controller busy");
-            eventData.pointerDrag = null;
-            return;
-        }
-
         cardVisual.BeingDrag();
 
         HandController.Instance.UnblockRayCasts();
 
         canvasGroup.alpha = .6f;
         canvasGroup.blocksRaycasts = false;
-        handController.LocalTryingToPlayCard(uid);
         playerDropZone.UpdateXPos();
         transform.localEulerAngles = Vector3.zero;
         transform.SetParent(canvas.transform);
@@ -148,9 +139,9 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
         switch (cardType) {
             case CardType.Unit:
                 if (DropZoneIsPointerOver(eventData) && proposedBoardIndex != -1) {
-                    handController.RequestPlayCard(uid, proposedBoardIndex);
+                    handController.RequestPlayUnitCard(this, proposedBoardIndex);
                 } else {
-                    handController.ReturnCardToHand();
+                    ReturnCardToHand();
                     playerDropZone.DestroyPlaceHolder();
                     proposedBoardIndex = -1;
                 }
@@ -160,15 +151,15 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
                     if (needsTargeting) {
                         if (currentlyDetectedTarget) {
                             Targeting targeting = GetTargeting(currentlyDetectedTarget);
-                            handController.RequestCastSpell(uid, targeting);
+                            handController.RequestCastSpell(this, targeting);
                         } else {
-                            handController.ReturnCardToHand();
+                            ReturnCardToHand();
                         }
                     } else {
-                        handController.RequestCastSpell(uid, null);
+                        handController.RequestCastSpell(this, null);
                     }
                 } else {
-                    handController.ReturnCardToHand();
+                    ReturnCardToHand();
                 }
                 break;
             case CardType.Weapon:
@@ -189,9 +180,9 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
         return !RectTransformUtility.RectangleContainsScreenPoint(handRectTransform, eventData.position, eventData.pressEventCamera);
     }
 
-    public void ReturnCardToHand(int previousHandIndex) {
-        transform.SetParent(prevParentTransform);
-        transform.SetSiblingIndex(previousHandIndex);
+    public void ReturnCardToHand() {
+        transform.SetParent(handController.transform);
+        transform.SetSiblingIndex(handController.FindCardIndex(this));
         if (HandVisual.Instance.IsExpanded()) {
             transform.SetLocalPositionAndRotation(expandedPos, Quaternion.Euler(0, 0, expandedRotation));
         } else {
@@ -311,5 +302,9 @@ public class DragCardController : MonoBehaviour, IBeginDragHandler, IDragHandler
             }
         }
         return Targetable.None;
+    }
+
+    public InHandCard GetCard() {
+        return card;
     }
 }

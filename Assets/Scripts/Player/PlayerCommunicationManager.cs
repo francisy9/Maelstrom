@@ -36,16 +36,26 @@ public class PlayerCommunicationManager : NetworkBehaviour
     }
 
     [TargetRpc]
-    public void TargetPlayCard(int handIndex, int boardIndex) {
-        player.GetHandManager().PlayCard(handIndex, boardIndex);
+    public void TargetPlayUnitCard(int handIndex, int boardIndex) {
+        player.GetHandManager().PlayUnitCard(handIndex, boardIndex);
     }
 
     [TargetRpc]
-    public void TargetOpponentPlayCard(byte[] cardData, int handIndex, int boardIndex) {
+    public void TargetOpponentPlayUnitCard(byte[] cardData, int handIndex, int boardIndex) {
         player.GetHandManager().OpponentPlayCard(cardData, handIndex, boardIndex);
     }
 
-    internal void RequestPlayCard(int handIndex, int boardIndex)
+    [TargetRpc]
+    public void TargetPlaySpellCard(int handIndex) {
+        player.GetHandManager().PlaySpellCard(handIndex);
+    }
+
+    [TargetRpc]
+    public void TargetOpponentPlaySpellCard(int handIndex) {
+        player.GetHandManager().OpponentPlaySpellCard(handIndex);
+    }
+
+    internal void RequestPlayUnitCard(int handIndex, int boardIndex)
     {
         GameManager.Instance.CmdPlayUnitCard(handIndex, boardIndex);
         return;
@@ -104,32 +114,12 @@ public class PlayerCommunicationManager : NetworkBehaviour
     public void TargetExecuteCardEffect(byte[] responseData)
     {
         CardEffectResponse response = CardEffectResponse.Deserialize(responseData);
-        Debug.Log(response);
-        Debug.Log($"Executing card effect for {response.AnimationStructure.AnimationId}");
-        if (response.AlliedUnits != null) {
-            foreach (KeyValuePair<int, byte[]> kvp in response.AlliedUnits)
-            {
-                if (kvp.Key == HERO_BOARD_INDEX) continue;
-                Debug.Log($"Affected allied unit at {kvp.Key} with {(UnitCardStats.Deserialize(kvp.Value) as UnitCardStats).CurrentHP} hp left");
-            }
-        }
-        if (response.EnemyUnits != null) {
-            foreach (KeyValuePair<int, byte[]> kvp in response.EnemyUnits)
-            {
-                if (kvp.Key == HERO_BOARD_INDEX) continue;
-                Debug.Log($"Affected enemy unit at {kvp.Key} with {(UnitCardStats.Deserialize(kvp.Value) as UnitCardStats).CurrentHP} hp left");
-            }
-        }
 
-        Debug.Log("Playing animation");
         player.GetAnimationManager().PlayAnimation(
             response.AnimationStructure.AnimationId, 
             player.GetBoardManager().GetUnitPosition(TargetType.Ally, response.AnimationStructure.OriginBoardIndex), 
             player.GetBoardManager().GetAffectedUnitPositions(response),
-            () => {
-                player.GetBoardManager().UpdateCardsAfterEffect(response);
-                Debug.Log("Updated cards");
-            }
+            () => {player.GetBoardManager().UpdateCardsAfterEffect(response);}
         );
     }
 
@@ -137,32 +127,12 @@ public class PlayerCommunicationManager : NetworkBehaviour
     public void TargetExecuteOpponentCardEffect(byte[] responseData)
     {
         CardEffectResponse response = CardEffectResponse.Deserialize(responseData);
-        Debug.Log(response);
-        Debug.Log($"Executing card effect for {response.AnimationStructure.AnimationId}");
-        if (response.AlliedUnits != null) {
-            foreach (KeyValuePair<int, byte[]> kvp in response.AlliedUnits)
-            {
-                if (kvp.Key == HERO_BOARD_INDEX) continue;
-                Debug.Log($"Affected allied unit at {kvp.Key} with {(UnitCardStats.Deserialize(kvp.Value) as UnitCardStats).CurrentHP} hp left");
-            }
-        }
-        if (response.EnemyUnits != null) {
-            foreach (KeyValuePair<int, byte[]> kvp in response.EnemyUnits)
-            {
-                if (kvp.Key == HERO_BOARD_INDEX) continue;
-                Debug.Log($"Affected enemy unit at {kvp.Key} with {(UnitCardStats.Deserialize(kvp.Value) as UnitCardStats).CurrentHP} hp left");
-            }
-        }
 
-        Debug.Log("Playing animation");
         player.GetAnimationManager().PlayAnimation(
             response.AnimationStructure.AnimationId, 
             player.GetBoardManager().GetUnitPosition(TargetType.Enemy, response.AnimationStructure.OriginBoardIndex), 
             player.GetBoardManager().GetAffectedUnitPositions(response),
-            () => {
-                player.GetBoardManager().UpdateCardsAfterEffect(response);
-                Debug.Log("Updated cards");
-            }
+            () => {player.GetBoardManager().UpdateCardsAfterEffect(response);}
         );
     }
 

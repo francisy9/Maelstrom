@@ -4,8 +4,8 @@ using static Layers.Layers;
 public class EnemyHero : HeroBase
 {
     public static EnemyHero Instance;
-    public override void InitHero (int hp) {
-        base.InitHero(hp);
+    public override void InitHero (int hp, Player player) {
+        base.InitHero(hp, player);
         gameObject.layer = LayerMask.NameToLayer(OPPONENT_HERO_LAYER);
         Instance = this;
         heroVisual.InitVisual();

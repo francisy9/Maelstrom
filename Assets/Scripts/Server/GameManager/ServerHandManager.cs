@@ -34,6 +34,16 @@ public class ServerHandManager : NetworkBehaviour
     }
 
     [Server]
+    public void PlaySpellCard(Player requestingPlayer, int handIndex) {
+        BaseCard baseCard = ServerState.Instance.GetCardStatsAtHandIndex(handIndex, requestingPlayer);
+        
+        GameManager.Instance.GetManaManager().ConsumeManaForCardPlay(requestingPlayer, baseCard.GetCurrentManaCost());
+        GameManager.Instance.GetNetworkingManager().ServerPlaySpellCard(requestingPlayer, handIndex);
+
+        ServerState.Instance.PrintServerGameState();
+    }
+
+    [Server]
     // Note: player turns needs to be set beforehand
     public void StartGameDrawCards()
     {

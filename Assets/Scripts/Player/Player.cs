@@ -52,13 +52,15 @@ public class Player : NetworkBehaviour
     public void TargetInitializeHeroes(int heroStartHp, int enemyHeroStartHp) => communicationManager.TargetInitializeHeroes(heroStartHp, enemyHeroStartHp);
     public void TargetAddCardToHand(byte[] serializedCardArray) => communicationManager.TargetAddCardToHand(serializedCardArray);
     public void TargetAddCardToOpponentHand() => communicationManager.TargetAddCardToOpponentHand();
-    public void TargetPlayCard(int handIndex, int boardIndex) => communicationManager.TargetPlayCard(handIndex, boardIndex);
-    public void TargetOpponentPlayCard(byte[] cardData, int handIndex, int boardIndex) => communicationManager.TargetOpponentPlayCard(cardData, handIndex, boardIndex);
+    public void TargetPlayUnitCard(int handIndex, int boardIndex) => communicationManager.TargetPlayUnitCard(handIndex, boardIndex);
+    public void TargetOpponentUnitPlayCard(byte[] cardData, int handIndex, int boardIndex) => communicationManager.TargetOpponentPlayUnitCard(cardData, handIndex, boardIndex);
+    public void TargetPlaySpellCard(int handIndex) => communicationManager.TargetPlaySpellCard(handIndex);
+    public void TargetOpponentPlaySpellCard(int handIndex) => communicationManager.TargetOpponentPlaySpellCard(handIndex);
     public void TargetAttackResponse(int boardIndex, int opponentBoardIndex, byte[] cardData, byte[] opponentCardData) => communicationManager.TargetAttackResponse(boardIndex, opponentBoardIndex, cardData, opponentCardData);
     public void TargetOpponentAttackResponse(int boardIndex, int opponentBoardIndex, byte[] cardData, byte[] opponentCardData) => communicationManager.TargetOpponentAttackResponse(boardIndex, opponentBoardIndex, cardData, opponentCardData);
     public void TargetExecuteCardEffect(byte[] responseData) => communicationManager.TargetExecuteCardEffect(responseData);
     public void TargetExecuteOpponentCardEffect(byte[] responseData) => communicationManager.TargetExecuteOpponentCardEffect(responseData);
-    internal void RequestPlayCard(int handIndex, int boardIndex) => communicationManager.RequestPlayCard(handIndex, boardIndex);
+    internal void RequestPlayUnitCard(int handIndex, int boardIndex) => communicationManager.RequestPlayUnitCard(handIndex, boardIndex);
     internal void RequestAttack(int boardIndex, int opponentBoardIndex) => communicationManager.RequestAttack(boardIndex, opponentBoardIndex);
     internal void RequestCastSpell(int handIndex, Targeting targeting) => communicationManager.RequestCastSpell(handIndex, targeting);
 

@@ -18,7 +18,6 @@ public abstract class ProjectileAnimationBase : MonoBehaviour
 
     protected virtual void Update()
     {
-        Debug.Log("projectile Animation Update");
         if (currentAnimationObjects.Count > 0)
         {
             float elapsedTime = Time.time - animationStartTime;
@@ -39,7 +38,6 @@ public abstract class ProjectileAnimationBase : MonoBehaviour
 
     public virtual void PlayAnimation(Vector3 originPosition, Vector3[] affectedPositions, Action onAnimationFinished)
     {
-        Debug.Log("projectile Animation started");
         gameObject.SetActive(true);
         startPosition = originPosition;
         targetPositions = affectedPositions;

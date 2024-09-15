@@ -26,11 +26,19 @@ public class PlayerHandManager : NetworkBehaviour
         enemyHand.AddCardToHand();
     }
 
-    public void PlayCard(int handIndex, int boardIndex) {
+    public void PlayUnitCard(int handIndex, int boardIndex) {
         handController.PlayUnitCard(handIndex, boardIndex);
     }
 
+    public void PlaySpellCard(int handIndex) {
+        handController.PlaySpellCard(handIndex);
+    }
+
     public void OpponentPlayCard(byte[] cardData, int handIndex, int boardIndex) {
-        enemyHand.PlayCard(cardData, handIndex, boardIndex);
+        enemyHand.PlayUnitCard(cardData, handIndex, boardIndex);
+    }
+
+    public void OpponentPlaySpellCard(int handIndex) {
+        enemyHand.PlaySpellCard(handIndex);
     }
 }
