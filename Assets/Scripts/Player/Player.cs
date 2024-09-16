@@ -74,4 +74,5 @@ public class Player : NetworkBehaviour
     public Board GetBoard() => boardManager.GetBoard();
     public EnemyBoard GetEnemyBoard() => boardManager.GetEnemyBoard();
     public PlayerAnimationManager GetAnimationManager() => animationManager;
+    public PlayerCommunicationManager GetCommunicationManager() => communicationManager;
 }

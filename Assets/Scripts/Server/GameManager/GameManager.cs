@@ -40,10 +40,10 @@ public class GameManager : NetworkBehaviour
 
 
     // Commands to be called by client
-    public void CmdEndTurn(NetworkConnectionToClient sender = null) => networkingManager.CmdEndTurn(sender);
-    public void CmdPlayUnitCard(int handIndex, int boardIndex, NetworkConnectionToClient sender = null) => networkingManager.CmdPlayUnitCard(handIndex, boardIndex, sender);
-    public void CmdAttack(int boardIndex, int opponentBoardIndex, NetworkConnectionToClient sender = null) => networkingManager.CmdAttack(boardIndex, opponentBoardIndex, sender);
-    public void CmdCastSpell(int handIndex, Targeting targeting, NetworkConnectionToClient sender = null) => networkingManager.CmdCastSpell(handIndex, targeting, sender);
+    public void CmdEndTurn(string requestId, NetworkConnectionToClient sender = null) => networkingManager.CmdEndTurn(requestId, sender);
+    public void CmdPlayUnitCard(string requestId, int handIndex, int boardIndex, NetworkConnectionToClient sender = null) => networkingManager.CmdPlayUnitCard(requestId, handIndex, boardIndex, sender);
+    public void CmdAttack(string requestId, int boardIndex, int opponentBoardIndex, NetworkConnectionToClient sender = null) => networkingManager.CmdAttack(requestId, boardIndex, opponentBoardIndex, sender);
+    public void CmdCastSpell(string requestId, int handIndex, Targeting targeting, NetworkConnectionToClient sender = null) => networkingManager.CmdCastSpell(requestId, handIndex, targeting, sender);
 
 
     // Functions to test on server client

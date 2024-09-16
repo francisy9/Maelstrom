@@ -11,9 +11,21 @@ using System.Linq;
 public class PlayerCommunicationManager : NetworkBehaviour
 {
     private Player player;
+    private int requestNum;
+    private bool isProcessingRequest;
+    [SerializeField] private RequestManager requestManager;
+    [SerializeField] private ResponseManager responseManager;
 
     public void Initialize(Player player) {
         this.player = player;
+        requestNum = 0;
+        isProcessingRequest = false;
+        responseManager.Initialize();
+        requestManager.Initialize(responseManager);
+    }
+
+    private string GetNextRequestId() {
+        return "request_" + player.name + "_" + requestNum++.ToString();
     }
 
     [TargetRpc]
@@ -22,6 +34,11 @@ public class PlayerCommunicationManager : NetworkBehaviour
     [TargetRpc]
     public void TargetInitializeHeroes(int heroStartHp, int enemyHeroStartHp) {
         player.GetHeroManager().InitHeroes(heroStartHp, enemyHeroStartHp);
+    }
+
+    [TargetRpc]
+    public void TargetAcknowledgeRequest(string requestId) {
+        Debug.Log("Server acknowledged request: " + requestId);
     }
 
     [TargetRpc]
@@ -53,12 +70,6 @@ public class PlayerCommunicationManager : NetworkBehaviour
     [TargetRpc]
     public void TargetOpponentPlaySpellCard(int handIndex) {
         player.GetHandManager().OpponentPlaySpellCard(handIndex);
-    }
-
-    internal void RequestPlayUnitCard(int handIndex, int boardIndex)
-    {
-        GameManager.Instance.CmdPlayUnitCard(handIndex, boardIndex);
-        return;
     }
 
     [TargetRpc]
@@ -136,14 +147,25 @@ public class PlayerCommunicationManager : NetworkBehaviour
         );
     }
 
+    internal void RequestPlayUnitCard(int handIndex, int boardIndex)
+    {
+        GameManager.Instance.CmdPlayUnitCard(GetNextRequestId(), handIndex, boardIndex);
+        return;
+    }
+
     internal void RequestAttack(int boardIndex, int opponentBoardIndex)
     {
-        GameManager.Instance.CmdAttack(boardIndex, opponentBoardIndex);
+        GameManager.Instance.CmdAttack(GetNextRequestId(), boardIndex, opponentBoardIndex);
         return;
     }
 
     internal void RequestCastSpell(int handIndex, Targeting targeting) {
-        GameManager.Instance.CmdCastSpell(handIndex, targeting);
+        GameManager.Instance.CmdCastSpell(GetNextRequestId(), handIndex, targeting);
+        return;
+    }
+
+    internal void RequestEndTurn() {
+        GameManager.Instance.CmdEndTurn(GetNextRequestId());
         return;
     }
 }

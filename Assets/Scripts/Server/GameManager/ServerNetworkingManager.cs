@@ -7,30 +7,30 @@ public class ServerNetworkingManager : NetworkBehaviour
 {
     // Commands to be called by client
     [Command(requiresAuthority = false)]
-    public void CmdEndTurn(NetworkConnectionToClient sender = null) {
+    public void CmdEndTurn(string requestId, NetworkConnectionToClient sender = null) {
         Player requestingPlayer = sender.identity.GetComponent<Player>();
-        ValidateRequest(requestingPlayer);
+        ValidateAndAcknowledgeRequest(requestingPlayer, requestId);
         GameManager.Instance.GetTurnManager().EndTurn(requestingPlayer);
     }
 
     [Command(requiresAuthority = false)]
-    public void CmdPlayUnitCard(int handIndex, int boardIndex, NetworkConnectionToClient sender = null) {
+    public void CmdPlayUnitCard(string requestId, int handIndex, int boardIndex, NetworkConnectionToClient sender = null) {
         Player requestingPlayer = sender.identity.GetComponent<Player>();
-        ValidateRequest(requestingPlayer);
+        ValidateAndAcknowledgeRequest(requestingPlayer, requestId);
 
         GameManager.Instance.GetHandManager().PlayUnitCard(requestingPlayer, handIndex, boardIndex);
     }
 
     [Command(requiresAuthority = false)]
-    public void CmdAttack(int boardIndex, int opponentBoardIndex, NetworkConnectionToClient sender = null) {
+    public void CmdAttack(string requestId, int boardIndex, int opponentBoardIndex, NetworkConnectionToClient sender = null) {
         Player requestingPlayer = sender.identity.GetComponent<Player>();
-        ValidateRequest(requestingPlayer);
+        ValidateAndAcknowledgeRequest(requestingPlayer, requestId);
         Debug.Log($"{requestingPlayer.name} is requesting to attack card own board index: {boardIndex} opponent board index: {opponentBoardIndex}");
         GameManager.Instance.GetBoardManager().Attack(requestingPlayer, boardIndex, opponentBoardIndex);
     }
 
     [Command(requiresAuthority = false)]
-    public void CmdCastSpell(int handIndex, Targeting targeting, NetworkConnectionToClient sender = null) {
+    public void CmdCastSpell(string requestId, int handIndex, Targeting targeting, NetworkConnectionToClient sender = null) {
         Player requestingPlayer = sender.identity.GetComponent<Player>();
         
         if (targeting == null) {
@@ -39,7 +39,7 @@ public class ServerNetworkingManager : NetworkBehaviour
             Debug.Log($"{requestingPlayer.name} is requesting to cast spell at hand index: {handIndex} targeting {targeting.targetType} index: {targeting.targetBoardIndices}");
         }
 
-        ValidateRequest(requestingPlayer);
+        ValidateAndAcknowledgeRequest(requestingPlayer, requestId);
 
         ServerState.Instance.CastSpell(handIndex, targeting, requestingPlayer);
     }
@@ -75,9 +75,10 @@ public class ServerNetworkingManager : NetworkBehaviour
     }
 
     // Helper methods
-    private void ValidateRequest(Player requestingPlayer) {
+    private void ValidateAndAcknowledgeRequest(Player requestingPlayer, string requestId) {
         if (!GameManager.Instance.GetTurnManager().IsPlayerInTurn(requestingPlayer)) {
             Debug.LogError("Player isn't in turn");
         }
+        requestingPlayer.GetCommunicationManager().TargetAcknowledgeRequest(requestId);
     }
 }

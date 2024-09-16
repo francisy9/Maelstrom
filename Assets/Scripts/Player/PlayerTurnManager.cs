@@ -41,6 +41,6 @@ public class PlayerTurnManager : NetworkBehaviour
     }
 
     private void RequestEndTurn() {
-        GameManager.Instance.CmdEndTurn();
+        player.GetCommunicationManager().RequestEndTurn();
     }
 }
