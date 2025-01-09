@@ -912,11 +912,11 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 0
   windowsGamepadBackendHint: 0
-  cloudProjectId: ce93ec51-1cd5-4aa2-9a78-f09a897ccb8e
+  cloudProjectId: 28587020-1eb3-4d9f-90d8-b551ebee407c
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: malstrom_game 2024-06-07_17-23-12
-  organizationId: magpot1
+  projectName: malstrom_game
+  organizationId: cryptographic-maelstrom
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}

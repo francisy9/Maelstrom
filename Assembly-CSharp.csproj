@@ -1,21 +1,26 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project ToolsVersion="Current">
   <!-- Generated file, do not modify, your changes will be overwritten (use AssetPostprocessor.OnGeneratedCSProject) -->
   <PropertyGroup>
-    <LangVersion>9.0</LangVersion>
+    <BaseIntermediateOutputPath>Temp/obj/$(Configuration)/$(MSBuildProjectName)</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
   </PropertyGroup>
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <ItemGroup>
+    <ProjectCapability Include="Unity" />
+  </ItemGroup>
   <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <LangVersion>9.0</LangVersion>
+    <Configurations>Debug;Release</Configurations>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>10.0.20506</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{3A9AC33C-6773-EABB-86ED-85AB94029492}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <BaseDirectory>.</BaseDirectory>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -23,7 +28,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>Temp/bin/Debug/</OutputPath>
-    <DefineConstants>UNITY_6000_0_33;UNITY_6000_0;UNITY_6000;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2018_1_OR_NEWER;UNITY_2018_2_OR_NEWER;UNITY_2018_3_OR_NEWER;UNITY_2018_4_OR_NEWER;UNITY_2019_1_OR_NEWER;UNITY_2019_2_OR_NEWER;UNITY_2019_3_OR_NEWER;UNITY_2019_4_OR_NEWER;UNITY_2020_1_OR_NEWER;UNITY_2020_2_OR_NEWER;UNITY_2020_3_OR_NEWER;UNITY_2021_1_OR_NEWER;UNITY_2021_2_OR_NEWER;UNITY_2021_3_OR_NEWER;UNITY_2022_1_OR_NEWER;UNITY_2022_2_OR_NEWER;UNITY_2022_3_OR_NEWER;UNITY_2023_1_OR_NEWER;UNITY_2023_2_OR_NEWER;UNITY_2023_3_OR_NEWER;UNITY_6000_0_OR_NEWER;PLATFORM_ARCH_64;UNITY_64;UNITY_INCLUDE_TESTS;ENABLE_AR;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_TEXTURE_STREAMING;ENABLE_VIRTUALTEXTURING;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_UNITYWEBREQUEST;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_NATIVE_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_EDITOR_GAME_SERVICES;ENABLE_UNITY_GAME_SERVICES_ANALYTICS_SUPPORT;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_GENERATE_NATIVE_PLUGINS_FOR_ASSEMBLIES_API;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_MANAGED_JOBS;ENABLE_MANAGED_TRANSFORM_JOBS;ENABLE_MANAGED_ANIMATION_JOBS;ENABLE_MANAGED_AUDIO_JOBS;ENABLE_MANAGED_UNITYTLS;INCLUDE_DYNAMIC_GI;ENABLE_SCRIPTING_GC_WBARRIERS;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_MARSHALLING_TESTS;ENABLE_VIDEO;ENABLE_NAVIGATION_OFFMESHLINK_TO_NAVMESHLINK;ENABLE_ACCELERATOR_CLIENT_DEBUGGING;TEXTCORE_1_0_OR_NEWER;EDITOR_ONLY_NAVMESH_BUILDER_DEPRECATED;PLATFORM_STANDALONE_OSX;PLATFORM_STANDALONE;UNITY_STANDALONE_OSX;UNITY_STANDALONE;ENABLE_GAMECENTER;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_CLUSTER_SYNC;ENABLE_CLUSTERINPUT;ENABLE_SPATIALTRACKING;PLATFORM_HAS_CUSTOM_MUTEX;PLATFORM_UPDATES_TIME_OUTSIDE_OF_PLAYER_LOOP;ENABLE_MONO;NET_STANDARD_2_0;NET_STANDARD;NET_STANDARD_2_1;NETSTANDARD;NETSTANDARD2_1;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_OSX;ENABLE_UNITY_COLLECTIONS_CHECKS;ENABLE_BURST_AOT;UNITY_TEAM_LICENSE;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_DIRECTOR;ENABLE_LOCALIZATION;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_TILEMAP;ENABLE_TIMELINE;ENABLE_LEGACY_INPUT_MANAGER;TEXTCORE_FONT_ENGINE_1_5_OR_NEWER;TEXTCORE_TEXT_ENGINE_1_5_OR_NEWER;MIRROR;MIRROR_79_OR_NEWER;MIRROR_81_OR_NEWER;MIRROR_82_OR_NEWER;MIRROR_83_OR_NEWER;MIRROR_84_OR_NEWER;MIRROR_85_OR_NEWER;MIRROR_86_OR_NEWER;MIRROR_89_OR_NEWER;EDGEGAP_PLUGIN_SERVERS;CSHARP_7_OR_LATER;CSHARP_7_3_OR_NEWER</DefineConstants>
+    <DefineConstants>UNITY_6000_0_33;UNITY_6000_0;UNITY_6000;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2018_1_OR_NEWER;UNITY_2018_2_OR_NEWER;UNITY_2018_3_OR_NEWER;UNITY_2018_4_OR_NEWER;UNITY_2019_1_OR_NEWER;UNITY_2019_2_OR_NEWER;UNITY_2019_3_OR_NEWER;UNITY_2019_4_OR_NEWER;UNITY_2020_1_OR_NEWER;UNITY_2020_2_OR_NEWER;UNITY_2020_3_OR_NEWER;UNITY_2021_1_OR_NEWER;UNITY_2021_2_OR_NEWER;UNITY_2021_3_OR_NEWER;UNITY_2022_1_OR_NEWER;UNITY_2022_2_OR_NEWER;UNITY_2022_3_OR_NEWER;UNITY_2023_1_OR_NEWER;UNITY_2023_2_OR_NEWER;UNITY_2023_3_OR_NEWER;UNITY_6000_0_OR_NEWER;PLATFORM_ARCH_64;UNITY_64;UNITY_INCLUDE_TESTS;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_TEXTURE_STREAMING;ENABLE_VIRTUALTEXTURING;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_UNITYWEBREQUEST;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_EDITOR_GAME_SERVICES;ENABLE_UNITY_GAME_SERVICES_ANALYTICS_SUPPORT;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_GENERATE_NATIVE_PLUGINS_FOR_ASSEMBLIES_API;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_MANAGED_JOBS;ENABLE_MANAGED_TRANSFORM_JOBS;ENABLE_MANAGED_ANIMATION_JOBS;ENABLE_MANAGED_AUDIO_JOBS;ENABLE_MANAGED_UNITYTLS;INCLUDE_DYNAMIC_GI;ENABLE_SCRIPTING_GC_WBARRIERS;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_MARSHALLING_TESTS;ENABLE_VIDEO;ENABLE_NAVIGATION_OFFMESHLINK_TO_NAVMESHLINK;ENABLE_ACCELERATOR_CLIENT_DEBUGGING;TEXTCORE_1_0_OR_NEWER;EDITOR_ONLY_NAVMESH_BUILDER_DEPRECATED;PLATFORM_STANDALONE_LINUX;PLATFORM_STANDALONE;UNITY_STANDALONE_LINUX;UNITY_STANDALONE;UNITY_STANDALONE_LINUX_API;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_CLUSTER_SYNC;ENABLE_CLUSTERINPUT;ENABLE_SPATIALTRACKING;ENABLE_MODULAR_UNITYENGINE_ASSEMBLIES;PLATFORM_SUPPORTS_SPLIT_GRAPHICS_JOBS;PLATFORM_USES_EXPLICIT_MEMORY_MANAGER_INITIALIZER;ENABLE_MONO;NET_STANDARD_2_0;NET_STANDARD;NET_STANDARD_2_1;NETSTANDARD;NETSTANDARD2_1;ENABLE_PROFILER;UNITY_SERVER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_OSX;ENABLE_UNITY_COLLECTIONS_CHECKS;ENABLE_BURST_AOT;UNITY_TEAM_LICENSE;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_DIRECTOR;ENABLE_LOCALIZATION;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_TILEMAP;ENABLE_TIMELINE;ENABLE_LEGACY_INPUT_MANAGER;TEXTCORE_FONT_ENGINE_1_5_OR_NEWER;TEXTCORE_TEXT_ENGINE_1_5_OR_NEWER;CSHARP_7_OR_LATER;CSHARP_7_3_OR_NEWER</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169;USG0001</NoWarn>
@@ -39,23 +44,23 @@
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
-    <NoConfig>true</NoConfig>
+    <NoStandardLibraries>true</NoStandardLibraries>
     <NoStdLib>true</NoStdLib>
-    <AddAdditionalExplicitAssemblyReferences>false</AddAdditionalExplicitAssemblyReferences>
-    <ImplicitlyExpandNETStandardFacades>false</ImplicitlyExpandNETStandardFacades>
-    <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
+    <NoConfig>true</NoConfig>
+    <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
+    <MSBuildWarningsAsMessages>MSB3277</MSBuildWarningsAsMessages>
   </PropertyGroup>
   <PropertyGroup>
-    <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <UnityProjectGenerator>Package</UnityProjectGenerator>
     <UnityProjectGeneratorVersion>2.0.22</UnityProjectGeneratorVersion>
-    <UnityProjectGeneratorStyle>Legacy</UnityProjectGeneratorStyle>
+    <UnityProjectGeneratorStyle>SDK</UnityProjectGeneratorStyle>
     <UnityProjectType>Game:1</UnityProjectType>
-    <UnityBuildTarget>StandaloneOSX:2</UnityBuildTarget>
+    <UnityBuildTarget>StandaloneLinux64:24</UnityBuildTarget>
     <UnityVersion>6000.0.33f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Analyzer Include="/Applications/Visual Studio.app/Contents/Resources/lib/monodevelop/AddIns/MonoDevelop.Unity/Analyzers/Microsoft.Unity.Analyzers.dll" />
+    <Analyzer Include="/Users/francisyang/.vscode/extensions/visualstudiotoolsforunity.vstuc-1.0.5/Analyzers/Microsoft.Unity.Analyzers.dll" />
+    <Analyzer Include="/Users/francisyang/dev/maelstrom/Maelstrom/Library/PackageCache/com.unity.transport/Analyzers/Unity.Transport.Analyzers.dll" />
     <Analyzer Include="/Applications/Unity/Hub/Editor/6000.0.33f1/Unity.app/Contents/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll" />
     <Analyzer Include="/Applications/Unity/Hub/Editor/6000.0.33f1/Unity.app/Contents/Tools/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll" />
     <Analyzer Include="/Applications/Unity/Hub/Editor/6000.0.33f1/Unity.app/Contents/Tools/Unity.SourceGenerators/Unity.UIToolkit.SourceGenerator.dll" />
@@ -63,60 +68,78 @@
   <ItemGroup>
     <Compile Include="Assets/Scripts/Server/ServerState/ServerHandStateManager.cs" />
     <Compile Include="Assets/Scripts/Server/GameManager/ServerHeroManager.cs" />
-    <Compile Include="Assets/Scripts/ScriptableObjects/UnitCardStatsSO.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_TextEventHandler.cs" />
+    <Compile Include="Assets/Scripts/Card/CanAttackBase.cs" />
+    <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/EnvMapAnimator.cs" />
+    <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_TextSelector_A.cs" />
+    <Compile Include="Assets/Scripts/Player/PlayerBoardManager.cs" />
+    <Compile Include="Assets/Scripts/Server/GameManager/ServerBoardManager.cs" />
+    <Compile Include="Assets/Scripts/Types/CardTypes/CardTypes.cs" />
+    <Compile Include="Assets/Scripts/Types/CardTypes/HeroStats.cs" />
+    <Compile Include="Assets/Scripts/Server/ServerState/ServerExecuteCardEffects.cs" />
+    <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/Benchmark02.cs" />
+    <Compile Include="Assets/Scripts/Types/CardTypes/BaseCard.cs" />
+    <Compile Include="Assets/Scripts/Types/AnimationId.cs" />
+    <Compile Include="Assets/Scripts/Controller/HandController.cs" />
+    <Compile Include="Assets/Scripts/Player/PlayerManaSystem.cs" />
+    <Compile Include="Assets/Scripts/Types/CardTypes/SpellCardStats.cs" />
+    <Compile Include="Assets/Scripts/Hero/HeroBase.cs" />
+    <Compile Include="Assets/Scripts/Card/CardEffect.cs" />
+    <Compile Include="Assets/Scripts/Server/CollectionsManager/CollectionsManager.cs" />
+    <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_ExampleScript_01.cs" />
+    <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMPro_InstructionOverlay.cs" />
+    <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/VertexShakeB.cs" />
+    <Compile Include="Assets/Scripts/Controller/Mask.cs" />
+    <Compile Include="Assets/Scripts/Animations/ProjectileAnimationBase.cs" />
+    <Compile Include="Assets/Scripts/Hero/HeroVisual.cs" />
+    <Compile Include="Assets/Scripts/Player/PlayerTurnManager.cs" />
+    <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/VertexJitter.cs" />
+    <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_UiFrameRateCounter.cs" />
+    <Compile Include="Assets/Scripts/Animations/Fireball.cs" />
+    <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/VertexZoom.cs" />
+    <Compile Include="Assets/Scripts/Types/ResponseManager.cs" />
+    <Compile Include="Assets/Scripts/Card/InHand/InHandCardVisualBase.cs" />
+    <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_TextSelector_B.cs" />
+    <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/SkewTextExample.cs" />
+    <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/WarpTextExample.cs" />
+    <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/ShaderPropAnimator.cs" />
+    <Compile Include="Assets/Scripts/Player/PlayerHandManager.cs" />
+    <Compile Include="Assets/Scripts/Hero/EnemyHero.cs" />
+    <Compile Include="Assets/Scripts/Card/InHand/InHandCard.cs" />
+    <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_TextInfoDebugTool.cs" />
+    <Compile Include="Assets/Scripts/Server/GameManager/ServerTurnManager.cs" />
+    <Compile Include="Assets/Scripts/ScriptableObjects/UnitCardStatsSO.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/VertexShakeA.cs" />
     <Compile Include="Assets/Scripts/Player/PlayerHeroManager.cs" />
     <Compile Include="Assets/Scripts/Player/PlayerCommunicationManager.cs" />
-    <Compile Include="Assets/Scripts/Card/CanAttackBase.cs" />
-    <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/EnvMapAnimator.cs" />
     <Compile Include="Assets/Scripts/Types/RequestManager.cs" />
-    <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_TextSelector_A.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/Benchmark01_UGUI.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/SimpleScript.cs" />
     <Compile Include="Assets/Scripts/Card/InHand/DragCardController.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/Benchmark04.cs" />
     <Compile Include="Assets/Scripts/Card/OnBoard/OnBoardCard.cs" />
-    <Compile Include="Assets/Scripts/Player/PlayerBoardManager.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/ChatController.cs" />
     <Compile Include="Assets/Scripts/Controller/Board.cs" />
-    <Compile Include="Assets/Scripts/Server/GameManager/ServerBoardManager.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_DigitValidator.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_FrameRateCounter.cs" />
-    <Compile Include="Assets/Scripts/Types/CardTypes/CardTypes.cs" />
-    <Compile Include="Assets/Scripts/Types/CardTypes/HeroStats.cs" />
     <Compile Include="Assets/Scripts/Server/GameManager/ServerPlayerManager.cs" />
-    <Compile Include="Assets/Scripts/Server/ServerState/ServerExecuteCardEffects.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TextMeshSpawner.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/Benchmark01.cs" />
     <Compile Include="Assets/Scripts/Types/ResponseTypes.cs" />
-    <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/Benchmark02.cs" />
     <Compile Include="Assets/Scripts/Types/CardTypes/WeaponCardStats.cs" />
-    <Compile Include="Assets/Scripts/Types/CardTypes/BaseCard.cs" />
-    <Compile Include="Assets/Scripts/Types/AnimationId.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/CameraController.cs" />
-    <Compile Include="Assets/Scripts/Controller/HandController.cs" />
-    <Compile Include="Assets/Scripts/Player/PlayerManaSystem.cs" />
-    <Compile Include="Assets/Scripts/Types/CardTypes/SpellCardStats.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/Benchmark03.cs" />
-    <Compile Include="Assets/Scripts/Hero/HeroBase.cs" />
     <Compile Include="Assets/Scripts/Server/GameManager/ServerManaManager.cs" />
     <Compile Include="Assets/Scripts/PlayerManaDisplay.cs" />
     <Compile Include="Assets/Scripts/ScriptableObjects/BaseCardSO.cs" />
     <Compile Include="Assets/Scripts/ScriptableObjects/WeaponStatsSO.cs" />
     <Compile Include="Assets/Scripts/Types/LayerNames.cs" />
-    <Compile Include="Assets/Scripts/Card/CardEffect.cs" />
     <Compile Include="Assets/Scripts/Controller/BoardBase.cs" />
     <Compile Include="Assets/Scripts/Player/PlayerAnimationManager.cs" />
-    <Compile Include="Assets/Scripts/Server/CollectionsManager/CollectionsManager.cs" />
-    <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_ExampleScript_01.cs" />
-    <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMPro_InstructionOverlay.cs" />
-    <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/VertexShakeB.cs" />
+    <Compile Include="Assets/Scripts/TestLobby.cs" />
     <Compile Include="Assets/Scripts/Controller/HandVisual.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/DropdownSample.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/VertexColorCycler.cs" />
-    <Compile Include="Assets/Scripts/Controller/Mask.cs" />
-    <Compile Include="Assets/Scripts/Animations/ProjectileAnimationBase.cs" />
     <Compile Include="Assets/Scripts/Controller/EnemyHandVisual.cs" />
     <Compile Include="Assets/Scripts/Types/CardTypes/UnitCardStats.cs" />
     <Compile Include="Assets/Scripts/Server/ServerState/ServerBoardStateManager.cs" />
@@ -124,40 +147,23 @@
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/ObjectSpin.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_PhoneNumberValidator.cs" />
     <Compile Include="Assets/Scripts/Server/PlayerManager.cs" />
-    <Compile Include="Assets/Scripts/Hero/HeroVisual.cs" />
-    <Compile Include="Assets/Scripts/Player/PlayerTurnManager.cs" />
     <Compile Include="Assets/Scripts/Card/OnBoard/OnBoardCardVisual.cs" />
-    <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/VertexJitter.cs" />
     <Compile Include="Assets/Scripts/Hero/Hero.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TextConsoleSimulator.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TeleType.cs" />
-    <Compile Include="Assets/Scripts/Server/GameManager/ServerNetworkingManager.cs" />
     <Compile Include="Assets/Scripts/Card/InHand/InHandCardVisual.cs" />
+    <Compile Include="Assets/Scripts/Server/GameManager/ServerNetworkingManager.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_TextEventCheck.cs" />
-    <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_UiFrameRateCounter.cs" />
     <Compile Include="Assets/Scripts/Server/GameManager/ServerHandManager.cs" />
     <Compile Include="Assets/Scripts/Controller/EnemyBoard.cs" />
-    <Compile Include="Assets/Scripts/Animations/Fireball.cs" />
-    <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/VertexZoom.cs" />
     <Compile Include="Assets/Scripts/ScriptableObjects/SpellCardSO.cs" />
-    <Compile Include="Assets/Scripts/Types/ResponseManager.cs" />
-    <Compile Include="Assets/Scripts/Card/InHand/InHandCardVisualBase.cs" />
-    <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_TextSelector_B.cs" />
     <Compile Include="Assets/Scripts/Controller/LineController.cs" />
     <Compile Include="Assets/Scripts/Controller/EnemyHand.cs" />
-    <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/SkewTextExample.cs" />
-    <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/WarpTextExample.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TextMeshProFloatingText.cs" />
     <Compile Include="Assets/Scripts/Server/GameManager/GameManager.cs" />
-    <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/ShaderPropAnimator.cs" />
     <Compile Include="Assets/Scripts/Server/ServerState/ServerState.cs" />
-    <Compile Include="Assets/Scripts/Player/PlayerHandManager.cs" />
-    <Compile Include="Assets/Scripts/Hero/EnemyHero.cs" />
-    <Compile Include="Assets/Scripts/Card/InHand/InHandCard.cs" />
     <Compile Include="Assets/Scripts/Controller/AnimationManager.cs" />
     <Compile Include="Assets/Scripts/Types/Const.cs" />
-    <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_TextInfoDebugTool.cs" />
-    <Compile Include="Assets/Scripts/Server/GameManager/ServerTurnManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets/Mirror/Plugins/Mono.Cecil/Mono.CecilX.dll" />
@@ -207,10 +213,6 @@
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>/Applications/Unity/Hub/Editor/6000.0.33f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.ARModule">
-      <HintPath>/Applications/Unity/Hub/Editor/6000.0.33f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.ARModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.AccessibilityModule">
@@ -703,6 +705,14 @@
     </Reference>
     <Reference Include="Mono.Cecil">
       <HintPath>Library/PackageCache/com.unity.nuget.mono-cecil/Mono.Cecil.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="websocket-sharp">
+      <HintPath>Library/PackageCache/com.unity.services.wire/Plugins/websocket-sharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="mcs">
+      <HintPath>Assets/Plugins/QFSW/Quantum Console/Source/Extras/exec/CSharpCompiler/Plugins/mcs.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
@@ -1233,12 +1243,16 @@
       <HintPath>Library/ScriptAssemblies/Unity.2D.Common.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Unity.Networking.Editor">
+      <HintPath>Library/ScriptAssemblies/Unity.Networking.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.2D.Common.Path.Editor">
       <HintPath>Library/ScriptAssemblies/Unity.2D.Common.Path.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Edgegap">
-      <HintPath>Library/ScriptAssemblies/Edgegap.dll</HintPath>
+    <Reference Include="Unity.Services.Multiplayer">
+      <HintPath>Library/ScriptAssemblies/Unity.Services.Multiplayer.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Toolchain.Macos-arm64-Linux-x86_64">
@@ -1281,6 +1295,10 @@
       <HintPath>Library/ScriptAssemblies/Unity.Multiplayer.Center.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Unity.Services.Core.Components">
+      <HintPath>Library/ScriptAssemblies/Unity.Services.Core.Components.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.Mathematics.Editor">
       <HintPath>Library/ScriptAssemblies/Unity.Mathematics.Editor.dll</HintPath>
       <Private>False</Private>
@@ -1293,12 +1311,24 @@
       <HintPath>Library/ScriptAssemblies/Unity.2D.Animation.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Unity.Services.Authentication.PlayerAccounts">
+      <HintPath>Library/ScriptAssemblies/Unity.Services.Authentication.PlayerAccounts.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.Collections">
       <HintPath>Library/ScriptAssemblies/Unity.Collections.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.2D.PixelPerfect.Editor">
       <HintPath>Library/ScriptAssemblies/Unity.2D.PixelPerfect.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Services.Multiplayer.Multiplay">
+      <HintPath>Library/ScriptAssemblies/Unity.Services.Multiplayer.Multiplay.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Services.Authentication.Editor.Shared">
+      <HintPath>Library/ScriptAssemblies/Unity.Services.Authentication.Editor.Shared.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.VisualScripting.Core">
@@ -1341,12 +1371,20 @@
       <HintPath>Library/ScriptAssemblies/Unity.Multiplayer.Center.Common.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Unity.Services.Multiplayer.Multiplay.Sqp">
+      <HintPath>Library/ScriptAssemblies/Unity.Services.Multiplayer.Multiplay.Sqp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.VisualScripting.Flow.Editor">
       <HintPath>Library/ScriptAssemblies/Unity.VisualScripting.Flow.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Services.Core.Analytics">
+      <HintPath>Library/ScriptAssemblies/Unity.Services.Core.Analytics.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.2D.Tilemap.Extras">
@@ -1369,8 +1407,12 @@
       <HintPath>Library/ScriptAssemblies/Unity.Mathematics.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Unity.Toolchain.Win-x86_64-Linux-x86_64">
-      <HintPath>Library/ScriptAssemblies/Unity.Toolchain.Win-x86_64-Linux-x86_64.dll</HintPath>
+    <Reference Include="Unity.Services.Authentication">
+      <HintPath>Library/ScriptAssemblies/Unity.Services.Authentication.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Networking.Transport">
+      <HintPath>Library/ScriptAssemblies/Unity.Networking.Transport.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.VisualScripting.State">
@@ -1385,8 +1427,24 @@
       <HintPath>Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Unity.Services.Core.Environments">
+      <HintPath>Library/ScriptAssemblies/Unity.Services.Core.Environments.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Services.Multiplayer.Editor.Matchmaker.Authoring">
+      <HintPath>Library/ScriptAssemblies/Unity.Services.Multiplayer.Editor.Matchmaker.Authoring.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Services.Multiplayer.Multiplay.Authoring.Core">
+      <HintPath>Library/ScriptAssemblies/Unity.Services.Multiplayer.Multiplay.Authoring.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.Sysroot.Linux_x86_64">
       <HintPath>Library/ScriptAssemblies/Unity.Sysroot.Linux_x86_64.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Services.Multiplayer.Editor.Shared">
+      <HintPath>Library/ScriptAssemblies/Unity.Services.Multiplayer.Editor.Shared.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.2D.Psdimporter.Editor">
@@ -1401,6 +1459,10 @@
       <HintPath>Library/ScriptAssemblies/Unity.Burst.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Unity.Services.Core">
+      <HintPath>Library/ScriptAssemblies/Unity.Services.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.2D.PixelPerfect">
       <HintPath>Library/ScriptAssemblies/Unity.2D.PixelPerfect.dll</HintPath>
       <Private>False</Private>
@@ -1413,8 +1475,24 @@
       <HintPath>Library/ScriptAssemblies/Unity.VisualStudio.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Unity.Services.Authentication.Server">
+      <HintPath>Library/ScriptAssemblies/Unity.Services.Authentication.Server.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Services.Multiplayer.Multiplay.Authoring.Editor">
+      <HintPath>Library/ScriptAssemblies/Unity.Services.Multiplayer.Multiplay.Authoring.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.VisualScripting.Flow">
       <HintPath>Library/ScriptAssemblies/Unity.VisualScripting.Flow.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Services.Multiplayer.Server">
+      <HintPath>Library/ScriptAssemblies/Unity.Services.Multiplayer.Server.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Services.QoS">
+      <HintPath>Library/ScriptAssemblies/Unity.Services.QoS.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.SysrootPackage.Editor">
@@ -1423,62 +1501,41 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Mirror.Editor.csproj">
-      <Project>{48402119-9A3E-94D5-512C-56E673943F1F}</Project>
-      <Name>Mirror.Editor</Name>
-    </ProjectReference>
-    <ProjectReference Include="ParrelSync.csproj">
-      <Project>{28971BF1-5FBC-B4C2-9F57-011A3F0AAF81}</Project>
-      <Name>ParrelSync</Name>
-    </ProjectReference>
-    <ProjectReference Include="Telepathy.csproj">
-      <Project>{1D359BA1-EBA9-D222-8042-9526B9562DFF}</Project>
-      <Name>Telepathy</Name>
-    </ProjectReference>
-    <ProjectReference Include="Mirror.Components.csproj">
-      <Project>{37483369-8C81-0B33-D816-04D5A7D2B2DA}</Project>
-      <Name>Mirror.Components</Name>
-    </ProjectReference>
-    <ProjectReference Include="EncryptionTransportEditor.csproj">
-      <Project>{B04EBB98-4E9D-7183-B660-B851F1F20E29}</Project>
-      <Name>EncryptionTransportEditor</Name>
-    </ProjectReference>
-    <ProjectReference Include="Mirror.CompilerSymbols.csproj">
-      <Project>{CF94DFEB-98FE-5FA6-B725-3B8FE321EA68}</Project>
-      <Name>Mirror.CompilerSymbols</Name>
-    </ProjectReference>
-    <ProjectReference Include="Mirror.Authenticators.csproj">
-      <Project>{ADD671C5-661B-199A-1E3F-ED75B34E7C20}</Project>
-      <Name>Mirror.Authenticators</Name>
-    </ProjectReference>
-    <ProjectReference Include="Mirror.Examples.csproj">
-      <Project>{353C2722-9069-B22A-FE8D-1D31D9AEDC7C}</Project>
-      <Name>Mirror.Examples</Name>
-    </ProjectReference>
-    <ProjectReference Include="kcp2k.csproj">
-      <Project>{BD5692AD-7746-C728-D205-C2788C8DA7B2}</Project>
-      <Name>kcp2k</Name>
-    </ProjectReference>
-    <ProjectReference Include="Mirror.csproj">
-      <Project>{421410E9-2468-5321-ADF8-A8EE702A52A9}</Project>
-      <Name>Mirror</Name>
-    </ProjectReference>
-    <ProjectReference Include="SimpleWebTransport.csproj">
-      <Project>{0A6C16B3-B29C-3205-EF4A-8C6DA8358726}</Project>
-      <Name>SimpleWebTransport</Name>
-    </ProjectReference>
-    <ProjectReference Include="Mirror.Transports.csproj">
-      <Project>{037C9BA0-21D4-C8C6-DD58-F216457550F4}</Project>
-      <Name>Mirror.Transports</Name>
-    </ProjectReference>
+    <ProjectReference Include="QFSW.QC.QGUI.csproj" />
+    <ProjectReference Include="Mirror.Editor.csproj" />
+    <ProjectReference Include="QFSW.QC.Grammar.csproj" />
+    <ProjectReference Include="QFSW.QC.Parsers.csproj" />
+    <ProjectReference Include="QFSW.QC.Extras.csproj" />
+    <ProjectReference Include="QFSW.QC.Editor.Tools.csproj" />
+    <ProjectReference Include="QFSW.QC.Serializers.csproj" />
+    <ProjectReference Include="ParrelSync.csproj" />
+    <ProjectReference Include="Telepathy.csproj" />
+    <ProjectReference Include="Mirror.Components.csproj" />
+    <ProjectReference Include="EncryptionTransportEditor.csproj" />
+    <ProjectReference Include="QFSW.QC.csproj" />
+    <ProjectReference Include="QFSW.QC.Demo.csproj" />
+    <ProjectReference Include="Mirror.CompilerSymbols.csproj" />
+    <ProjectReference Include="Mirror.Authenticators.csproj" />
+    <ProjectReference Include="QFSW.QC.UI.csproj" />
+    <ProjectReference Include="QFSW.QC.ScanRules.csproj" />
+    <ProjectReference Include="Mirror.Examples.csproj" />
+    <ProjectReference Include="kcp2k.csproj" />
+    <ProjectReference Include="Mirror.csproj" />
+    <ProjectReference Include="SimpleWebTransport.csproj" />
+    <ProjectReference Include="Mirror.Transports.csproj" />
+    <ProjectReference Include="QFSW.QC.Editor.csproj" />
+    <ProjectReference Include="QFSW.QC.Suggestors.csproj" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)/Microsoft.CSharp.targets" />
-  <Target Name="GenerateTargetFrameworkMonikerAttribute" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+  <ItemGroup>
+    <ProjectCapability Remove="LaunchProfiles" />
+    <ProjectCapability Remove="SharedProjectReferences" />
+    <ProjectCapability Remove="ReferenceManagerSharedProjects" />
+    <ProjectCapability Remove="ProjectReferences" />
+    <ProjectCapability Remove="ReferenceManagerProjects" />
+    <ProjectCapability Remove="COMReferences" />
+    <ProjectCapability Remove="ReferenceManagerCOM" />
+    <ProjectCapability Remove="AssemblyReferences" />
+    <ProjectCapability Remove="ReferenceManagerAssemblies" />
+  </ItemGroup>
 </Project>
