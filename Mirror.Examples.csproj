@@ -685,6 +685,10 @@
       <HintPath>/Applications/Unity/Hub/Editor/6000.0.33f1/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="websocket-sharp">
+      <HintPath>Library/PackageCache/com.unity.services.wire/Plugins/websocket-sharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Mono.CecilX">
       <HintPath>Assets/Mirror/Plugins/Mono.Cecil/Mono.CecilX.dll</HintPath>
       <Private>False</Private>
@@ -715,6 +719,10 @@
     </Reference>
     <Reference Include="Unity.Plastic.Antlr3.Runtime">
       <HintPath>Library/PackageCache/com.unity.collab-proxy/Lib/Editor/Unity.Plastic.Antlr3.Runtime.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="mcs">
+      <HintPath>Assets/Plugins/QFSW/Quantum Console/Source/Extras/exec/CSharpCompiler/Plugins/mcs.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Mono.CecilX.Rocks">
@@ -751,14 +759,6 @@
     </Reference>
     <Reference Include="Mono.Cecil">
       <HintPath>Library/PackageCache/com.unity.nuget.mono-cecil/Mono.Cecil.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="websocket-sharp">
-      <HintPath>Library/PackageCache/com.unity.services.wire/Plugins/websocket-sharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="mcs">
-      <HintPath>Assets/Plugins/QFSW/Quantum Console/Source/Extras/exec/CSharpCompiler/Plugins/mcs.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">

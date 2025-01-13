@@ -123,8 +123,8 @@
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_DigitValidator.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_FrameRateCounter.cs" />
     <Compile Include="Assets/Scripts/Server/GameManager/ServerPlayerManager.cs" />
-    <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TextMeshSpawner.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/Benchmark01.cs" />
+    <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TextMeshSpawner.cs" />
     <Compile Include="Assets/Scripts/Types/ResponseTypes.cs" />
     <Compile Include="Assets/Scripts/Types/CardTypes/WeaponCardStats.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/CameraController.cs" />
@@ -667,6 +667,10 @@
       <HintPath>/Applications/Unity/Hub/Editor/6000.0.33f1/Unity.app/Contents/Managed/UnityEngine/UnityEditor.XRModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="websocket-sharp">
+      <HintPath>Library/PackageCache/com.unity.services.wire/Plugins/websocket-sharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Mono.CecilX">
       <HintPath>Assets/Mirror/Plugins/Mono.Cecil/Mono.CecilX.dll</HintPath>
       <Private>False</Private>
@@ -687,6 +691,10 @@
       <HintPath>Assets/Mirror/Plugins/Mono.Cecil/Mono.CecilX.Pdb.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="mcs">
+      <HintPath>Assets/Plugins/QFSW/Quantum Console/Source/Extras/exec/CSharpCompiler/Plugins/mcs.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Mono.CecilX.Rocks">
       <HintPath>Assets/Mirror/Plugins/Mono.Cecil/Mono.CecilX.Rocks.dll</HintPath>
       <Private>False</Private>
@@ -705,14 +713,6 @@
     </Reference>
     <Reference Include="Mono.Cecil">
       <HintPath>Library/PackageCache/com.unity.nuget.mono-cecil/Mono.Cecil.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="websocket-sharp">
-      <HintPath>Library/PackageCache/com.unity.services.wire/Plugins/websocket-sharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="mcs">
-      <HintPath>Assets/Plugins/QFSW/Quantum Console/Source/Extras/exec/CSharpCompiler/Plugins/mcs.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
@@ -1239,12 +1239,12 @@
       <HintPath>Library/ScriptAssemblies/PsdPlugin.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Unity.2D.Common.Editor">
-      <HintPath>Library/ScriptAssemblies/Unity.2D.Common.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Unity.Networking.Editor">
       <HintPath>Library/ScriptAssemblies/Unity.Networking.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.2D.Common.Editor">
+      <HintPath>Library/ScriptAssemblies/Unity.2D.Common.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.2D.Common.Path.Editor">
@@ -1367,12 +1367,12 @@
       <HintPath>Library/ScriptAssemblies/Unity.VisualScripting.Core.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Unity.Multiplayer.Center.Common">
-      <HintPath>Library/ScriptAssemblies/Unity.Multiplayer.Center.Common.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Unity.Services.Multiplayer.Multiplay.Sqp">
       <HintPath>Library/ScriptAssemblies/Unity.Services.Multiplayer.Multiplay.Sqp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Multiplayer.Center.Common">
+      <HintPath>Library/ScriptAssemblies/Unity.Multiplayer.Center.Common.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.VisualScripting.Flow.Editor">
@@ -1403,12 +1403,12 @@
       <HintPath>Library/ScriptAssemblies/Unity.VisualScripting.State.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Unity.Mathematics">
-      <HintPath>Library/ScriptAssemblies/Unity.Mathematics.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Unity.Services.Authentication">
       <HintPath>Library/ScriptAssemblies/Unity.Services.Authentication.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Mathematics">
+      <HintPath>Library/ScriptAssemblies/Unity.Mathematics.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Networking.Transport">
@@ -1419,36 +1419,32 @@
       <HintPath>Library/ScriptAssemblies/Unity.VisualScripting.State.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Unity.2D.SpriteShape.Editor">
-      <HintPath>Library/ScriptAssemblies/Unity.2D.SpriteShape.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.2D.Sprite.Editor">
-      <HintPath>Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
+    <Reference Include="Unity.Services.Multiplayer.Editor.Shared">
+      <HintPath>Library/ScriptAssemblies/Unity.Services.Multiplayer.Editor.Shared.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Services.Core.Environments">
       <HintPath>Library/ScriptAssemblies/Unity.Services.Core.Environments.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Unity.Services.Multiplayer.Editor.Matchmaker.Authoring">
-      <HintPath>Library/ScriptAssemblies/Unity.Services.Multiplayer.Editor.Matchmaker.Authoring.dll</HintPath>
+    <Reference Include="Unity.Services.Multiplayer.Multiplay.Authoring.Editor">
+      <HintPath>Library/ScriptAssemblies/Unity.Services.Multiplayer.Multiplay.Authoring.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Services.Multiplayer.Multiplay.Authoring.Core">
       <HintPath>Library/ScriptAssemblies/Unity.Services.Multiplayer.Multiplay.Authoring.Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Unity.Services.Multiplayer.Editor.Matchmaker.Authoring">
+      <HintPath>Library/ScriptAssemblies/Unity.Services.Multiplayer.Editor.Matchmaker.Authoring.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.Sysroot.Linux_x86_64">
       <HintPath>Library/ScriptAssemblies/Unity.Sysroot.Linux_x86_64.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Unity.Services.Multiplayer.Editor.Shared">
-      <HintPath>Library/ScriptAssemblies/Unity.Services.Multiplayer.Editor.Shared.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.2D.Psdimporter.Editor">
-      <HintPath>Library/ScriptAssemblies/Unity.2D.Psdimporter.Editor.dll</HintPath>
+    <Reference Include="Unity.2D.Sprite.Editor">
+      <HintPath>Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
@@ -1461,6 +1457,10 @@
     </Reference>
     <Reference Include="Unity.Services.Core">
       <HintPath>Library/ScriptAssemblies/Unity.Services.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.2D.SpriteShape.Editor">
+      <HintPath>Library/ScriptAssemblies/Unity.2D.SpriteShape.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.2D.PixelPerfect">
@@ -1479,8 +1479,8 @@
       <HintPath>Library/ScriptAssemblies/Unity.Services.Authentication.Server.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Unity.Services.Multiplayer.Multiplay.Authoring.Editor">
-      <HintPath>Library/ScriptAssemblies/Unity.Services.Multiplayer.Multiplay.Authoring.Editor.dll</HintPath>
+    <Reference Include="Unity.2D.Psdimporter.Editor">
+      <HintPath>Library/ScriptAssemblies/Unity.2D.Psdimporter.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.VisualScripting.Flow">
