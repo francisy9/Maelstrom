@@ -5,6 +5,7 @@ using Unity.Services.Lobbies.Models;
 using UnityEngine;
 using QFSW.QC;
 using System.Collections.Generic;
+using ParrelSync;
 
 public class TestLobby : MonoBehaviour
 {
@@ -23,9 +24,15 @@ public class TestLobby : MonoBehaviour
             Debug.Log("Signed in " + AuthenticationService.Instance.PlayerId);
         };
 
+        if (ClonesManager.IsClone())
+        {
+            string customArgument = ClonesManager.GetArgument();
+            AuthenticationService.Instance.SwitchProfile($"Clone_{customArgument}_Profile");
+        }
+
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
 
-        playerName = "12.9 v" + Random.Range(0, 99) + "." + Random.Range(1,5);
+        playerName = "12.9 v" + Random.Range(0, 9) + "." + Random.Range(1,5);
         Debug.Log(playerName);
     }
 
@@ -94,22 +101,7 @@ public class TestLobby : MonoBehaviour
     {
         try
         {
-            QueryLobbiesOptions options = new QueryLobbiesOptions
-            {
-                Count = 10,
-                Filters = new List<QueryFilter> {
-                    new QueryFilter(
-                        QueryFilter.FieldOptions.AvailableSlots,
-                        "0",
-                        QueryFilter.OpOptions.GT),
-                    new QueryFilter(
-                        QueryFilter.FieldOptions.S1,
-                        "Normal",
-                        QueryFilter.OpOptions.EQ
-                    ),
-                },
-            };
-            QueryResponse lobbies = await LobbyService.Instance.QueryLobbiesAsync(options);
+            QueryResponse lobbies = await LobbyService.Instance.QueryLobbiesAsync();
 
             Debug.Log("Lobbies found: " + lobbies.Results);
             Debug.Log(lobbies.Results.Count + " lobbies");
@@ -118,6 +110,7 @@ public class TestLobby : MonoBehaviour
             {
                 Debug.Log("Lobby name: " + lobby.Name);
                 Debug.Log("Lobby id: " + lobby.Id);
+                Debug.Log($"Number of players: {lobby.Players.Count}");
                 PrintPlayers(lobby.Players);
                 Debug.Log("Lobby max players: " + lobby.MaxPlayers);
             }
@@ -153,8 +146,17 @@ public class TestLobby : MonoBehaviour
     {
         return new Unity.Services.Lobbies.Models.Player{
             Data = new Dictionary<string, PlayerDataObject> {
-                {"PlayerName", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, playerName)}
+                {"PlayerName", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, playerName)}
             }
         };
+    }
+
+    [Command]
+    private async void DeleteLobby() {
+        try {
+            await LobbyService.Instance.DeleteLobbyAsync(hostLobby.Id);
+        } catch (LobbyServiceException e) {
+            Debug.Log($"Failed to delete lobby: {e}");
+        }
     }
 }
