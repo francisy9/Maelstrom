@@ -108,6 +108,7 @@
     <Compile Include="Assets/Scripts/Card/InHand/InHandCard.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_TextInfoDebugTool.cs" />
     <Compile Include="Assets/Scripts/Server/GameManager/ServerTurnManager.cs" />
+    <Compile Include="Assets/Scripts/MainMenuUI.cs" />
     <Compile Include="Assets/Scripts/ScriptableObjects/UnitCardStatsSO.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/VertexShakeA.cs" />
     <Compile Include="Assets/Scripts/Player/PlayerHeroManager.cs" />
@@ -126,6 +127,8 @@
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/Benchmark01.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TextMeshSpawner.cs" />
     <Compile Include="Assets/Scripts/Types/ResponseTypes.cs" />
+    <Compile Include="Assets/Scripts/SceneManager/LoaderCallBack.cs" />
+    <Compile Include="Assets/Scripts/SceneManager/Loader.cs" />
     <Compile Include="Assets/Scripts/Types/CardTypes/WeaponCardStats.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/CameraController.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/Benchmark03.cs" />
@@ -136,6 +139,7 @@
     <Compile Include="Assets/Scripts/Types/LayerNames.cs" />
     <Compile Include="Assets/Scripts/Controller/BoardBase.cs" />
     <Compile Include="Assets/Scripts/Player/PlayerAnimationManager.cs" />
+    <Compile Include="Assets/Scripts/SceneManager/LoadingScreen.cs" />
     <Compile Include="Assets/Scripts/TestLobby.cs" />
     <Compile Include="Assets/Scripts/Controller/HandVisual.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/DropdownSample.cs" />
